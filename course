@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>המאמן של עצמך | קורס כושר דיגיטלי</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;300;400;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:   #000000;
+      --dark:    #0d0d0d;
+      --mid:     #1a1a1a;
+      --steel:   #2a2a2a;
+      --silver:  #8a8a8a;
+      --light:   #c8c8c8;
+      --white:   #f4f4f4;
+      --pure:    #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Heebo', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ══════════════════════════════════════
+       LOADER
+    ══════════════════════════════════════ */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .loader-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .loader-word {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 12vw, 160px);
+      letter-spacing: 0.06em;
+      line-height: 0.9;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loader-word .fill {
+      position: absolute;
+      inset: 0;
+      color: var(--white);
+      -webkit-text-stroke: 0;
+      clip-path: inset(100% 0 0 0);
+      animation: wordFill 0.7s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+    }
+
+    .loader-word:nth-child(1) .fill { animation-delay: 0.3s; }
+    .loader-word:nth-child(2) .fill { animation-delay: 0.55s; color: var(--silver); }
+    .loader-word:nth-child(3) .fill { animation-delay: 0.8s; }
+
+    @keyframes wordFill {
+      from { clip-path: inset(100% 0 0 0); }
+      to   { clip-path: inset(0% 0 0 0); }
+    }
+
+    .loader-line {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--white), transparent);
+      margin-top: 32px;
+      animation: lineGrow 1.4s ease forwards;
+      animation-delay: 1.1s;
+    }
+
+    @keyframes lineGrow {
+      to { width: min(400px, 80vw); }
+    }
+
+    .loader-pct {
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--silver);
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.3s;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    #loader.exit {
+      animation: curtainUp 0.9s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+    }
+    @keyframes curtainUp {
+      from { clip-path: inset(0 0 0 0); }
+      to   { clip-path: inset(0 0 100% 0); }
+    }
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    #hero {
+      min-height: 100svh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 80px 24px 100px;
+    }
+
+    .hero-stripe {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent 0px,
+        transparent 120px,
+        rgba(255,255,255,0.012) 120px,
+        rgba(255,255,255,0.012) 121px
+      );
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 900px;
+      height: 900px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      background: radial-gradient(circle, rgba(255,255,255,0.055) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-bg-num {
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(300px, 55vw, 700px);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.035);
+      line-height: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 1000px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--silver);
+      margin-bottom: 40px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 9px 22px;
+      opacity: 0;
+      animation: fadeSlide 0.8s ease forwards 2.6s;
+    }
+    .hero-tag span {
+      width: 5px; height: 5px;
+      background: var(--light);
+      border-radius: 50%;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 16vw, 200px);
+      line-height: 0.85;
+      letter-spacing: 0.02em;
+      color: var(--white);
+    }
+
+    .hero-title .t-line {
+      display: block;
+      overflow: hidden;
+    }
+    .hero-title .t-line span {
+      display: block;
+      transform: translateY(110%) skewY(4deg);
+      animation: heroReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .hero-title .t-line:nth-child(1) span { animation-delay: 2.1s; }
+    .hero-title .t-line:nth-child(2) span {
+      animation-delay: 2.22s;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--white);
+    }
+    .hero-title .t-line:nth-child(3) span { animation-delay: 2.34s; }
+
+    @keyframes heroReveal {
+      to { transform: translateY(0) skewY(0deg); }
+    }
+
+    .hero-divider {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--light), transparent);
+      margin: 36px auto;
+      animation: expandLine 0.8s ease forwards 2.7s;
+    }
+    @keyframes expandLine { to { width: 280px; } }
+
+    .hero-sub {
+      font-size: clamp(17px, 2.5vw, 22px);
+      font-weight: 300;
+      color: var(--silver);
+      line-height: 1.75;
+      max-width: 640px;
+      margin: 0 auto 56px;
+      opacity: 0;
+      animation: fadeSlide 0.9s ease forwards 2.9s;
+    }
+    .hero-sub strong { color: var(--white); font-weight: 600; }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeSlide 0.8s ease forwards 3.1s;
+    }
+
+    .btn-main {
+      display: inline-block;
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.12em;
+      padding: 16px 52px;
+      border: none;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .btn-main::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--silver);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.7,0,0.3,1);
+    }
+    .btn-main:hover::after { transform: scaleX(1); }
+    .btn-main:hover { transform: translateY(-4px); }
+    .btn-main span { position: relative; z-index: 1; }
+
+    .btn-ghost {
+      display: inline-block;
+      background: transparent;
+      color: var(--light);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.12em;
+      padding: 15px 40px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .btn-ghost:hover { border-color: var(--white); color: var(--white); transform: translateY(-4px); }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeSlide 0.8s ease forwards 3.4s;
+    }
+    .scroll-track {
+      width: 1px;
+      height: 70px;
+      background: rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-track::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--white));
+      animation: scrollDrop 2.2s ease-in-out infinite 3.8s;
+    }
+    @keyframes scrollDrop {
+      0% { top: -100%; }
+      100% { top: 200%; }
+    }
+    .scroll-label {
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════════════
+       TICKER
+    ══════════════════════════════════════ */
+    .ticker {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      overflow: hidden;
+      padding: 14px 0;
+      background: rgba(255,255,255,0.02);
+    }
+    .ticker-track {
+      display: flex;
+      animation: ticker 30s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      padding: 0 28px;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--silver);
+    }
+    .ticker-item .sep {
+      width: 4px; height: 4px;
+      background: var(--silver);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ══════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════ */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 32px; }
+
+    .s-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 11px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--silver);
+      margin-bottom: 28px;
+    }
+    .s-label::before { content: ''; width: 28px; height: 1px; background: var(--silver); }
+
+    .s-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(44px, 6vw, 80px);
+      line-height: 1;
+      letter-spacing: 0.03em;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+    .s-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px var(--light); }
+
+    /* ══════════════════════════════════════
+       PAIN
+    ══════════════════════════════════════ */
+    #pain { padding: 130px 0; }
+    .pain-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.07);
+      margin-top: 64px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .pain-cell {
+      background: var(--black);
+      padding: 52px 44px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s ease;
+    }
+    .pain-cell:hover { background: var(--dark); }
+    .pain-cell::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--white);
+      transition: width 0.5s ease;
+    }
+    .pain-cell:hover::before { width: 100%; }
+    .pain-num { font-family: 'Bebas Neue', sans-serif; font-size: 88px; color: rgba(255,255,255,0.04); line-height: 1; margin-bottom: 16px; }
+    .pain-h { font-size: 21px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+    .pain-p { font-size: 15px; font-weight: 300; color: var(--silver); line-height: 1.8; }
+
+    /* ══════════════════════════════════════
+       INTRO
+    ══════════════════════════════════════ */
+    #intro { padding: 100px 0; }
+    .intro-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .intro-box {
+      aspect-ratio: 1;
+      background: var(--mid);
+      border: 1px solid rgba(255,255,255,0.09);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .intro-box::before {
+      content: 'NEXT\ALEVEL';
+      white-space: pre;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 90px;
+      color: rgba(255,255,255,0.06);
+      text-align: center;
+      line-height: 0.9;
+      letter-spacing: 0.06em;
+    }
+    .intro-box-tag {
+      position: absolute;
+      bottom: 28px; right: 28px;
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      padding: 8px 20px;
+    }
+    .intro-corner { position: absolute; width: 60px; height: 60px; }
+    .intro-corner.tl { top: -1px; left: -1px; border-top: 2px solid var(--white); border-left: 2px solid var(--white); }
+    .intro-corner.br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--white); border-right: 2px solid var(--white); }
+
+    .intro-text p { font-size: 18px; font-weight: 300; color: var(--silver); line-height: 1.9; margin-bottom: 22px; }
+    .intro-text strong { color: var(--white); font-weight: 600; }
+    .promise-items { margin-top: 40px; display: flex; flex-direction: column; gap: 14px; }
+    .promise-item { display: flex; align-items: center; gap: 16px; font-size: 16px; color: var(--light); }
+    .promise-item::before { content: '—'; color: var(--silver); font-size: 18px; flex-shrink: 0; }
+
+    /* ══════════════════════════════════════
+       CURRICULUM
+    ══════════════════════════════════════ */
+    #curriculum {
+      padding: 120px 0;
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .curr-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 70px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .curr-modules { display: flex; flex-direction: column; gap: 2px; }
+    .module-row {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      align-items: center;
+      gap: 32px;
+      padding: 28px 36px;
+      background: var(--black);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .module-row::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--mid);
+      transform: translateX(-100%);
+      transition: transform 0.45s cubic-bezier(0.7,0,0.3,1);
+      z-index: 0;
+    }
+    .module-row:hover::before { transform: translateX(0); }
+    .module-row > * { position: relative; z-index: 1; }
+
+    .m-num { font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: rgba(255,255,255,0.2); transition: color 0.3s ease; white-space: nowrap; }
+    .module-row:hover .m-num { color: var(--light); }
+    .m-title { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+    .m-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+    .m-topic { font-size: 12px; color: var(--silver); background: rgba(255,255,255,0.05); padding: 3px 12px; }
+    .m-arrow { font-size: 24px; color: rgba(255,255,255,0.2); transition: all 0.3s ease; }
+    .module-row:hover .m-arrow { color: var(--white); transform: translateX(-6px); }
+
+    /* ══════════════════════════════════════
+       WHO
+    ══════════════════════════════════════ */
+    #who { padding: 120px 0; }
+    .who-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 64px; }
+    .who-card {
+      padding: 48px 40px;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: border-color 0.4s ease;
+    }
+    .who-card:hover { border-color: rgba(255,255,255,0.3); }
+    .who-icon { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 20px; }
+    .who-title { font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 14px; line-height: 1.3; }
+    .who-text { font-size: 15px; font-weight: 300; color: var(--silver); line-height: 1.85; }
+
+    /* ══════════════════════════════════════
+       OUTCOMES
+    ══════════════════════════════════════ */
+    #outcomes {
+      padding: 120px 0;
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .outcomes-split { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .outcomes-left .s-title { font-size: clamp(50px, 7vw, 96px); }
+    .outcomes-desc { font-size: 17px; font-weight: 300; color: var(--silver); line-height: 1.85; margin-top: 24px; }
+    .outcomes-list { list-style: none; display: flex; flex-direction: column; }
+    .outcome-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      transition: padding-right 0.3s ease;
+    }
+    .outcome-item:hover { padding-right: 12px; }
+    .outcome-item .ok {
+      width: 30px; height: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; flex-shrink: 0; color: var(--light);
+    }
+
+    /* ══════════════════════════════════════
+       BONUSES
+    ══════════════════════════════════════ */
+    #bonuses { padding: 120px 0; }
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(255,255,255,0.07);
+      margin-top: 64px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .bonus-cell { background: var(--black); padding: 44px 36px; transition: background 0.3s ease; }
+    .bonus-cell:hover { background: var(--mid); }
+    .bonus-num { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 0.3em; color: var(--silver); margin-bottom: 20px; }
+    .bonus-title { font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .bonus-desc { font-size: 14px; font-weight: 300; color: var(--silver); line-height: 1.75; }
+
+    /* ══════════════════════════════════════
+       STATS
+    ══════════════════════════════════════ */
+    .stats-bar { border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .stats-inner {
+      max-width: 1140px; margin: 0 auto; padding: 80px 32px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat-cell { text-align: center; padding: 20px; border-left: 1px solid rgba(255,255,255,0.07); }
+    .stat-cell:first-child { border-left: none; }
+    .stat-n { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 6vw, 80px); color: var(--white); line-height: 1; }
+    .stat-l { font-size: 13px; letter-spacing: 0.1em; color: var(--silver); margin-top: 8px; }
+
+    /* ══════════════════════════════════════
+       PRICING
+    ══════════════════════════════════════ */
+    #pricing {
+      padding: 130px 0;
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .pricing-wrap { max-width: 700px; margin: 60px auto 0; }
+    .price-card {
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 70px 60px;
+      position: relative;
+      background: var(--black);
+      text-align: center;
+    }
+    .price-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: var(--white); color: var(--black);
+      font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 0.2em;
+      padding: 5px 28px; white-space: nowrap;
+    }
+    .price-was { font-size: 18px; color: var(--silver); text-decoration: line-through; margin-bottom: 8px; }
+    .price-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 12vw, 120px);
+      color: var(--white); line-height: 1; letter-spacing: 0.02em;
+    }
+    .price-big sup { font-size: 0.4em; vertical-align: super; color: var(--light); }
+    .price-sub { font-size: 14px; color: var(--silver); letter-spacing: 0.05em; margin-bottom: 48px; }
+    .price-list { list-style: none; text-align: right; margin-bottom: 52px; display: flex; flex-direction: column; gap: 14px; }
+    .price-list li { display: flex; align-items: center; gap: 14px; font-size: 16px; color: var(--light); }
+    .price-list li::before {
+      content: '✓';
+      width: 24px; height: 24px;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: var(--white); flex-shrink: 0;
+    }
+    .price-cta {
+      width: 100%; display: block;
+      background: var(--white); color: var(--black);
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.18em;
+      padding: 20px; border: none; text-decoration: none; text-align: center;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .price-cta::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--silver);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform 0.4s cubic-bezier(0.7,0,0.3,1);
+    }
+    .price-cta:hover::after { transform: scaleX(1); }
+    .price-cta span { position: relative; z-index: 1; }
+    .price-guarantee { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 24px; font-size: 13px; color: var(--silver); }
+
+    /* ══════════════════════════════════════
+       CONTACT
+    ══════════════════════════════════════ */
+    #contact { padding: 130px 0; }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .contact-text p { font-size: 17px; font-weight: 300; color: var(--silver); line-height: 1.9; margin-top: 20px; }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-field { display: flex; flex-direction: column; gap: 8px; }
+    .form-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--silver); }
+    .form-input {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--white);
+      font-family: 'Heebo', sans-serif; font-size: 16px;
+      padding: 16px 20px; outline: none;
+      transition: border-color 0.3s ease;
+      width: 100%;
+    }
+    .form-input::placeholder { color: var(--steel); }
+    .form-input:focus { border-color: rgba(255,255,255,0.5); }
+    .form-submit {
+      background: var(--white); color: var(--black);
+      font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.15em;
+      padding: 18px; border: none; cursor: pointer;
+      transition: all 0.3s ease; margin-top: 8px;
+      position: relative; overflow: hidden;
+    }
+    .form-submit::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--light);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform 0.4s cubic-bezier(0.7,0,0.3,1);
+    }
+    .form-submit:hover::after { transform: scaleX(1); }
+    .form-submit span { position: relative; z-index: 1; }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      background: #030303;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 48px 32px;
+    }
+    .footer-inner {
+      max-width: 1140px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 0.1em; color: var(--white); }
+    .footer-copy { font-size: 13px; color: var(--silver); }
+
+    /* ══════════════════════════════════════
+       SCROLL REVEAL
+    ══════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-left {
+      opacity: 0; transform: translateX(-40px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.in { opacity: 1; transform: none; }
+
+    .stagger .reveal:nth-child(1) { transition-delay: 0s; }
+    .stagger .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .stagger .reveal:nth-child(3) { transition-delay: 0.2s; }
+    .stagger .reveal:nth-child(4) { transition-delay: 0.3s; }
+    .stagger .reveal:nth-child(5) { transition-delay: 0.4s; }
+    .stagger .reveal:nth-child(6) { transition-delay: 0.5s; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .pain-layout, .who-grid, .bonus-grid, .intro-inner, .outcomes-split, .contact-inner { grid-template-columns: 1fr; }
+      .curr-header { flex-direction: column; align-items: flex-start; }
+      .module-row { grid-template-columns: 64px 1fr 24px; gap: 16px; padding: 22px 20px; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .stat-cell { border-left: none; border-top: 1px solid rgba(255,255,255,0.07); }
+      .price-card { padding: 60px 28px; }
+      .intro-visual { display: none; }
+      .hero-bg-num { display: none; }
+      .bonus-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ LOADER ══ -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-word">
+        <span>NEXT</span>
+        <span class="fill">NEXT</span>
+      </div>
+      <div class="loader-word">
+        <span>LEVEL</span>
+        <span class="fill">LEVEL</span>
+      </div>
+      <div class="loader-word" style="font-size:clamp(20px,3.5vw,46px); letter-spacing:0.25em; -webkit-text-stroke: 1px rgba(255,255,255,0.15)">
+        <span>FITNESS COURSE</span>
+        <span class="fill">FITNESS COURSE</span>
+      </div>
+      <div class="loader-line"></div>
+      <div class="loader-pct" id="loaderPct">LOADING... 0%</div>
+    </div>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <section id="hero">
+    <div class="hero-stripe"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-bg-num">NL</div>
+    <div class="hero-content">
+      <div class="hero-tag"><span></span>קורס כושר דיגיטלי פרימיום<span></span></div>
+      <h1 class="hero-title">
+        <span class="t-line"><span>הגיע</span></span>
+        <span class="t-line"><span>הזמן</span></span>
+        <span class="t-line"><span>לתוצאות</span></span>
+      </h1>
+      <div class="hero-divider"></div>
+      <p class="hero-sub">
+        אם אתה מתאמן תקופה ארוכה ולא רואה תוצאות —<br>
+        <strong>אתה עושה מה שכולם עושים. וזה בדיוק מה שתוקע אותך.</strong>
+      </p>
+      <div class="hero-btns">
+        <a href="https://pay.grow.link/6ef2af5a9e5a1b243bcf27005c57a845-MTcyNDE0OA" target="_blank" class="btn-main"><span>אני רוצה תוצאות ←</span></a>
+        <a href="#curriculum" class="btn-ghost">תוכן הקורס</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-track"></div>
+      <span class="scroll-label">גלול</span>
+    </div>
+  </section>
+
+  <!-- ══ TICKER ══ -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <div class="ticker-item"><span class="sep"></span>תזונת ספורט</div>
+      <div class="ticker-item"><span class="sep"></span>אנטומיה מעמיקה</div>
+      <div class="ticker-item"><span class="sep"></span>תורת האימון</div>
+      <div class="ticker-item"><span class="sep"></span>חיטוב ומסה</div>
+      <div class="ticker-item"><span class="sep"></span>תכניות אימון מלאות</div>
+      <div class="ticker-item"><span class="sep"></span>בלי מאמן יקר</div>
+      <div class="ticker-item"><span class="sep"></span>ביצועים גבוהים</div>
+      <div class="ticker-item"><span class="sep"></span>NEXT LEVEL</div>
+      <div class="ticker-item"><span class="sep"></span>תזונת ספורט</div>
+      <div class="ticker-item"><span class="sep"></span>אנטומיה מעמיקה</div>
+      <div class="ticker-item"><span class="sep"></span>תורת האימון</div>
+      <div class="ticker-item"><span class="sep"></span>חיטוב ומסה</div>
+      <div class="ticker-item"><span class="sep"></span>תכניות אימון מלאות</div>
+      <div class="ticker-item"><span class="sep"></span>בלי מאמן יקר</div>
+      <div class="ticker-item"><span class="sep"></span>ביצועים גבוהים</div>
+      <div class="ticker-item"><span class="sep"></span>NEXT LEVEL</div>
+    </div>
+  </div>
+
+  <!-- ══ PAIN ══ -->
+  <section id="pain">
+    <div class="container">
+      <div class="s-label reveal">הבעיה</div>
+      <h2 class="s-title reveal">מכיר את <em>התחושה</em> הזו?</h2>
+      <div class="pain-layout stagger">
+        <div class="pain-cell reveal">
+          <div class="pain-num">01</div>
+          <div class="pain-h">מתאמן קשה, לא רואה תוצאות</div>
+          <div class="pain-p">שעות בחדר כושר, זיעה, כאבים — ובסוף הגוף לא משתנה. זה לא חוסר מאמץ. זה חוסר ידע נכון.</div>
+        </div>
+        <div class="pain-cell reveal">
+          <div class="pain-num">02</div>
+          <div class="pain-h">משלם אלפים על מאמן שלא מסביר כלום</div>
+          <div class="pain-p">מאמן אישי טוב עולה הון. ורוב המאמנים נותנים לך תכנית בלי ללמד אותך למה. אתה תלוי בהם לצמיתות.</div>
+        </div>
+        <div class="pain-cell reveal">
+          <div class="pain-num">03</div>
+          <div class="pain-h">עושה מה שכולם עושים</div>
+          <div class="pain-p">כולם אוכלים אותו הדבר, מתאמנים אותו הדבר — ומקבלים אותן התוצאות. לא תוצאות. זה הגיע הזמן לשנות.</div>
+        </div>
+        <div class="pain-cell reveal">
+          <div class="pain-num">04</div>
+          <div class="pain-h">תזונה? מבלבלת ומסבכת</div>
+          <div class="pain-p">כל אחד אומר משהו אחר. פחמימות טובות? לא טובות? חלבון כמה? הקורס הזה נותן לך את האמת המבוססת מדעית.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ INTRO ══ -->
+  <section id="intro">
+    <div class="container">
+      <div class="intro-inner">
+        <div class="reveal-left" style="position:relative">
+          <div class="intro-box">
+            <div class="intro-corner tl"></div>
+            <div class="intro-corner br"></div>
+            <div class="intro-box-tag">THE COURSE</div>
+          </div>
+        </div>
+        <div class="intro-text">
+          <div class="s-label reveal">הפתרון</div>
+          <h2 class="s-title reveal">הקורס שייקח<br>אותך ל<em>NEXT LEVEL</em></h2>
+          <p class="reveal">הגיע הזמן שתלמד <strong>איך לקחת את הגוף והידע שלך לרמה הבאה</strong>. לא עוד ניחושים. לא עוד כסף על מאמנים יקרים. <strong>פשוט תוצאות.</strong></p>
+          <div class="promise-items reveal">
+            <div class="promise-item">תלמד להתאים לעצמך תפריט תזונה מדויק</div>
+            <div class="promise-item">תבנה תוכנית אימון שמתאימה לגוף שלך</div>
+            <div class="promise-item">תבין למה כל דבר קורה — לא רק מה לעשות</div>
+            <div class="promise-item">תפסיק לשלם אלפי שקלים על מאמנים</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CURRICULUM ══ -->
+  <section id="curriculum">
+    <div class="container">
+      <div class="curr-header">
+        <div>
+          <div class="s-label reveal">תוכן הקורס</div>
+          <h2 class="s-title reveal">3 עמודות<br><em>הידע</em></h2>
+        </div>
+        <p class="reveal" style="font-size:16px;color:var(--silver);max-width:360px;font-weight:300;line-height:1.8">כל מה שמאמן מקצועי יודע — בידיים שלך. מתזונה ועד אנטומיה ועד תורת האימון המלאה.</p>
+      </div>
+      <div class="curr-modules">
+        <div class="module-row reveal">
+          <div class="m-num">01</div>
+          <div class="m-body">
+            <div class="m-title">תזונת ספורט</div>
+            <div class="m-topics">
+              <span class="m-topic">חיטוב ומסה</span>
+              <span class="m-topic">אבות המזון</span>
+              <span class="m-topic">תוספי תזונה</span>
+              <span class="m-topic">תזמון ארוחות</span>
+              <span class="m-topic">ירקות ופירות</span>
+              <span class="m-topic">מתוקים — טוב או רע?</span>
+            </div>
+          </div>
+          <div class="m-arrow">←</div>
+        </div>
+        <div class="module-row reveal">
+          <div class="m-num">02</div>
+          <div class="m-body">
+            <div class="m-title">אנטומיה</div>
+            <div class="m-topics">
+              <span class="m-topic">מבוא לאנטומיה</span>
+              <span class="m-topic">תנועות ומישורי הגוף</span>
+              <span class="m-topic">עצמות ומפרקים</span>
+              <span class="m-topic">שרירים, גידים, רצועות</span>
+            </div>
+          </div>
+          <div class="m-arrow">←</div>
+        </div>
+        <div class="module-row reveal">
+          <div class="m-num">03</div>
+          <div class="m-body">
+            <div class="m-title">תורת האימון</div>
+            <div class="m-topics">
+              <span class="m-topic">איך נבנה שריר?</span>
+              <span class="m-topic">שיטות וטכניקות</span>
+              <span class="m-topic">פציעות ספורט</span>
+              <span class="m-topic">סוגי כיווצים</span>
+              <span class="m-topic">תכניות אימון</span>
+              <span class="m-topic">3 תכניות לדוגמה</span>
+            </div>
+          </div>
+          <div class="m-arrow">←</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ WHO ══ -->
+  <section id="who">
+    <div class="container">
+      <div class="s-label reveal">למי זה מתאים</div>
+      <h2 class="s-title reveal">הקורס הזה<br><em>בשבילך</em></h2>
+      <div class="who-grid stagger">
+        <div class="who-card reveal">
+          <div class="who-icon">— 01</div>
+          <div class="who-title">נמאס לך לשלם אלפים על מאמן</div>
+          <div class="who-text">מאמן טוב עולה 3,000–8,000 ש"ח בחודש. הקורס נותן לך את הידע הזה פעם אחת — לצמיתות.</div>
+        </div>
+        <div class="who-card reveal">
+          <div class="who-icon">— 02</div>
+          <div class="who-title">מתאמן קשה בלי תוצאות</div>
+          <div class="who-text">כשהמאמץ לא מניב תוצאות, הבעיה היא בגישה — לא ביכולת. הקורס יסביר לך בדיוק למה ומה לשנות.</div>
+        </div>
+        <div class="who-card reveal">
+          <div class="who-icon">— 03</div>
+          <div class="who-title">רוצה להבין, לא רק לעשות</div>
+          <div class="who-text">לא עוד "תעשה X חזרות". תלמד את המדע שמאחורי כל תנועה, תזונה ותהליך — ותוכל לקבל החלטות בעצמך.</div>
+        </div>
+        <div class="who-card reveal">
+          <div class="who-icon">— 04</div>
+          <div class="who-title">רוצה להשיג מטרות גופניות אמיתיות</div>
+          <div class="who-text">חיטוב? מסה? כוח? סיבולת? לא משנה מה המטרה — הקורס יתן לך את הכלים להגיע אליה בדרך הנכונה.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OUTCOMES ══ -->
+  <section id="outcomes">
+    <div class="container">
+      <div class="outcomes-split">
+        <div class="outcomes-left">
+          <div class="s-label reveal">בסוף הקורס</div>
+          <h2 class="s-title reveal">מה<br>תדע<br><em>לעשות</em></h2>
+          <p class="outcomes-desc reveal">לא עוד ספקות. לא עוד ניחושים. תצא עם ידע מקצועי שמאמן אישי לומד שנים להשיג.</p>
+        </div>
+        <ul class="outcomes-list">
+          <li class="outcome-item reveal"><span class="ok">✓</span>להתאים לעצמך תפריט תזונה מלא</li>
+          <li class="outcome-item reveal"><span class="ok">✓</span>לבנות תוכנית אימון מדויקת ומותאמת אישית</li>
+          <li class="outcome-item reveal"><span class="ok">✓</span>להבין את האנטומיה של גוף האדם</li>
+          <li class="outcome-item reveal"><span class="ok">✓</span>לאמן נכון ומדויק — בלי לבזבז זמן</li>
+          <li class="outcome-item reveal"><span class="ok">✓</span>לנהל תהליכי חיטוב ומסה לבד</li>
+          <li class="outcome-item reveal"><span class="ok">✓</span>לעבוד עם אפליקציית MyFitnessPal</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BONUSES ══ -->
+  <section id="bonuses">
+    <div class="container">
+      <div class="s-label reveal">בונוסים</div>
+      <h2 class="s-title reveal">מה עוד<br><em>מקבלים?</em></h2>
+      <div class="bonus-grid stagger">
+        <div class="bonus-cell reveal">
+          <div class="bonus-num">BONUS 01</div>
+          <div class="bonus-title">מיתוסים באימונים</div>
+          <div class="bonus-desc">כל האגדות האורבניות שמסתובבות בחדרי הכושר — מפורקות ומנופצות על בסיס מדע.</div>
+        </div>
+        <div class="bonus-cell reveal">
+          <div class="bonus-num">BONUS 02</div>
+          <div class="bonus-title">שאלות נפוצות בחיטוב</div>
+          <div class="bonus-desc">תשובות ישירות לכל השאלות שנשאלות הכי הרבה — בלי עיגולים, בלי שטויות.</div>
+        </div>
+        <div class="bonus-cell reveal">
+          <div class="bonus-num">BONUS 03</div>
+          <div class="bonus-title">MyFitnessPal — מדריך מלא</div>
+          <div class="bonus-desc">הכרות מלאה עם האפליקציה שמשנה את כל מעקב התזונה. ממש מהקרקע.</div>
+        </div>
+        <div class="bonus-cell reveal">
+          <div class="bonus-num">BONUS 04</div>
+          <div class="bonus-title">סיכום פרקטי של הקורס</div>
+          <div class="bonus-desc">כל הקורס בסיכום מדויק שאפשר לחזור אליו בכל רגע — כמו גיליון רמאות מקצועי.</div>
+        </div>
+        <div class="bonus-cell reveal">
+          <div class="bonus-num">BONUS 05</div>
+          <div class="bonus-title">3 תכניות אימון לדוגמה</div>
+          <div class="bonus-desc">שלוש תכניות מוכנות לשימוש מיידי — לרמות שונות ומטרות שונות. תתחיל מחר.</div>
+        </div>
+        <div class="bonus-cell reveal">
+          <div class="bonus-num">BONUS 06</div>
+          <div class="bonus-title">גישה לצמיתות</div>
+          <div class="bonus-desc">הקורס שלך לתמיד. תחזור אליו כשצריך, בכל מכשיר, בכל שעה. ללא תפוגה.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STATS ══ -->
+  <div class="stats-bar reveal">
+    <div class="stats-inner">
+      <div class="stat-cell">
+        <div class="stat-n" data-count="2300">0</div>
+        <div class="stat-l">תלמידים</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n" data-count="97">0</div>
+        <div class="stat-l">% שביעות רצון</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n">3</div>
+        <div class="stat-l">מודולי ידע</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n">∞</div>
+        <div class="stat-l">גישה לצמיתות</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PRICING ══ -->
+  <section id="pricing">
+    <div class="container">
+      <div class="s-label reveal" style="justify-content:center">הצטרפות</div>
+      <h2 class="s-title reveal" style="text-align:center">השקעה <em>חד פעמית</em>.<br>ידע לתמיד.</h2>
+      <div class="pricing-wrap">
+        <div class="price-card reveal">
+          <div class="price-badge">מחיר השקה מוגבל</div>
+          <div class="price-was">₪997</div>
+          <div class="price-big"><sup>₪</sup>497</div>
+          <div class="price-sub">תשלום חד פעמי · גישה לצמיתות · ללא מנוי</div>
+          <ul class="price-list">
+            <li>3 מודולי ידע מלאים בוידאו HD</li>
+            <li>6 בונוסים כולל 3 תכניות אימון</li>
+            <li>גישה ומדריך לאפליקציית MyFitnessPal</li>
+            <li>עדכוני תוכן עתידיים בחינם</li>
+            <li>צפייה ממחשב, טאבלט ומובייל</li>
+          </ul>
+          <a href="https://pay.grow.link/6ef2af5a9e5a1b243bcf27005c57a845-MTcyNDE0OA" target="_blank" class="price-cta"><span>אני רוצה להצטרף עכשיו ←</span></a>
+          <div class="price-guarantee">🛡️ 30 יום אחריות מלאה — לא אהבת? כסף חזרה.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ══ -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-text">
+          <div class="s-label reveal">צור קשר</div>
+          <h2 class="s-title reveal">רוצים<br>לשמוע<br><em>עוד?</em></h2>
+          <p class="reveal">מלאו את הפרטים וניצור איתכם קשר בהקדם. נשמח לענות על כל שאלה לפני ההצטרפות.</p>
+        </div>
+        <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+          <div class="form-field">
+            <label class="form-label">שם מלא</label>
+            <input class="form-input" type="text" placeholder="ישראל ישראלי" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label">מספר טלפון</label>
+            <input class="form-input" type="tel" placeholder="05X-XXXXXXX" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label">אימייל</label>
+            <input class="form-input" type="email" placeholder="your@email.com">
+          </div>
+          <div class="form-field">
+            <label class="form-label">שאלה / הודעה (אופציונלי)</label>
+            <textarea class="form-input" rows="3" placeholder="כתוב כאן..." style="resize:vertical"></textarea>
+          </div>
+          <button type="submit" class="form-submit"><span>שלח פרטים ←</span></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">TB FITNESS</div>
+      <div class="footer-copy">© 2025 כל הזכויות שמורות · מדיניות פרטיות</div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── LOADER ── */
+    let pct = 0;
+    const pctEl = document.getElementById('loaderPct');
+    const pctTimer = setInterval(() => {
+      pct += Math.floor(Math.random() * 12) + 4;
+      if (pct >= 100) { pct = 100; clearInterval(pctTimer); }
+      pctEl.textContent = 'LOADING... ' + pct + '%';
+    }, 100);
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        loader.classList.add('exit');
+        setTimeout(() => { loader.style.display = 'none'; }, 950);
+      }, 2200);
+    });
+
+    /* ── SCROLL REVEAL ── */
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left').forEach(el => revealObs.observe(el));
+
+    /* ── COUNT UP ── */
+    const countObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && e.target.dataset.count) {
+          const target = parseInt(e.target.dataset.count);
+          let current = 0;
+          const step = target / (2000 / 16);
+          const t = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(t); }
+            e.target.textContent = Math.floor(current).toLocaleString('he');
+          }, 16);
+          countObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+    /* ── FORM ── */
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.form-submit span');
+      btn.textContent = '✓ הפרטים נשלחו!';
+      setTimeout(() => { btn.textContent = 'שלח פרטים ←'; }, 3000);
+    }
+
+    /* ── PARALLAX ── */
+    const heroContent = document.querySelector('.hero-content');
+    const heroBgNum = document.querySelector('.hero-bg-num');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        if (heroContent) heroContent.style.transform = 'translateY(' + (y * 0.18) + 'px)';
+        if (heroBgNum) heroBgNum.style.transform = 'translate(-50%, calc(-50% + ' + (y * 0.08) + 'px))';
+      }
+    }, { passive: true });
+  </script>
+</body>
+</html>
