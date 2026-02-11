@@ -75,7 +75,17 @@
     .hero-title .t-line:nth-child(2) span { animation-delay: 2.18s; color: transparent; -webkit-text-stroke: 2px var(--white); }
     .hero-title .t-line:nth-child(3) span { animation-delay: 2.31s; }
     @keyframes hReveal { to { transform: translateY(0) skewY(0deg); } }
-    .hero-divider { width: 0; height: 1px; margin: 30px auto; background: linear-gradient(90deg, transparent, var(--light), transparent); animation: expLine 0.7s ease forwards 2.65s; }
+    .hero-divider { width: 0; height: 1px; margin: 30px auto; background: linear-gradient(90deg, transparent, rgba(200,200,200,0.6), rgba(255,255,255,0.8), rgba(200,200,200,0.6), transparent); animation: expLine 0.7s ease forwards 2.65s; position: relative; }
+    .hero-divider::after {
+      content: '';
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+      animation: dividerShine 4s ease-in-out infinite 3.5s;
+    }
+    @keyframes dividerShine {
+      0%, 100% { transform: translateX(-100%); opacity: 0; }
+      50%       { transform: translateX(100%);  opacity: 1; }
+    }
     @keyframes expLine { to { width: 220px; } }
     .hero-sub { font-size: clamp(16px, 2.2vw, 20px); font-weight: 300; color: var(--silver); line-height: 1.7; max-width: 520px; margin: 0 auto 44px; opacity: 0; animation: fSlide 0.8s ease forwards 2.8s; }
     .hero-sub strong { color: var(--white); font-weight: 700; }
@@ -163,7 +173,19 @@
     .out-check { width: 26px; height: 26px; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--light); flex-shrink: 0; }
 
     /* ── STATS ── */
-    .stats-bar { border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); background: var(--dark); }
+    .stats-bar { border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); background: var(--dark); position: relative; overflow: hidden; }
+    .stats-bar::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(180,180,180,0.3) 20%, rgba(200,200,200,0.5) 50%, rgba(180,180,180,0.3) 80%, transparent 100%);
+      animation: silverSweep 6s ease-in-out infinite;
+    }
+    @keyframes silverSweep {
+      0%   { opacity: 0; transform: scaleX(0); transform-origin: right; }
+      30%  { opacity: 1; transform: scaleX(1); transform-origin: right; }
+      70%  { opacity: 1; transform: scaleX(1); transform-origin: left; }
+      100% { opacity: 0; transform: scaleX(0); transform-origin: left; }
+    }
     .stats-inner { max-width: 1100px; margin: 0 auto; padding: 70px 28px; display: grid; grid-template-columns: repeat(4,1fr); }
     .stat-cell { text-align: center; padding: 16px; border-left: 1px solid rgba(255,255,255,0.06); }
     .stat-cell:first-child { border-left: none; }
@@ -174,6 +196,9 @@
     #pricing { padding: 120px 0; }
     .price-wrap { max-width: 600px; margin: 52px auto 0; }
     .price-card { border: 1px solid rgba(255,255,255,0.14); padding: 60px 52px; position: relative; background: var(--dark); text-align: center; }
+    .price-corner { position: absolute; width: 24px; height: 24px; }
+    .price-corner.tl { top: -1px; right: -1px; border-top: 1px solid rgba(200,200,200,0.5); border-right: 1px solid rgba(200,200,200,0.5); }
+    .price-corner.br { bottom: -1px; left: -1px; border-bottom: 1px solid rgba(200,200,200,0.5); border-left: 1px solid rgba(200,200,200,0.5); }
     .price-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--white); color: var(--black); font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 0.2em; padding: 4px 24px; white-space: nowrap; }
     .price-was { font-size: 16px; color: var(--silver); text-decoration: line-through; margin-bottom: 6px; }
     .price-big { font-family: 'Bebas Neue', sans-serif; font-size: clamp(68px,10vw,108px); color: var(--white); line-height: 1; }
@@ -210,6 +235,124 @@
     .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
     .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.1em; color: var(--white); }
     .footer-copy { font-size: 12px; color: var(--silver); }
+
+    /* ── FLOATING PARTICLES ── */
+    .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+    .particle {
+      position: absolute;
+      width: 1px; height: 1px;
+      background: rgba(200,200,200,0.5);
+      border-radius: 50%;
+      animation: particleDrift linear infinite;
+    }
+    @keyframes particleDrift {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+    }
+
+    /* ── SILVER SHIMMER on section titles ── */
+    .s-title { position: relative; display: inline-block; }
+    .s-title::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%; width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(220,220,220,0.07), transparent);
+      transform: skewX(-20deg);
+      animation: shimmer 5s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { left: -60%; opacity: 0; }
+      40%       { opacity: 1; }
+      60%       { left: 120%; opacity: 0; }
+    }
+
+    /* ── SILVER GLOW on pain cells hover ── */
+    .pain-cell { box-shadow: inset 0 0 0 0 rgba(180,180,180,0); transition: background 0.35s, box-shadow 0.4s; }
+    .pain-cell:hover { box-shadow: inset 0 0 40px rgba(120,120,120,0.04); }
+
+    /* ── SILVER BORDER PULSE on price card ── */
+    .price-card {
+      animation: borderPulse 4s ease-in-out infinite;
+    }
+    @keyframes borderPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(180,180,180,0), inset 0 0 0 0 rgba(180,180,180,0); }
+      50%       { box-shadow: 0 0 28px rgba(140,140,140,0.07), inset 0 1px 0 rgba(200,200,200,0.08); }
+    }
+
+    /* ── SILVER ACCENT LINE animating on outcomes ── */
+    .out-item { position: relative; }
+    .out-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      height: 1px; width: 0;
+      background: linear-gradient(90deg, transparent, rgba(180,180,180,0.35));
+      transition: width 0.5s ease;
+    }
+    .out-item:hover::after { width: 100%; }
+
+    /* ── SILVER DOT SHIMMER on vticker ── */
+    .vticker-chip .dot {
+      animation: dotPulse 3s ease-in-out infinite;
+    }
+    .vticker-chip:nth-child(2) .dot { animation-delay: 0.75s; }
+    .vticker-chip:nth-child(3) .dot { animation-delay: 1.5s; }
+    .vticker-chip:nth-child(4) .dot { animation-delay: 2.25s; }
+    @keyframes dotPulse {
+      0%, 100% { opacity: 0.5; transform: rotate(45deg) scale(1); }
+      50%       { opacity: 1;   transform: rotate(45deg) scale(1.8); background: var(--light); }
+    }
+
+    /* ── SUBTLE AMBIENT GLOW drifting in backgrounds ── */
+    #pain { position: relative; overflow: hidden; }
+    #pain::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(160,160,160,0.03) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: ambientDrift 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes ambientDrift {
+      0%, 100% { transform: translate(-50%, -50%); }
+      33%       { transform: translate(-30%, -60%); }
+      66%       { transform: translate(-70%, -40%); }
+    }
+
+    #outcomes { position: relative; overflow: hidden; }
+    #outcomes::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(160,160,160,0.025) 0%, transparent 65%);
+      bottom: 0; right: 10%;
+      animation: ambientDrift2 10s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes ambientDrift2 {
+      0%, 100% { transform: translate(0, 0); }
+      50%       { transform: translate(-80px, -60px); }
+    }
+
+    /* ── MOD ROW silver left accent ── */
+    .mod-row::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0;
+      width: 2px; height: 0;
+      background: linear-gradient(to bottom, transparent, rgba(180,180,180,0.4), transparent);
+      transition: height 0.45s ease;
+      z-index: 2;
+    }
+    .mod-row:hover::after { height: 100%; }
+
+    /* ── STAT number silver glow on reveal ── */
+    .stat-n { transition: text-shadow 0.4s ease; }
+    .stat-cell:hover .stat-n { text-shadow: 0 0 20px rgba(180,180,180,0.2); }
 
     /* ── REVEAL ── */
     .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.16,1,0.3,1); }
@@ -251,6 +394,7 @@
     <div class="hero-stripe"></div>
     <div class="hero-glow"></div>
     <div class="hero-bg-num">NL</div>
+    <div class="particles" id="particles"></div>
     <div class="hero-content">
       <h1 class="hero-title">
         <span class="t-line"><span>הגיע</span></span>
@@ -437,6 +581,8 @@
       <h2 class="s-title reveal" style="text-align:center">השקעה אחת.<br><em>ידע לתמיד.</em></h2>
       <div class="price-wrap">
         <div class="price-card reveal">
+          <div class="price-corner tl"></div>
+          <div class="price-corner br"></div>
           <div class="price-badge">מחיר השקה מוגבל</div>
           <div class="price-was">₪997</div>
           <div class="price-big"><sup>₪</sup>497</div>
@@ -496,6 +642,28 @@
   </footer>
 
   <script>
+    /* PARTICLES */
+    (function() {
+      const container = document.getElementById('particles');
+      if (!container) return;
+      for (let i = 0; i < 28; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 2 + 1;
+        p.style.cssText = [
+          'width:' + size + 'px',
+          'height:' + size + 'px',
+          'left:' + Math.random() * 100 + '%',
+          'bottom:' + (Math.random() * 30 - 10) + '%',
+          'animation-duration:' + (Math.random() * 14 + 10) + 's',
+          'animation-delay:' + (Math.random() * 12) + 's',
+          'opacity:0',
+          'background:rgba(' + [180+Math.random()*40, 180+Math.random()*40, 180+Math.random()*40].map(Math.round).join(',') + ',0.45)'
+        ].join(';');
+        container.appendChild(p);
+      }
+    })();
+
     /* LOADER */
     let pct = 0;
     const pctEl = document.getElementById('loaderPct');
