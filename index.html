@@ -2,7 +2,8 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
   <title>TB Fitness | קורס כושר דיגיטלי</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -15,362 +16,494 @@
       --light:  #c8c8c8;
       --white:  #f4f4f4;
     }
+
+    /* ─── RESET & BASE ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--black); color: var(--white); font-family: 'Heebo', sans-serif; overflow-x: hidden; }
-    body::before {
-      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.022;
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Heebo', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ── LOADER ── */
-    #loader { position: fixed; inset: 0; background: var(--black); z-index: 9999; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .loader-inner { display: flex; flex-direction: column; align-items: center; }
+    /* noise texture */
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.018;
+    }
+
+    /* ─── LOADER ─── */
+    #loader {
+      position: fixed; inset: 0; background: var(--black); z-index: 9999;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .loader-inner { display: flex; flex-direction: column; align-items: center; padding: 0 24px; text-align: center; }
     .loader-word {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(56px, 11vw, 150px); letter-spacing: 0.06em; line-height: 0.88;
-      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.13);
-      position: relative; overflow: hidden;
+      font-size: clamp(44px, 10vw, 130px); letter-spacing: 0.05em; line-height: 0.88;
+      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.12);
+      position: relative; overflow: hidden; display: block;
     }
     .loader-word .fill {
       position: absolute; inset: 0; color: var(--white); -webkit-text-stroke: 0;
-      clip-path: inset(100% 0 0 0); animation: wFill 0.65s cubic-bezier(0.7,0,0.3,1) forwards;
+      clip-path: inset(100% 0 0 0); animation: wFill 0.6s cubic-bezier(0.7,0,0.3,1) forwards;
     }
-    .loader-word:nth-child(1) .fill { animation-delay: 0.25s; }
-    .loader-word:nth-child(2) .fill { animation-delay: 0.5s; color: var(--silver); }
-    .loader-word:nth-child(3) .fill { animation-delay: 0.75s; }
+    .loader-word:nth-child(1) .fill { animation-delay: 0.2s; }
+    .loader-word:nth-child(2) .fill { animation-delay: 0.42s; color: var(--silver); }
+    .loader-word:nth-child(3) .fill { animation-delay: 0.64s; font-size: clamp(14px,2.5vw,32px); letter-spacing: 0.15em; }
     @keyframes wFill { to { clip-path: inset(0% 0 0 0); } }
-    .loader-line { width: 0; height: 1px; margin-top: 28px; background: linear-gradient(90deg, transparent, var(--white), transparent); animation: lGrow 1.2s ease forwards 1.05s; }
-    @keyframes lGrow { to { width: min(360px, 75vw); } }
-    .loader-pct { font-size: 11px; letter-spacing: 0.38em; color: var(--silver); margin-top: 16px; opacity: 0; animation: fIn 0.4s ease forwards 0.25s; }
+    .loader-line {
+      width: 0; height: 1px; margin-top: 24px;
+      background: linear-gradient(90deg, transparent, var(--white), transparent);
+      animation: lGrow 1s ease forwards 0.9s;
+    }
+    @keyframes lGrow { to { width: min(320px, 72vw); } }
+    .loader-pct { font-size: 10px; letter-spacing: 0.36em; color: var(--silver); margin-top: 14px; opacity: 0; animation: fIn 0.4s ease forwards 0.2s; }
     @keyframes fIn { to { opacity: 1; } }
-    #loader.exit { animation: cUp 0.85s cubic-bezier(0.7,0,0.3,1) forwards; }
+    #loader.exit { animation: cUp 0.8s cubic-bezier(0.7,0,0.3,1) forwards; }
     @keyframes cUp { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(0 0 100% 0); } }
 
-    /* ── HERO ── */
+    /* ─── SECTION DIVIDERS / TRANSITIONS ─── */
+    /* Each section gets a top-transition shape via SVG or clip */
+    .wave-div {
+      position: relative; overflow: hidden; line-height: 0;
+      height: 60px; margin-top: -1px;
+    }
+    .wave-div svg { display: block; width: 100%; height: 100%; }
+
+    /* diagonal-clip transition */
+    .clip-in  { clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 100%); }
+    .clip-out { clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%); }
+
+    /* ─── HERO ─── */
     #hero {
       min-height: 100svh; position: relative;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      overflow: hidden; padding: 80px 24px 100px; text-align: center;
+      padding: 80px 20px 110px; text-align: center; overflow: hidden;
     }
     .hero-stripe {
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(-55deg, transparent 0, transparent 110px, rgba(255,255,255,0.011) 110px, rgba(255,255,255,0.011) 111px);
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(-55deg, transparent 0, transparent 100px, rgba(255,255,255,0.01) 100px, rgba(255,255,255,0.01) 101px);
     }
     .hero-glow {
-      position: absolute; width: 800px; height: 800px; top: 50%; left: 50%; transform: translate(-50%, -58%);
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 65%); pointer-events: none;
+      position: absolute; width: 120vw; height: 120vw; max-width: 700px; max-height: 700px;
+      top: 0; left: 50%; transform: translate(-50%, -40%);
+      background: radial-gradient(circle, rgba(255,255,255,0.048) 0%, transparent 65%);
+      pointer-events: none;
     }
     .hero-bg-num {
       position: absolute; font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(280px, 50vw, 650px); color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.03);
-      top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; user-select: none;
+      font-size: clamp(200px, 48vw, 580px); color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.028);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none; user-select: none; will-change: transform;
     }
-    .hero-content { position: relative; z-index: 2; max-width: 920px; }
-    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 15vw, 190px); line-height: 0.85; letter-spacing: 0.02em; color: var(--white); }
-    .hero-title .t-line { display: block; overflow: hidden; }
-    .hero-title .t-line span { display: block; transform: translateY(110%) skewY(4deg); animation: hReveal 1s cubic-bezier(0.16,1,0.3,1) forwards; }
-    .hero-title .t-line:nth-child(1) span { animation-delay: 2.05s; }
-    .hero-title .t-line:nth-child(2) span { animation-delay: 2.18s; color: transparent; -webkit-text-stroke: 2px var(--white); }
-    .hero-title .t-line:nth-child(3) span { animation-delay: 2.31s; }
-    @keyframes hReveal { to { transform: translateY(0) skewY(0deg); } }
-    .hero-divider { width: 0; height: 1px; margin: 30px auto; background: linear-gradient(90deg, transparent, rgba(200,200,200,0.6), rgba(255,255,255,0.8), rgba(200,200,200,0.6), transparent); animation: expLine 0.7s ease forwards 2.65s; position: relative; }
-    .hero-divider::after {
-      content: '';
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
-      animation: dividerShine 4s ease-in-out infinite 3.5s;
-    }
-    @keyframes dividerShine {
-      0%, 100% { transform: translateX(-100%); opacity: 0; }
-      50%       { transform: translateX(100%);  opacity: 1; }
-    }
-    @keyframes expLine { to { width: 220px; } }
-    .hero-sub { font-size: clamp(16px, 2.2vw, 20px); font-weight: 300; color: var(--silver); line-height: 1.7; max-width: 520px; margin: 0 auto 44px; opacity: 0; animation: fSlide 0.8s ease forwards 2.8s; }
-    .hero-sub strong { color: var(--white); font-weight: 700; }
-    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; opacity: 0; animation: fSlide 0.7s ease forwards 3s; }
-    @keyframes fSlide { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-
-    .btn-main { display: inline-block; background: var(--white); color: var(--black); font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 0.12em; padding: 15px 48px; text-decoration: none; position: relative; overflow: hidden; transition: transform 0.3s; }
-    .btn-main::after { content: ''; position: absolute; inset: 0; background: var(--silver); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.7,0,0.3,1); }
-    .btn-main:hover::after { transform: scaleX(1); }
-    .btn-main:hover { transform: translateY(-3px); }
-    .btn-main span { position: relative; z-index: 1; }
-
-    .btn-ghost { display: inline-block; background: transparent; color: var(--light); font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 0.12em; padding: 14px 36px; border: 1px solid rgba(255,255,255,0.18); text-decoration: none; transition: all 0.3s; }
-    .btn-ghost:hover { border-color: var(--white); color: var(--white); transform: translateY(-3px); }
-
-    .hero-scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fSlide 0.7s ease forwards 3.3s; }
-    .scroll-track { width: 1px; height: 60px; background: rgba(255,255,255,0.08); position: relative; overflow: hidden; }
-    .scroll-track::after { content: ''; position: absolute; top: -100%; left: 0; width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, var(--white)); animation: sDrop 2.2s ease-in-out infinite 3.5s; }
-    @keyframes sDrop { 0% { top: -100%; } 100% { top: 200%; } }
-    .scroll-label { font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
-
-    /* ── VERTICAL TICKER ── */
-    .vticker {
-      border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07);
-      background: rgba(255,255,255,0.015); overflow: hidden; height: 44px; position: relative;
-    }
-    .vticker-track {
-      position: absolute; top: 0; left: 0; right: 0;
-      display: flex; flex-direction: column;
-      animation: vScroll 8s linear infinite;
-    }
-    .vticker-item { height: 44px; display: flex; align-items: center; justify-content: center; gap: 32px; }
-    .vticker-chip { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
-    .vticker-chip .dot { width: 4px; height: 4px; background: var(--silver); transform: rotate(45deg); flex-shrink: 0; }
-    @keyframes vScroll {
-      0%   { transform: translateY(0); }      22%  { transform: translateY(0); }
-      25%  { transform: translateY(-44px); }  47%  { transform: translateY(-44px); }
-      50%  { transform: translateY(-88px); }  72%  { transform: translateY(-88px); }
-      75%  { transform: translateY(-132px); } 97%  { transform: translateY(-132px); }
-      100% { transform: translateY(-176px); }
-    }
-
-    /* ── LAYOUT ── */
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
-    .s-label { display: inline-flex; align-items: center; gap: 12px; font-size: 10px; letter-spacing: 0.38em; text-transform: uppercase; color: var(--silver); margin-bottom: 20px; }
-    .s-label::before { content: ''; width: 24px; height: 1px; background: var(--silver); }
-    .s-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 5.5vw, 72px); line-height: 1; letter-spacing: 0.03em; color: var(--white); margin-bottom: 16px; }
-    .s-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px var(--light); }
-
-    /* ── PAIN ── */
-    #pain { padding: 110px 0; }
-    .pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); margin-top: 52px; border: 1px solid rgba(255,255,255,0.06); }
-    .pain-cell { background: var(--black); padding: 44px 36px; position: relative; overflow: hidden; transition: background 0.35s; }
-    .pain-cell:hover { background: var(--dark); }
-    .pain-cell::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 2px; background: var(--white); transition: width 0.45s ease; }
-    .pain-cell:hover::before { width: 100%; }
-    .pain-icon { font-size: 10px; letter-spacing: 0.3em; color: rgba(255,255,255,0.25); margin-bottom: 20px; text-transform: uppercase; }
-    .pain-h { font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
-    .pain-p { font-size: 14px; font-weight: 300; color: var(--silver); line-height: 1.8; }
-
-    /* ── CURRICULUM ── */
-    #curriculum { padding: 110px 0; background: var(--dark); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .curr-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; flex-wrap: wrap; gap: 20px; }
-    .curr-note { font-size: 15px; font-weight: 300; color: var(--silver); max-width: 300px; line-height: 1.7; }
-    .mod-list { display: flex; flex-direction: column; gap: 2px; }
-    .mod-row { display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 28px; padding: 24px 32px; background: var(--black); border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
-    .mod-row::before { content: ''; position: absolute; inset: 0; background: var(--mid); transform: translateX(-101%); transition: transform 0.42s cubic-bezier(0.7,0,0.3,1); z-index: 0; }
-    .mod-row:hover::before { transform: translateX(0); }
-    .mod-row > * { position: relative; z-index: 1; }
-    .mod-n { font-family: 'Bebas Neue', sans-serif; font-size: 34px; color: rgba(255,255,255,0.18); transition: color 0.3s; }
-    .mod-row:hover .mod-n { color: var(--light); }
-    .mod-title { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
-    .mod-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-    .mod-tag { font-size: 11px; color: var(--silver); background: rgba(255,255,255,0.04); padding: 2px 10px; }
-    .mod-arrow { font-size: 20px; color: rgba(255,255,255,0.18); transition: all 0.3s; }
-    .mod-row:hover .mod-arrow { color: var(--white); transform: translateX(-5px); }
-
-    /* ── OUTCOMES ── */
-    #outcomes { padding: 110px 0; }
-    .outcomes-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-    .outcomes-desc { font-size: 16px; font-weight: 300; color: var(--silver); line-height: 1.85; margin-top: 16px; }
-    .out-list { list-style: none; }
-    .out-item { display: flex; align-items: center; gap: 20px; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 17px; font-weight: 600; color: var(--white); transition: padding-right 0.3s; }
-    .out-item:hover { padding-right: 10px; }
-    .out-check { width: 26px; height: 26px; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--light); flex-shrink: 0; }
-
-    /* ── STATS ── */
-    .stats-bar { border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); background: var(--dark); position: relative; overflow: hidden; }
-    .stats-bar::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent 0%, rgba(180,180,180,0.3) 20%, rgba(200,200,200,0.5) 50%, rgba(180,180,180,0.3) 80%, transparent 100%);
-      animation: silverSweep 6s ease-in-out infinite;
-    }
-    @keyframes silverSweep {
-      0%   { opacity: 0; transform: scaleX(0); transform-origin: right; }
-      30%  { opacity: 1; transform: scaleX(1); transform-origin: right; }
-      70%  { opacity: 1; transform: scaleX(1); transform-origin: left; }
-      100% { opacity: 0; transform: scaleX(0); transform-origin: left; }
-    }
-    .stats-inner { max-width: 1100px; margin: 0 auto; padding: 70px 28px; display: grid; grid-template-columns: repeat(4,1fr); }
-    .stat-cell { text-align: center; padding: 16px; border-left: 1px solid rgba(255,255,255,0.06); }
-    .stat-cell:first-child { border-left: none; }
-    .stat-n { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px,5.5vw,72px); color: var(--white); line-height: 1; }
-    .stat-l { font-size: 12px; letter-spacing: 0.08em; color: var(--silver); margin-top: 6px; }
-
-    /* ── PRICING ── */
-    #pricing { padding: 120px 0; }
-    .price-wrap { max-width: 600px; margin: 52px auto 0; }
-    .price-card { border: 1px solid rgba(255,255,255,0.14); padding: 60px 52px; position: relative; background: var(--dark); text-align: center; }
-    .price-corner { position: absolute; width: 24px; height: 24px; }
-    .price-corner.tl { top: -1px; right: -1px; border-top: 1px solid rgba(200,200,200,0.5); border-right: 1px solid rgba(200,200,200,0.5); }
-    .price-corner.br { bottom: -1px; left: -1px; border-bottom: 1px solid rgba(200,200,200,0.5); border-left: 1px solid rgba(200,200,200,0.5); }
-    .price-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--white); color: var(--black); font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 0.2em; padding: 4px 24px; white-space: nowrap; }
-    .price-was { font-size: 16px; color: var(--silver); text-decoration: line-through; margin-bottom: 6px; }
-    .price-big { font-family: 'Bebas Neue', sans-serif; font-size: clamp(68px,10vw,108px); color: var(--white); line-height: 1; }
-    .price-big sup { font-size: 0.38em; vertical-align: super; color: var(--light); }
-    .price-note { font-size: 13px; color: var(--silver); letter-spacing: 0.05em; margin-bottom: 36px; }
-    .price-list { list-style: none; text-align: right; margin-bottom: 40px; display: flex; flex-direction: column; gap: 12px; }
-    .price-list li { display: flex; align-items: center; gap: 12px; font-size: 15px; color: var(--light); }
-    .price-list li::before { content: '✓'; width: 22px; height: 22px; border: 1px solid rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--white); flex-shrink: 0; }
-    .price-cta { width: 100%; display: block; background: var(--white); color: var(--black); font-family: 'Bebas Neue', sans-serif; font-size: 21px; letter-spacing: 0.16em; padding: 18px; border: none; text-decoration: none; text-align: center; position: relative; overflow: hidden; transition: transform 0.3s; }
-    .price-cta::after { content: ''; position: absolute; inset: 0; background: var(--silver); transform: scaleX(0); transform-origin: right; transition: transform 0.4s cubic-bezier(0.7,0,0.3,1); }
-    .price-cta:hover::after { transform: scaleX(1); }
-    .price-cta:hover { transform: translateY(-2px); }
-    .price-cta span { position: relative; z-index: 1; }
-    .price-guarantee { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; font-size: 13px; color: var(--silver); }
-
-    /* ── CONTACT ── */
-    #contact { padding: 110px 0; background: var(--dark); border-top: 1px solid rgba(255,255,255,0.05); }
-    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-    .contact-desc { font-size: 16px; font-weight: 300; color: var(--silver); line-height: 1.85; margin-top: 16px; }
-    .cform { display: flex; flex-direction: column; gap: 14px; }
-    .cfield { display: flex; flex-direction: column; gap: 6px; }
-    .clabel { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--silver); }
-    .cinput { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: 'Heebo', sans-serif; font-size: 15px; padding: 14px 18px; outline: none; transition: border-color 0.3s; width: 100%; }
-    .cinput::placeholder { color: rgba(255,255,255,0.2); }
-    .cinput:focus { border-color: rgba(255,255,255,0.45); }
-    .csubmit { background: var(--white); color: var(--black); font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 0.14em; padding: 16px; border: none; cursor: pointer; margin-top: 6px; position: relative; overflow: hidden; transition: transform 0.3s; }
-    .csubmit::after { content: ''; position: absolute; inset: 0; background: var(--light); transform: scaleX(0); transform-origin: right; transition: transform 0.4s cubic-bezier(0.7,0,0.3,1); }
-    .csubmit:hover::after { transform: scaleX(1); }
-    .csubmit:hover { transform: translateY(-2px); }
-    .csubmit span { position: relative; z-index: 1; }
-
-    /* ── FOOTER ── */
-    footer { background: #040404; border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 28px; }
-    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-    .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.1em; color: var(--white); }
-    .footer-copy { font-size: 12px; color: var(--silver); }
-
-    /* ── FLOATING PARTICLES ── */
     .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
     .particle {
-      position: absolute;
-      width: 1px; height: 1px;
-      background: rgba(200,200,200,0.5);
-      border-radius: 50%;
+      position: absolute; border-radius: 50%;
       animation: particleDrift linear infinite;
     }
     @keyframes particleDrift {
       0%   { transform: translateY(0) translateX(0); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.4; }
-      100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 0.3; }
+      100% { transform: translateY(-110vh) translateX(20px); opacity: 0; }
     }
 
-    /* ── SILVER SHIMMER on section titles ── */
-    .s-title { position: relative; display: inline-block; }
-    .s-title::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%; width: 40%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(220,220,220,0.07), transparent);
-      transform: skewX(-20deg);
-      animation: shimmer 5s ease-in-out infinite;
+    .hero-content { position: relative; z-index: 2; max-width: 860px; width: 100%; }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(62px, 14vw, 175px);
+      line-height: 0.87; letter-spacing: 0.02em; color: var(--white);
     }
-    @keyframes shimmer {
-      0%, 100% { left: -60%; opacity: 0; }
-      40%       { opacity: 1; }
-      60%       { left: 120%; opacity: 0; }
+    .hero-title .t-line { display: block; overflow: hidden; }
+    .hero-title .t-line span {
+      display: block;
+      transform: translateY(110%) skewY(3deg);
+      animation: hReveal 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .hero-title .t-line:nth-child(1) span { animation-delay: 2s; }
+    .hero-title .t-line:nth-child(2) span { animation-delay: 2.12s; color: transparent; -webkit-text-stroke: 2px var(--white); }
+    .hero-title .t-line:nth-child(3) span { animation-delay: 2.24s; }
+    @keyframes hReveal { to { transform: translateY(0) skewY(0deg); } }
+
+    .hero-divider {
+      width: 0; height: 1px; margin: 24px auto;
+      background: linear-gradient(90deg, transparent, rgba(200,200,200,0.7), rgba(255,255,255,0.9), rgba(200,200,200,0.7), transparent);
+      animation: expLine 0.7s ease forwards 2.55s; position: relative; overflow: hidden;
+    }
+    .hero-divider::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, white, transparent);
+      animation: dShine 4s ease-in-out infinite 3.4s;
+    }
+    @keyframes expLine  { to { width: 200px; } }
+    @keyframes dShine   { 0%,100%{transform:translateX(-100%);opacity:0} 50%{transform:translateX(100%);opacity:1} }
+
+    .hero-sub {
+      font-size: clamp(15px, 4vw, 19px); font-weight: 300;
+      color: var(--silver); line-height: 1.65; max-width: 480px; margin: 0 auto 40px;
+      opacity: 0; animation: fSlide 0.7s ease forwards 2.7s;
+    }
+    .hero-sub strong { color: var(--white); font-weight: 700; }
+    .hero-btns {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      opacity: 0; animation: fSlide 0.7s ease forwards 2.9s;
+    }
+    @keyframes fSlide { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+    .btn-main {
+      display: inline-block; background: var(--white); color: var(--black);
+      font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 0.12em;
+      padding: 15px 40px; text-decoration: none; position: relative; overflow: hidden;
+      -webkit-tap-highlight-color: transparent; transition: transform 0.25s;
+      touch-action: manipulation;
+    }
+    .btn-main::after {
+      content: ''; position: absolute; inset: 0; background: var(--silver);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.7,0,0.3,1);
+    }
+    .btn-main:active { transform: scale(0.97); }
+    .btn-main span { position: relative; z-index: 1; }
+
+    .btn-ghost {
+      display: inline-block; background: transparent; color: var(--light);
+      font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 0.12em;
+      padding: 14px 28px; border: 1px solid rgba(255,255,255,0.2); text-decoration: none;
+      transition: all 0.25s; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    }
+    .btn-ghost:active { background: rgba(255,255,255,0.07); }
+
+    .hero-scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center;
+      opacity: 0; animation: fSlide 0.6s ease forwards 3.2s;
+    }
+    .scroll-track { width: 1px; height: 52px; background: rgba(255,255,255,0.07); position: relative; overflow: hidden; }
+    .scroll-track::after {
+      content: ''; position: absolute; top: -100%; left: 0; width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--white));
+      animation: sDrop 2s ease-in-out infinite 3.5s;
+    }
+    @keyframes sDrop { 0%{top:-100%} 100%{top:200%} }
+
+    /* ─── SECTION TRANSITION: diagonal wedge ─── */
+    .wedge {
+      position: relative; z-index: 2;
+      height: 0; overflow: visible; line-height: 0;
+    }
+    .wedge svg {
+      display: block; width: 100%;
+      margin-top: -1px; /* kill gap */
     }
 
-    /* ── SILVER GLOW on pain cells hover ── */
-    .pain-cell { box-shadow: inset 0 0 0 0 rgba(180,180,180,0); transition: background 0.35s, box-shadow 0.4s; }
-    .pain-cell:hover { box-shadow: inset 0 0 40px rgba(120,120,120,0.04); }
-
-    /* ── SILVER BORDER PULSE on price card ── */
-    .price-card {
-      animation: borderPulse 4s ease-in-out infinite;
+    /* ─── TICKER ─── */
+    .vticker {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.013); overflow: hidden; height: 44px; position: relative;
     }
-    @keyframes borderPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(180,180,180,0), inset 0 0 0 0 rgba(180,180,180,0); }
-      50%       { box-shadow: 0 0 28px rgba(140,140,140,0.07), inset 0 1px 0 rgba(200,200,200,0.08); }
+    .vticker-track {
+      position: absolute; top: 0; left: 0; right: 0;
+      display: flex; flex-direction: column;
+      animation: vScroll 9s linear infinite;
+      will-change: transform;
     }
-
-    /* ── SILVER ACCENT LINE animating on outcomes ── */
-    .out-item { position: relative; }
-    .out-item::after {
-      content: '';
-      position: absolute;
-      bottom: 0; right: 0;
-      height: 1px; width: 0;
-      background: linear-gradient(90deg, transparent, rgba(180,180,180,0.35));
-      transition: width 0.5s ease;
-    }
-    .out-item:hover::after { width: 100%; }
-
-    /* ── SILVER DOT SHIMMER on vticker ── */
-    .vticker-chip .dot {
-      animation: dotPulse 3s ease-in-out infinite;
-    }
+    .vticker-item { height: 44px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: nowrap; overflow: hidden; }
+    .vticker-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+    .vticker-chip .dot { width: 3px; height: 3px; background: var(--silver); transform: rotate(45deg); flex-shrink: 0; animation: dotPulse 3s ease-in-out infinite; }
     .vticker-chip:nth-child(2) .dot { animation-delay: 0.75s; }
     .vticker-chip:nth-child(3) .dot { animation-delay: 1.5s; }
     .vticker-chip:nth-child(4) .dot { animation-delay: 2.25s; }
     @keyframes dotPulse {
-      0%, 100% { opacity: 0.5; transform: rotate(45deg) scale(1); }
-      50%       { opacity: 1;   transform: rotate(45deg) scale(1.8); background: var(--light); }
+      0%,100%{opacity:0.5;transform:rotate(45deg) scale(1)}
+      50%{opacity:1;transform:rotate(45deg) scale(1.9);background:var(--light)}
+    }
+    @keyframes vScroll {
+      0%  {transform:translateY(0)}      22%{transform:translateY(0)}
+      25% {transform:translateY(-44px)}  47%{transform:translateY(-44px)}
+      50% {transform:translateY(-88px)}  72%{transform:translateY(-88px)}
+      75% {transform:translateY(-132px)} 97%{transform:translateY(-132px)}
+      100%{transform:translateY(-176px)}
     }
 
-    /* ── SUBTLE AMBIENT GLOW drifting in backgrounds ── */
-    #pain { position: relative; overflow: hidden; }
+    /* ─── LAYOUT ─── */
+    .container { max-width: 1060px; margin: 0 auto; padding: 0 20px; }
+
+    .s-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 5vw, 66px); line-height: 1; letter-spacing: 0.03em;
+      color: var(--white); margin-bottom: 16px;
+      display: block; position: relative; overflow: hidden;
+    }
+    .s-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px var(--light); }
+    .s-title::after {
+      content: ''; position: absolute;
+      top: 0; left: -60%; width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(220,220,220,0.06), transparent);
+      transform: skewX(-20deg); animation: shimmer 6s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%,100%{left:-60%;opacity:0} 40%{opacity:1} 60%{left:120%;opacity:0} }
+
+    /* ─── PAIN ─── */
+    #pain {
+      padding: 80px 0 90px;
+      position: relative; overflow: hidden;
+      background: var(--black);
+    }
     #pain::before {
-      content: '';
-      position: absolute;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(160,160,160,0.03) 0%, transparent 65%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      animation: ambientDrift 8s ease-in-out infinite;
-      pointer-events: none;
+      content: ''; position: absolute; width: 80vw; height: 80vw; max-width: 500px; max-height: 500px;
+      background: radial-gradient(circle, rgba(150,150,150,0.028) 0%, transparent 65%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      animation: ambDrift 9s ease-in-out infinite; pointer-events: none;
     }
-    @keyframes ambientDrift {
-      0%, 100% { transform: translate(-50%, -50%); }
-      33%       { transform: translate(-30%, -60%); }
-      66%       { transform: translate(-70%, -40%); }
+    @keyframes ambDrift {
+      0%,100%{transform:translate(-50%,-50%)}
+      33%{transform:translate(-35%,-60%)}
+      66%{transform:translate(-65%,-40%)}
     }
+    .pain-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(255,255,255,0.055);
+      margin-top: 40px; border: 1px solid rgba(255,255,255,0.055);
+    }
+    .pain-cell {
+      background: var(--black); padding: 36px 28px; position: relative; overflow: hidden;
+      transition: background 0.3s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pain-cell::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--white), rgba(180,180,180,0.4));
+      transition: width 0.4s ease;
+    }
+    .pain-cell:hover::before, .pain-cell:focus-within::before { width: 100%; }
+    .pain-cell:hover { background: var(--dark); }
+    .pain-h { font-size: clamp(16px,4vw,19px); font-weight: 700; color: var(--white); margin-bottom: 8px; line-height: 1.3; }
+    .pain-p { font-size: clamp(13px,3.5vw,14px); font-weight: 300; color: var(--silver); line-height: 1.75; }
 
-    #outcomes { position: relative; overflow: hidden; }
-    #outcomes::before {
-      content: '';
-      position: absolute;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(160,160,160,0.025) 0%, transparent 65%);
-      bottom: 0; right: 10%;
-      animation: ambientDrift2 10s ease-in-out infinite;
-      pointer-events: none;
+    .pain-conclusion {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(24px, 5.5vw, 48px); letter-spacing: 0.04em;
+      color: var(--white); text-align: center; margin-top: 44px;
+      padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.07);
     }
-    @keyframes ambientDrift2 {
-      0%, 100% { transform: translate(0, 0); }
-      50%       { transform: translate(-80px, -60px); }
-    }
+    .pain-conclusion em { font-style: normal; color: transparent; -webkit-text-stroke: 1px var(--light); }
 
-    /* ── MOD ROW silver left accent ── */
+    /* ─── CURRICULUM ─── */
+    #curriculum {
+      padding: 80px 0 90px;
+      background: var(--dark);
+      position: relative; overflow: hidden;
+    }
+    /* silver shimmer line top */
+    #curriculum::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(180,180,180,0.35) 20%, rgba(210,210,210,0.6) 50%, rgba(180,180,180,0.35) 80%, transparent 100%);
+      animation: silverSweep 7s ease-in-out infinite;
+    }
+    @keyframes silverSweep {
+      0%{opacity:0;transform:scaleX(0);transform-origin:right}
+      35%{opacity:1;transform:scaleX(1);transform-origin:right}
+      65%{opacity:1;transform:scaleX(1);transform-origin:left}
+      100%{opacity:0;transform:scaleX(0);transform-origin:left}
+    }
+    .curr-head { margin-bottom: 44px; }
+    .mod-list { display: flex; flex-direction: column; gap: 2px; }
+    .mod-row {
+      display: grid; grid-template-columns: 68px 1fr 28px; align-items: center; gap: 20px;
+      padding: 20px 24px; background: var(--black); border: 1px solid rgba(255,255,255,0.05);
+      position: relative; overflow: hidden;
+      -webkit-tap-highlight-color: transparent; transition: border-color 0.3s;
+    }
+    .mod-row::before {
+      content: ''; position: absolute; inset: 0; background: var(--mid);
+      transform: translateX(-101%); transition: transform 0.4s cubic-bezier(0.7,0,0.3,1); z-index: 0;
+    }
+    .mod-row:hover::before, .mod-row:focus-within::before { transform: translateX(0); }
+    /* silver right accent */
     .mod-row::after {
-      content: '';
-      position: absolute;
-      right: 0; top: 0;
-      width: 2px; height: 0;
-      background: linear-gradient(to bottom, transparent, rgba(180,180,180,0.4), transparent);
-      transition: height 0.45s ease;
-      z-index: 2;
+      content: ''; position: absolute; right: 0; top: 0; width: 2px; height: 0;
+      background: linear-gradient(to bottom, transparent, rgba(180,180,180,0.45), transparent);
+      transition: height 0.4s ease; z-index: 2;
     }
     .mod-row:hover::after { height: 100%; }
+    .mod-row > * { position: relative; z-index: 1; }
+    .mod-n { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: rgba(255,255,255,0.16); transition: color 0.3s; }
+    .mod-row:hover .mod-n { color: var(--light); }
+    .mod-title { font-size: clamp(16px,4vw,18px); font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .mod-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .mod-tag { font-size: 11px; color: var(--silver); background: rgba(255,255,255,0.04); padding: 2px 9px; }
+    .mod-arrow { font-size: 18px; color: rgba(255,255,255,0.16); transition: all 0.3s; justify-self: end; }
+    .mod-row:hover .mod-arrow { color: var(--white); transform: translateX(-4px); }
 
-    /* ── STAT number silver glow on reveal ── */
-    .stat-n { transition: text-shadow 0.4s ease; }
-    .stat-cell:hover .stat-n { text-shadow: 0 0 20px rgba(180,180,180,0.2); }
+    /* ─── OUTCOMES ─── */
+    #outcomes {
+      padding: 80px 0 90px;
+      background: var(--black);
+      position: relative; overflow: hidden;
+    }
+    #outcomes::before {
+      content: ''; position: absolute;
+      width: 70vw; height: 70vw; max-width: 450px; max-height: 450px;
+      background: radial-gradient(circle, rgba(150,150,150,0.022) 0%, transparent 65%);
+      bottom: 10%; right: 5%;
+      animation: ambDrift2 11s ease-in-out infinite; pointer-events: none;
+    }
+    @keyframes ambDrift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-60px,-50px)} }
+    .outcomes-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .outcomes-desc { font-size: clamp(14px,3.5vw,16px); font-weight: 300; color: var(--silver); line-height: 1.85; margin-top: 12px; }
+    .out-list { list-style: none; }
+    .out-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: clamp(15px,4vw,17px); font-weight: 600; color: var(--white);
+      position: relative; transition: padding-right 0.3s;
+    }
+    .out-item::after {
+      content: ''; position: absolute; bottom: -1px; right: 0;
+      height: 1px; width: 0;
+      background: linear-gradient(90deg, transparent, rgba(180,180,180,0.4));
+      transition: width 0.45s ease;
+    }
+    .out-item:hover::after { width: 100%; }
+    .out-item:hover { padding-right: 8px; }
+    .out-check { width: 24px; height: 24px; border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--light); flex-shrink: 0; }
 
-    /* ── REVEAL ── */
-    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.16,1,0.3,1); }
+    /* ─── STATS ─── */
+    .stats-bar {
+      background: var(--dark); position: relative; overflow: hidden;
+    }
+    .stats-bar::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(180,180,180,0.35) 20%, rgba(210,210,210,0.6) 50%, rgba(180,180,180,0.35) 80%, transparent 100%);
+      animation: silverSweep 7s ease-in-out infinite 3.5s;
+    }
+    .stats-inner {
+      max-width: 1060px; margin: 0 auto; padding: 60px 20px;
+      display: grid; grid-template-columns: repeat(4,1fr);
+    }
+    .stat-cell { text-align: center; padding: 12px; border-left: 1px solid rgba(255,255,255,0.06); }
+    .stat-cell:first-child { border-left: none; }
+    .stat-n { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px,5vw,68px); color: var(--white); line-height: 1; transition: text-shadow 0.4s; }
+    .stat-cell:hover .stat-n { text-shadow: 0 0 24px rgba(180,180,180,0.22); }
+    .stat-l { font-size: 11px; letter-spacing: 0.08em; color: var(--silver); margin-top: 5px; }
+
+    /* ─── PRICING ─── */
+    #pricing {
+      padding: 80px 0 90px;
+      background: var(--black);
+    }
+    .price-wrap { max-width: 560px; margin: 44px auto 0; }
+    .price-card {
+      border: 1px solid rgba(255,255,255,0.13); padding: 52px 40px;
+      position: relative; background: var(--dark); text-align: center;
+      animation: borderPulse 4.5s ease-in-out infinite;
+    }
+    @keyframes borderPulse {
+      0%,100%{box-shadow:0 0 0 0 rgba(180,180,180,0)}
+      50%{box-shadow:0 0 30px rgba(140,140,140,0.07),inset 0 1px 0 rgba(200,200,200,0.07)}
+    }
+    .price-corner { position: absolute; width: 22px; height: 22px; }
+    .price-corner.tl { top: -1px; right: -1px; border-top: 1px solid rgba(200,200,200,0.5); border-right: 1px solid rgba(200,200,200,0.5); }
+    .price-corner.br { bottom: -1px; left: -1px; border-bottom: 1px solid rgba(200,200,200,0.5); border-left: 1px solid rgba(200,200,200,0.5); }
+    .price-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--white); color: var(--black);
+      font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 0.2em;
+      padding: 3px 20px; white-space: nowrap;
+    }
+    .price-was { font-size: 15px; color: var(--silver); text-decoration: line-through; margin-bottom: 4px; }
+    .price-big { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px,10vw,100px); color: var(--white); line-height: 1; }
+    .price-big sup { font-size: 0.38em; vertical-align: super; color: var(--light); }
+    .price-note { font-size: 12px; color: var(--silver); letter-spacing: 0.05em; margin-bottom: 30px; }
+    .price-list { list-style: none; text-align: right; margin-bottom: 36px; display: flex; flex-direction: column; gap: 10px; }
+    .price-list li { display: flex; align-items: center; gap: 10px; font-size: clamp(13px,3.5vw,15px); color: var(--light); }
+    .price-list li::before { content:'✓'; width:20px; height:20px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:10px; color:var(--white); flex-shrink:0; }
+    .price-cta {
+      width: 100%; display: block; background: var(--white); color: var(--black);
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(17px,4.5vw,20px); letter-spacing: 0.15em;
+      padding: 17px; border: none; text-decoration: none; text-align: center;
+      position: relative; overflow: hidden; transition: transform 0.25s;
+      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    }
+    .price-cta::after { content:''; position:absolute; inset:0; background:var(--silver); transform:scaleX(0); transform-origin:right; transition:transform 0.38s cubic-bezier(0.7,0,0.3,1); }
+    .price-cta:active { transform: scale(0.98); }
+    .price-cta span { position: relative; z-index: 1; }
+
+    /* ─── CONTACT ─── */
+    #contact { padding: 80px 0 90px; background: var(--dark); position: relative; overflow: hidden; }
+    #contact::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(180,180,180,0.35) 20%, rgba(210,210,210,0.6) 50%, rgba(180,180,180,0.35) 80%, transparent 100%);
+      animation: silverSweep 7s ease-in-out infinite 1.5s;
+    }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contact-desc { font-size: clamp(14px,3.5vw,16px); font-weight: 300; color: var(--silver); line-height: 1.85; margin-top: 12px; }
+    .cform { display: flex; flex-direction: column; gap: 12px; }
+    .cfield { display: flex; flex-direction: column; gap: 5px; }
+    .clabel { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--silver); }
+    .cinput {
+      background: transparent; border: 1px solid rgba(255,255,255,0.1);
+      color: var(--white); font-family: 'Heebo', sans-serif; font-size: clamp(15px,4vw,16px);
+      padding: 13px 16px; outline: none; transition: border-color 0.3s; width: 100%;
+      border-radius: 0; -webkit-appearance: none; appearance: none;
+    }
+    .cinput::placeholder { color: rgba(255,255,255,0.18); }
+    .cinput:focus { border-color: rgba(255,255,255,0.42); }
+    .csubmit {
+      background: var(--white); color: var(--black);
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(17px,4.5vw,19px); letter-spacing: 0.13em;
+      padding: 15px; border: none; cursor: pointer; margin-top: 4px;
+      position: relative; overflow: hidden; transition: transform 0.25s;
+      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    }
+    .csubmit::after { content:''; position:absolute; inset:0; background:var(--light); transform:scaleX(0); transform-origin:right; transition:transform 0.38s cubic-bezier(0.7,0,0.3,1); }
+    .csubmit:active { transform: scale(0.98); }
+    .csubmit span { position: relative; z-index: 1; }
+
+    /* ─── FOOTER ─── */
+    footer { background: #040404; border-top: 1px solid rgba(255,255,255,0.05); padding: 36px 20px; }
+    .footer-inner { max-width: 1060px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.1em; color: var(--white); }
+    .footer-copy { font-size: 11px; color: var(--silver); }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1); }
     .reveal.in { opacity: 1; transform: none; }
     .stagger .reveal:nth-child(1) { transition-delay: 0s; }
-    .stagger .reveal:nth-child(2) { transition-delay: 0.08s; }
-    .stagger .reveal:nth-child(3) { transition-delay: 0.16s; }
-    .stagger .reveal:nth-child(4) { transition-delay: 0.24s; }
+    .stagger .reveal:nth-child(2) { transition-delay: 0.07s; }
+    .stagger .reveal:nth-child(3) { transition-delay: 0.14s; }
+    .stagger .reveal:nth-child(4) { transition-delay: 0.21s; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .pain-grid, .outcomes-wrap, .contact-wrap { grid-template-columns: 1fr; }
-      .curr-head { flex-direction: column; }
-      .mod-row { grid-template-columns: 56px 1fr 20px; gap: 12px; padding: 18px 16px; }
-      .stats-inner { grid-template-columns: 1fr 1fr; }
-      .stat-cell { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
-      .price-card { padding: 52px 24px; }
+    /* ─── SECTION WEDGE TRANSITIONS ─── */
+    /* Fills the gap between sections with an angled SVG shape */
+    .section-wedge {
+      display: block; width: 100%; overflow: hidden; line-height: 0;
+      margin-bottom: -1px; /* prevent subpixel gap */
+    }
+    .section-wedge svg { display: block; width: 100%; height: auto; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 640px) {
+      .pain-grid { grid-template-columns: 1fr; }
+      .pain-cell { padding: 28px 22px; }
+      .outcomes-wrap { grid-template-columns: 1fr; gap: 36px; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 36px; }
+      .stats-inner { grid-template-columns: 1fr 1fr; gap: 0; }
+      .stat-cell { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); padding: 16px 8px; }
+      .stat-cell:nth-child(2n+1) { border-right: 1px solid rgba(255,255,255,0.06); }
+      .price-card { padding: 48px 22px 40px; }
       .hero-bg-num { display: none; }
+      .btn-main, .btn-ghost { font-size: 16px; padding: 14px 28px; }
+      #hero { padding: 70px 18px 100px; }
+      .container { padding: 0 18px; }
+    }
+    @media (max-width: 400px) {
+      .hero-title { font-size: clamp(56px, 14vw, 80px); }
     }
   </style>
 </head>
@@ -379,17 +512,18 @@
   <!-- LOADER -->
   <div id="loader">
     <div class="loader-inner">
-      <div class="loader-word"><span>NEXT</span><span class="fill">NEXT</span></div>
-      <div class="loader-word"><span>LEVEL</span><span class="fill">LEVEL</span></div>
-      <div class="loader-word" style="font-size:clamp(18px,3vw,42px);letter-spacing:0.28em;-webkit-text-stroke:1px rgba(255,255,255,0.12)">
-        <span>FITNESS COURSE</span><span class="fill">FITNESS COURSE</span>
+      <div class="loader-word"><span>איך להפוך</span><span class="fill">איך להפוך</span></div>
+      <div class="loader-word"><span>למאמן</span><span class="fill">למאמן</span></div>
+      <div class="loader-word" style="font-size:clamp(13px,2.8vw,32px);letter-spacing:0.14em;-webkit-text-stroke:1px rgba(255,255,255,0.1)">
+        <span>של עצמך ולקחת את הגוף ל NEXT LEVEL</span>
+        <span class="fill">של עצמך ולקחת את הגוף ל NEXT LEVEL</span>
       </div>
       <div class="loader-line"></div>
       <div class="loader-pct" id="loaderPct">LOADING... 0%</div>
     </div>
   </div>
 
-  <!-- HERO -->
+  <!-- ════ HERO ════ -->
   <section id="hero">
     <div class="hero-stripe"></div>
     <div class="hero-glow"></div>
@@ -397,27 +531,31 @@
     <div class="particles" id="particles"></div>
     <div class="hero-content">
       <h1 class="hero-title">
-        <span class="t-line"><span>הגיע</span></span>
-        <span class="t-line"><span>הזמן</span></span>
-        <span class="t-line"><span>לתוצאות</span></span>
+        <span class="t-line"><span>מתאמן קשה</span></span>
+        <span class="t-line"><span>ולא רואה</span></span>
+        <span class="t-line"><span>תוצאות?</span></span>
       </h1>
       <div class="hero-divider"></div>
       <p class="hero-sub">
-        מתאמן קשה ולא רואה תוצאות?<br>
-        <strong>הבעיה היא לא המאמץ — היא הידע.</strong>
+        <strong>הבעיה היא לא האימונים — אלא הידע.</strong><br>
+        הגיע הזמן סוף סוף לראות תוצאות.
       </p>
       <div class="hero-btns">
-        <a href="https://pay.grow.link/6ef2af5a9e5a1b243bcf27005c57a845-MTcyNDE0OA" target="_blank" class="btn-main"><span>אני רוצה תוצאות ←</span></a>
-        <a href="#curriculum" class="btn-ghost">מה בקורס?</a>
+        <a href="https://pay.grow.link/6ef2af5a9e5a1b243bcf27005c57a845-MTcyNDE0OA" target="_blank" class="btn-main"><span>אני רוצה להשיג תוצאות ←</span></a>
+        <a href="#curriculum" class="btn-ghost">מה נלמד בקורס?</a>
       </div>
     </div>
-    <div class="hero-scroll-hint">
-      <div class="scroll-track"></div>
-
-    </div>
+    <div class="hero-scroll-hint"><div class="scroll-track"></div></div>
   </section>
 
-  <!-- VERTICAL TICKER -->
+  <!-- wedge: hero → ticker (black stays black, just visual breathing room) -->
+  <div class="section-wedge" style="background:var(--black)">
+    <svg viewBox="0 0 1440 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,28 1440,0 1440,28" fill="rgba(255,255,255,0.03)"/>
+    </svg>
+  </div>
+
+  <!-- TICKER -->
   <div class="vticker">
     <div class="vticker-track">
       <div class="vticker-item">
@@ -444,7 +582,6 @@
         <span class="vticker-chip"><span class="dot"></span>ידע = תוצאות</span>
         <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
       </div>
-      <!-- duplicate row 1 for seamless loop -->
       <div class="vticker-item">
         <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
         <span class="vticker-chip"><span class="dot"></span>חיטוב ומסה</span>
@@ -454,45 +591,53 @@
     </div>
   </div>
 
-  <!-- PAIN -->
+  <!-- ════ PAIN ════ -->
+  <!-- wedge: ticker → pain -->
+  <div class="section-wedge" style="background:var(--black)">
+    <svg viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,40 1440,0 1440,40" fill="var(--black)"/>
+      <line x1="0" y1="40" x2="1440" y2="0" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    </svg>
+  </div>
+
   <section id="pain">
     <div class="container">
-
-      <h2 class="s-title reveal">נשמע <em>מוכר?</em></h2>
+      <h2 class="s-title reveal">אם <em>את/ה</em></h2>
       <div class="pain-grid stagger">
         <div class="pain-cell reveal">
-
           <div class="pain-h">מתאמן, לא מתקדם</div>
           <div class="pain-p">שעות בחדר כושר ותוצאות שלא זז. זה לא חוסר מאמץ — זה חוסר ידע נכון.</div>
         </div>
         <div class="pain-cell reveal">
-
           <div class="pain-h">משלם לפי חודש, לא מבין למה</div>
           <div class="pain-p">מאמן נותן לך תכנית בלי הסבר. אתה עושה מה שנאמר לך — ותלוי בו לצמיתות.</div>
         </div>
         <div class="pain-cell reveal">
-
           <div class="pain-h">תזונה — בלגן מוחלט</div>
           <div class="pain-p">כולם אומרים משהו אחר. הקורס שם סוף לבלבול ונותן לך שיטה ברורה שעובדת.</div>
         </div>
         <div class="pain-cell reveal">
-
           <div class="pain-h">עושה מה שכולם עושים</div>
           <div class="pain-p">אותה שגרה, אותן תוצאות. כדי לקבל משהו שונה — צריך לחשוב אחרת.</div>
         </div>
       </div>
+      <p class="pain-conclusion reveal">אז הקורס הזה <em>בול</em> בשבילך.</p>
     </div>
   </section>
 
-  <!-- CURRICULUM -->
+  <!-- ════ CURRICULUM ════ -->
+  <!-- wedge: pain (black) → curriculum (dark) — diagonal going other way -->
+  <div class="section-wedge" style="background:var(--dark)">
+    <svg viewBox="0 0 1440 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 1440,44 0,44" fill="var(--black)"/>
+      <line x1="0" y1="0" x2="1440" y2="44" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+    </svg>
+  </div>
+
   <section id="curriculum">
     <div class="container">
       <div class="curr-head">
-        <div>
-
-          <h2 class="s-title reveal">3 עמודות<br><em>הידע</em></h2>
-        </div>
-        <p class="curr-note reveal">מתזונה ועד אנטומיה ועד תורת האימון — הכל בשפה ברורה ופרקטית.</p>
+        <h2 class="s-title reveal">מתזונה ועד אנטומיה<br>ועד תורת האימון —<br><em>הכל בשפה ברורה.</em></h2>
       </div>
       <div class="mod-list">
         <div class="mod-row reveal">
@@ -523,7 +668,7 @@
             <div class="mod-title">תורת האימון</div>
             <div class="mod-tags">
               <span class="mod-tag">בניית שריר</span><span class="mod-tag">שיטות אימון</span>
-              <span class="mod-tag">פציעות</span><span class="mod-tag">3 תכניות לדוגמה</span>
+              <span class="mod-tag">פציעות</span>
             </div>
           </div>
           <div class="mod-arrow">←</div>
@@ -532,13 +677,20 @@
     </div>
   </section>
 
-  <!-- OUTCOMES -->
+  <!-- ════ OUTCOMES ════ -->
+  <!-- wedge: curriculum (dark) → outcomes (black) -->
+  <div class="section-wedge" style="background:var(--black)">
+    <svg viewBox="0 0 1440 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,44 1440,0 1440,44" fill="var(--dark)"/>
+      <line x1="0" y1="44" x2="1440" y2="0" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+    </svg>
+  </div>
+
   <section id="outcomes">
     <div class="container">
       <div class="outcomes-wrap">
         <div>
-
-          <h2 class="s-title reveal" style="font-size:clamp(46px,6.5vw,88px)">מה<br>תדע<br><em>לעשות</em></h2>
+          <h2 class="s-title reveal" style="font-size:clamp(42px,6vw,82px)">מה<br>תדע<br><em>לעשות</em></h2>
           <p class="outcomes-desc reveal">ידע שמאמן אישי לומד שנים — שלך תוך שבועות.</p>
         </div>
         <ul class="out-list">
@@ -552,11 +704,19 @@
     </div>
   </section>
 
-  <!-- STATS -->
+  <!-- ════ STATS ════ -->
+  <!-- wedge: outcomes (black) → stats (dark) -->
+  <div class="section-wedge" style="background:var(--dark)">
+    <svg viewBox="0 0 1440 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 1440,44 0,44" fill="var(--black)"/>
+      <line x1="0" y1="0" x2="1440" y2="44" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+    </svg>
+  </div>
+
   <div class="stats-bar reveal">
     <div class="stats-inner">
       <div class="stat-cell">
-        <div class="stat-n" data-count="2300">0</div>
+        <div class="stat-n" id="studentCount">0</div>
         <div class="stat-l">תלמידים</div>
       </div>
       <div class="stat-cell">
@@ -564,8 +724,8 @@
         <div class="stat-l">% שביעות רצון</div>
       </div>
       <div class="stat-cell">
-        <div class="stat-n">3</div>
-        <div class="stat-l">מודולים</div>
+        <div class="stat-n">6+</div>
+        <div class="stat-l">שעות תוכן</div>
       </div>
       <div class="stat-cell">
         <div class="stat-n">∞</div>
@@ -574,11 +734,18 @@
     </div>
   </div>
 
-  <!-- PRICING -->
+  <!-- ════ PRICING ════ -->
+  <!-- wedge: stats (dark) → pricing (black) -->
+  <div class="section-wedge" style="background:var(--black)">
+    <svg viewBox="0 0 1440 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,44 1440,0 1440,44" fill="var(--dark)"/>
+      <line x1="0" y1="44" x2="1440" y2="0" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+    </svg>
+  </div>
+
   <section id="pricing">
     <div class="container">
-
-      <h2 class="s-title reveal" style="text-align:center">השקעה אחת.<br><em>ידע לתמיד.</em></h2>
+      <h2 class="s-title reveal" style="text-align:center;display:block">השקעה אחת.<br><em>ידע לתמיד.</em></h2>
       <div class="price-wrap">
         <div class="price-card reveal">
           <div class="price-corner tl"></div>
@@ -588,40 +755,46 @@
           <div class="price-big"><sup>₪</sup>497</div>
           <div class="price-note">תשלום חד פעמי · גישה לצמיתות · ללא מנוי</div>
           <ul class="price-list">
-            <li>3 מודולים + 6 בונוסים</li>
-            <li>3 תכניות אימון מוכנות לשימוש</li>
+            <li>3 מודולי ידע מלאים — תזונה, אנטומיה, אימון</li>
+            <li>תכניות אימון מוכנות לשימוש מיידי</li>
             <li>מדריך מלא לאפליקציית MyFitnessPal</li>
-            <li>עדכונים עתידיים בחינם</li>
-            <li>גישה מכל מכשיר, לתמיד</li>
+            <li>בונוסים: מיתוסים, שאלות נפוצות וסיכום פרקטי</li>
+            <li>גישה מכל מכשיר, לצמיתות</li>
           </ul>
-          <a href="https://pay.grow.link/6ef2af5a9e5a1b243bcf27005c57a845-MTcyNDE0OA" target="_blank" class="price-cta"><span>אני רוצה להתחיל עכשיו ←</span></a>
-          <div class="price-guarantee">🛡️ 30 יום אחריות — לא אהבת? כסף חזרה.</div>
+          <a href="https://pay.grow.link/6ef2af5a9e5a1b243bcf27005c57a845-MTcyNDE0OA" target="_blank" class="price-cta"><span>אני רוצה להשיג תוצאות ←</span></a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
+  <!-- ════ CONTACT ════ -->
+  <!-- wedge: pricing (black) → contact (dark) -->
+  <div class="section-wedge" style="background:var(--dark)">
+    <svg viewBox="0 0 1440 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 1440,44 0,44" fill="var(--black)"/>
+      <line x1="0" y1="0" x2="1440" y2="44" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+    </svg>
+  </div>
+
   <section id="contact">
     <div class="container">
       <div class="contact-wrap">
         <div>
-
           <h2 class="s-title reveal">נשמח<br>לדבר<br><em>איתך</em></h2>
           <p class="contact-desc reveal">מלאו פרטים וניצור קשר בהקדם.</p>
         </div>
         <form class="cform reveal" onsubmit="handleSubmit(event)">
           <div class="cfield">
             <label class="clabel">שם מלא</label>
-            <input class="cinput" type="text" placeholder="ישראל ישראלי" required>
+            <input class="cinput" type="text" placeholder="ישראל ישראלי" required autocomplete="name">
           </div>
           <div class="cfield">
             <label class="clabel">טלפון</label>
-            <input class="cinput" type="tel" placeholder="05X-XXXXXXX" required>
+            <input class="cinput" type="tel" placeholder="05X-XXXXXXX" required autocomplete="tel">
           </div>
           <div class="cfield">
             <label class="clabel">אימייל</label>
-            <input class="cinput" type="email" placeholder="your@email.com">
+            <input class="cinput" type="email" placeholder="your@email.com" autocomplete="email">
           </div>
           <div class="cfield">
             <label class="clabel">הודעה (אופציונלי)</label>
@@ -642,56 +815,84 @@
   </footer>
 
   <script>
-    /* PARTICLES */
+    /* ── PARTICLES (hero only, light on mobile) ── */
     (function() {
-      const container = document.getElementById('particles');
-      if (!container) return;
-      for (let i = 0; i < 28; i++) {
+      const c = document.getElementById('particles');
+      if (!c) return;
+      const isMobile = window.innerWidth < 640;
+      const count = isMobile ? 14 : 26;
+      for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
-        const size = Math.random() * 2 + 1;
-        p.style.cssText = [
-          'width:' + size + 'px',
-          'height:' + size + 'px',
-          'left:' + Math.random() * 100 + '%',
-          'bottom:' + (Math.random() * 30 - 10) + '%',
-          'animation-duration:' + (Math.random() * 14 + 10) + 's',
-          'animation-delay:' + (Math.random() * 12) + 's',
-          'opacity:0',
-          'background:rgba(' + [180+Math.random()*40, 180+Math.random()*40, 180+Math.random()*40].map(Math.round).join(',') + ',0.45)'
-        ].join(';');
-        container.appendChild(p);
+        const sz = Math.random() * 1.8 + 0.8;
+        const r = 175 + Math.round(Math.random() * 45);
+        p.style.cssText =
+          'width:' + sz + 'px;' +
+          'height:' + sz + 'px;' +
+          'left:' + Math.random() * 100 + '%;' +
+          'bottom:' + (Math.random() * 40 - 5) + '%;' +
+          'animation-duration:' + (Math.random() * 14 + 11) + 's;' +
+          'animation-delay:' + (Math.random() * 14) + 's;' +
+          'opacity:0;' +
+          'background:rgba(' + r + ',' + r + ',' + r + ',0.42);';
+        c.appendChild(p);
       }
     })();
 
-    /* LOADER */
+    /* ── LOADER ── */
     let pct = 0;
     const pctEl = document.getElementById('loaderPct');
     const pt = setInterval(() => {
-      pct += Math.floor(Math.random() * 11) + 4;
+      pct += Math.floor(Math.random() * 11) + 3;
       if (pct >= 100) { pct = 100; clearInterval(pt); }
       pctEl.textContent = 'LOADING... ' + pct + '%';
-    }, 100);
+    }, 90);
     window.addEventListener('load', () => {
       setTimeout(() => {
         const l = document.getElementById('loader');
         l.classList.add('exit');
-        setTimeout(() => l.style.display = 'none', 900);
-      }, 2100);
+        setTimeout(() => { l.style.display = 'none'; }, 850);
+      }, 2000);
     });
 
-    /* SCROLL REVEAL */
+    /* ── SCROLL REVEAL ── */
     const ro = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-    /* COUNT UP */
+    /* ── STUDENT COUNTER ── */
+    let studentSeen = 0;
+    const studentEl = document.getElementById('studentCount');
+    const sObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        studentSeen++;
+        if (studentSeen === 1) {
+          let cur = 0; const target = 1491; const step = target / (1600 / 16);
+          const t = setInterval(() => {
+            cur += step;
+            if (cur >= target) { cur = target; clearInterval(t); }
+            studentEl.textContent = Math.floor(cur).toLocaleString('he');
+          }, 16);
+        } else if (studentSeen === 2) {
+          studentEl.style.transition = 'opacity 0.25s';
+          studentEl.style.opacity = '0.35';
+          setTimeout(() => {
+            studentEl.textContent = (1492).toLocaleString('he');
+            studentEl.style.opacity = '1';
+          }, 350);
+        }
+      });
+    }, { threshold: 0.5 });
+    if (studentEl) sObs.observe(studentEl);
+
+    /* ── OTHER COUNT UP ── */
     const co = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting && e.target.dataset.count) {
           const tgt = parseInt(e.target.dataset.count);
-          let cur = 0; const step = tgt / (1800 / 16);
+          let cur = 0; const step = tgt / (1600 / 16);
           const t = setInterval(() => {
             cur += step;
             if (cur >= tgt) { cur = tgt; clearInterval(t); }
@@ -703,7 +904,7 @@
     }, { threshold: 0.5 });
     document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
 
-    /* FORM */
+    /* ── FORM ── */
     function handleSubmit(e) {
       e.preventDefault();
       const s = e.target.querySelector('.csubmit span');
@@ -711,16 +912,25 @@
       setTimeout(() => s.textContent = 'שלח ←', 3000);
     }
 
-    /* PARALLAX */
-    const hc = document.querySelector('.hero-content');
-    const hbn = document.querySelector('.hero-bg-num');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y < window.innerHeight) {
-        if (hc) hc.style.transform = 'translateY(' + (y * 0.17) + 'px)';
-        if (hbn) hbn.style.transform = 'translate(-50%, calc(-50% + ' + (y * 0.07) + 'px))';
-      }
-    }, { passive: true });
+    /* ── HERO PARALLAX — only on desktop, passive for no jank ── */
+    if (window.innerWidth > 768) {
+      const hc = document.querySelector('.hero-content');
+      const hbn = document.querySelector('.hero-bg-num');
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const y = window.scrollY;
+            if (y < window.innerHeight) {
+              if (hc) hc.style.transform = 'translateY(' + (y * 0.14) + 'px)';
+              if (hbn) hbn.style.transform = 'translate(-50%, calc(-50% + ' + (y * 0.06) + 'px))';
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
   </script>
 </body>
 </html>
