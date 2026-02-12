@@ -53,8 +53,8 @@
       clip-path: inset(100% 0 0 0); animation: wFill 0.6s cubic-bezier(0.7,0,0.3,1) forwards;
     }
     .loader-word:nth-child(1) .fill { animation-delay: 0.2s; }
-    .loader-word:nth-child(2) .fill { animation-delay: 0.42s; color: var(--silver); }
-    .loader-word:nth-child(3) .fill { animation-delay: 0.64s; font-size: clamp(14px,2.5vw,32px); letter-spacing: 0.15em; }
+    .loader-word:nth-child(2) .fill { animation-delay: 0.42s; }
+    .loader-word:nth-child(4) .fill { animation-delay: 0.75s; color: var(--silver); }
     @keyframes wFill { to { clip-path: inset(0% 0 0 0); } }
     .loader-line {
       width: 0; height: 1px; margin-top: 24px;
@@ -434,39 +434,8 @@
     .price-cta:active { transform: scale(0.98); }
     .price-cta span { position: relative; z-index: 1; }
 
-    /* ─── CONTACT ─── */
-    #contact { padding: 80px 0 90px; background: var(--dark); position: relative; overflow: hidden; }
-    #contact::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent 0%, rgba(180,180,180,0.35) 20%, rgba(210,210,210,0.6) 50%, rgba(180,180,180,0.35) 80%, transparent 100%);
-      animation: silverSweep 7s ease-in-out infinite 1.5s;
-    }
-    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-    .contact-desc { font-size: clamp(14px,3.5vw,16px); font-weight: 300; color: var(--silver); line-height: 1.85; margin-top: 12px; }
-    .cform { display: flex; flex-direction: column; gap: 12px; }
-    .cfield { display: flex; flex-direction: column; gap: 5px; }
-    .clabel { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--silver); }
-    .cinput {
-      background: transparent; border: 1px solid rgba(255,255,255,0.1);
-      color: var(--white); font-family: 'Heebo', sans-serif; font-size: clamp(15px,4vw,16px);
-      padding: 13px 16px; outline: none; transition: border-color 0.3s; width: 100%;
-      border-radius: 0; -webkit-appearance: none; appearance: none;
-    }
-    .cinput::placeholder { color: rgba(255,255,255,0.18); }
-    .cinput:focus { border-color: rgba(255,255,255,0.42); }
-    .csubmit {
-      background: var(--white); color: var(--black);
-      font-family: 'Bebas Neue', sans-serif; font-size: clamp(17px,4.5vw,19px); letter-spacing: 0.13em;
-      padding: 15px; border: none; cursor: pointer; margin-top: 4px;
-      position: relative; overflow: hidden; transition: transform 0.25s;
-      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-    }
-    .csubmit::after { content:''; position:absolute; inset:0; background:var(--light); transform:scaleX(0); transform-origin:right; transition:transform 0.38s cubic-bezier(0.7,0,0.3,1); }
-    .csubmit:active { transform: scale(0.98); }
-    .csubmit span { position: relative; z-index: 1; }
-
     /* ─── FOOTER ─── */
-    footer { background: #040404; border-top: 1px solid rgba(255,255,255,0.05); padding: 36px 20px; }
+    footer { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.05); padding: 36px 20px; }
     .footer-inner { max-width: 1060px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.1em; color: var(--white); }
     .footer-copy { font-size: 11px; color: var(--silver); }
@@ -492,7 +461,6 @@
       .pain-grid { grid-template-columns: 1fr; }
       .pain-cell { padding: 28px 22px; }
       .outcomes-wrap { grid-template-columns: 1fr; gap: 36px; }
-      .contact-wrap { grid-template-columns: 1fr; gap: 36px; }
       .stats-inner { grid-template-columns: 1fr 1fr; gap: 0; }
       .stat-cell { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); padding: 16px 8px; }
       .stat-cell:nth-child(2n+1) { border-right: 1px solid rgba(255,255,255,0.06); }
@@ -513,12 +481,12 @@
   <div id="loader">
     <div class="loader-inner">
       <div class="loader-word"><span>איך להפוך</span><span class="fill">איך להפוך</span></div>
-      <div class="loader-word"><span>למאמן</span><span class="fill">למאמן</span></div>
-      <div class="loader-word" style="font-size:clamp(13px,2.8vw,32px);letter-spacing:0.14em;-webkit-text-stroke:1px rgba(255,255,255,0.1)">
-        <span>של עצמך ולקחת את הגוף ל NEXT LEVEL</span>
-        <span class="fill">של עצמך ולקחת את הגוף ל NEXT LEVEL</span>
-      </div>
+      <div class="loader-word"><span>למאמן של עצמך</span><span class="fill">למאמן של עצמך</span></div>
       <div class="loader-line"></div>
+      <div class="loader-word" style="font-size:clamp(16px,3.2vw,38px);letter-spacing:0.16em;-webkit-text-stroke:1px rgba(255,255,255,0.1);margin-top:18px">
+        <span>ולקחת את הגוף ל NEXT LEVEL</span>
+        <span class="fill">ולקחת את הגוף ל NEXT LEVEL</span>
+      </div>
       <div class="loader-pct" id="loaderPct">LOADING... 0%</div>
     </div>
   </div>
@@ -537,8 +505,8 @@
       </h1>
       <div class="hero-divider"></div>
       <p class="hero-sub">
-        <strong>הבעיה היא לא האימונים — אלא הידע.</strong><br>
-        הגיע הזמן סוף סוף לראות תוצאות.
+        <strong>הבעיה לא האימונים — הבעיה הידע.</strong><br>
+        הגיע הזמן לראות תוצאות אמיתיות.
       </p>
       <div class="hero-btns">
         <a href="https://pay.grow.link/6ef2af5a9e5a1b243bcf27005c57a845-MTcyNDE0OA" target="_blank" class="btn-main"><span>אני רוצה להשיג תוצאות ←</span></a>
@@ -605,23 +573,23 @@
       <h2 class="s-title reveal">אם <em>את/ה</em></h2>
       <div class="pain-grid stagger">
         <div class="pain-cell reveal">
-          <div class="pain-h">מתאמן, לא מתקדם</div>
-          <div class="pain-p">שעות בחדר כושר ותוצאות שלא זז. זה לא חוסר מאמץ — זה חוסר ידע נכון.</div>
+          <div class="pain-h">מתאמן ולא רואה שינוי</div>
+          <div class="pain-p">משקיע שעות בחדר כושר אבל התוצאות לא זז ממקום. זה לא חוסר מאמץ — פשוט חסר לך הידע.</div>
         </div>
         <div class="pain-cell reveal">
-          <div class="pain-h">משלם לפי חודש, לא מבין למה</div>
-          <div class="pain-p">מאמן נותן לך תכנית בלי הסבר. אתה עושה מה שנאמר לך — ותלוי בו לצמיתות.</div>
+          <div class="pain-h">משלם למאמן חודש אחרי חודש</div>
+          <div class="pain-p">הוא נותן לך תוכנית, אתה עושה מה שנאמר, אבל אף פעם לא באמת מבין למה. תלוי בו לנצח.</div>
         </div>
         <div class="pain-cell reveal">
-          <div class="pain-h">תזונה — בלגן מוחלט</div>
-          <div class="pain-p">כולם אומרים משהו אחר. הקורס שם סוף לבלבול ונותן לך שיטה ברורה שעובדת.</div>
+          <div class="pain-h">תזונה זה בלבול מוחלט</div>
+          <div class="pain-p">כל אחד אומר משהו אחר. פחמימות טוב או רע? כמה חלבון צריך? הקורס שם סוף לבלבול.</div>
         </div>
         <div class="pain-cell reveal">
-          <div class="pain-h">עושה מה שכולם עושים</div>
-          <div class="pain-p">אותה שגרה, אותן תוצאות. כדי לקבל משהו שונה — צריך לחשוב אחרת.</div>
+          <div class="pain-h">עושה כמו כולם ומצפה למשהו אחר</div>
+          <div class="pain-p">אותן תרגילים, אותה שגרה, אותן תוצאות. אם רוצה משהו שונה — צריך לחשוב אחרת.</div>
         </div>
       </div>
-      <p class="pain-conclusion reveal">אז הקורס הזה <em>בול</em> בשבילך.</p>
+      <p class="pain-conclusion reveal">אז הקורס הזה <em>בדיוק</em> בשבילך.</p>
     </div>
   </section>
 
@@ -637,7 +605,7 @@
   <section id="curriculum">
     <div class="container">
       <div class="curr-head">
-        <h2 class="s-title reveal">מתזונה ועד אנטומיה<br>ועד תורת האימון —<br><em>הכל בשפה ברורה.</em></h2>
+        <h2 class="s-title reveal">תזונה, אנטומיה,<br>ותורת האימון —<br><em>הכל בשפה ברורה.</em></h2>
       </div>
       <div class="mod-list">
         <div class="mod-row reveal">
@@ -691,7 +659,7 @@
       <div class="outcomes-wrap">
         <div>
           <h2 class="s-title reveal" style="font-size:clamp(42px,6vw,82px)">מה<br>תדע<br><em>לעשות</em></h2>
-          <p class="outcomes-desc reveal">ידע שמאמן אישי לומד שנים — שלך תוך שבועות.</p>
+          <p class="outcomes-desc reveal">ידע שלוקח למאמן אישי שנים ללמוד — אצלך זה יהיה תוך שבועות.</p>
         </div>
         <ul class="out-list">
           <li class="out-item reveal"><span class="out-check">✓</span>לבנות תפריט תזונה מותאם אישית</li>
@@ -728,8 +696,8 @@
         <div class="stat-l">שעות תוכן</div>
       </div>
       <div class="stat-cell">
-        <div class="stat-n">∞</div>
-        <div class="stat-l">גישה לצמיתות</div>
+        <div class="stat-n" style="font-size:clamp(32px,4.5vw,56px);letter-spacing:0.02em">לצמיתות</div>
+        <div class="stat-l">גישה</div>
       </div>
     </div>
   </div>
@@ -745,7 +713,7 @@
 
   <section id="pricing">
     <div class="container">
-      <h2 class="s-title reveal" style="text-align:center;display:block">השקעה אחת.<br><em>ידע לתמיד.</em></h2>
+      <h2 class="s-title reveal" style="text-align:center;display:block">השקעה חד פעמית.<br><em>ידע לכל החיים.</em></h2>
       <div class="price-wrap">
         <div class="price-card reveal">
           <div class="price-corner tl"></div>
@@ -753,13 +721,13 @@
           <div class="price-badge">מחיר השקה מוגבל</div>
           <div class="price-was">₪997</div>
           <div class="price-big"><sup>₪</sup>497</div>
-          <div class="price-note">תשלום חד פעמי · גישה לצמיתות · ללא מנוי</div>
+          <div class="price-note">תשלום חד פעמי · גישה לכל החיים · ללא מנוי</div>
           <ul class="price-list">
-            <li>3 מודולי ידע מלאים — תזונה, אנטומיה, אימון</li>
-            <li>תכניות אימון מוכנות לשימוש מיידי</li>
-            <li>מדריך מלא לאפליקציית MyFitnessPal</li>
-            <li>בונוסים: מיתוסים, שאלות נפוצות וסיכום פרקטי</li>
-            <li>גישה מכל מכשיר, לצמיתות</li>
+            <li>3 מודולי ידע מלאים: תזונה, אנטומיה ואימונים</li>
+            <li>תוכניות אימון מוכנות שאפשר להתחיל איתן מיד</li>
+            <li>מדריך מלא לעבודה עם MyFitnessPal</li>
+            <li>בונוסים: שאלות נפוצות, מיתוסים וסיכום מעשי</li>
+            <li>גישה מכל מכשיר לכל החיים</li>
           </ul>
           <a href="https://pay.grow.link/6ef2af5a9e5a1b243bcf27005c57a845-MTcyNDE0OA" target="_blank" class="price-cta"><span>אני רוצה להשיג תוצאות ←</span></a>
         </div>
@@ -767,44 +735,13 @@
     </div>
   </section>
 
-  <!-- ════ CONTACT ════ -->
-  <!-- wedge: pricing (black) → contact (dark) -->
+  <!-- wedge: pricing (black) → footer (dark) -->
   <div class="section-wedge" style="background:var(--dark)">
     <svg viewBox="0 0 1440 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <polygon points="0,0 1440,44 0,44" fill="var(--black)"/>
       <line x1="0" y1="0" x2="1440" y2="44" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
     </svg>
   </div>
-
-  <section id="contact">
-    <div class="container">
-      <div class="contact-wrap">
-        <div>
-          <h2 class="s-title reveal">נשמח<br>לדבר<br><em>איתך</em></h2>
-          <p class="contact-desc reveal">מלאו פרטים וניצור קשר בהקדם.</p>
-        </div>
-        <form class="cform reveal" onsubmit="handleSubmit(event)">
-          <div class="cfield">
-            <label class="clabel">שם מלא</label>
-            <input class="cinput" type="text" placeholder="ישראל ישראלי" required autocomplete="name">
-          </div>
-          <div class="cfield">
-            <label class="clabel">טלפון</label>
-            <input class="cinput" type="tel" placeholder="05X-XXXXXXX" required autocomplete="tel">
-          </div>
-          <div class="cfield">
-            <label class="clabel">אימייל</label>
-            <input class="cinput" type="email" placeholder="your@email.com" autocomplete="email">
-          </div>
-          <div class="cfield">
-            <label class="clabel">הודעה (אופציונלי)</label>
-            <textarea class="cinput" rows="3" placeholder="כתוב כאן..." style="resize:vertical"></textarea>
-          </div>
-          <button type="submit" class="csubmit"><span>שלח ←</span></button>
-        </form>
-      </div>
-    </div>
-  </section>
 
   <!-- FOOTER -->
   <footer>
@@ -903,14 +840,6 @@
       });
     }, { threshold: 0.5 });
     document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
-
-    /* ── FORM ── */
-    function handleSubmit(e) {
-      e.preventDefault();
-      const s = e.target.querySelector('.csubmit span');
-      s.textContent = '✓ נשלח!';
-      setTimeout(() => s.textContent = 'שלח ←', 3000);
-    }
 
     /* ── HERO PARALLAX — only on desktop, passive for no jank ── */
     if (window.innerWidth > 768) {
