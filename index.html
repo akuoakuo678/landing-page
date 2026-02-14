@@ -307,32 +307,56 @@
 
     /* ─── TICKER ─── */
     .vticker {
-      border-top: 1px solid rgba(255,255,255,0.07);
+      position: sticky;
+      top: 0;
+      z-index: 100;
       border-bottom: 1px solid rgba(255,255,255,0.07);
-      background: rgba(255,255,255,0.013); overflow: hidden; height: 44px; position: relative;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      overflow: hidden;
+      height: 44px;
     }
     .vticker-track {
-      position: absolute; top: 0; left: 0; right: 0;
-      display: flex; flex-direction: column;
-      animation: vScroll 15s linear infinite;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      animation: hScroll 40s linear infinite;
       will-change: transform;
     }
-    .vticker-item { height: 44px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: nowrap; overflow: hidden; }
-    .vticker-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
-    .vticker-chip .dot { width: 3px; height: 3px; background: var(--silver); transform: rotate(45deg); flex-shrink: 0; animation: dotPulse 3s ease-in-out infinite; }
-    .vticker-chip:nth-child(2) .dot { animation-delay: 0.75s; }
-    .vticker-chip:nth-child(3) .dot { animation-delay: 1.5s; }
-    .vticker-chip:nth-child(4) .dot { animation-delay: 2.25s; }
+    .vticker-item {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      padding: 0 40px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .vticker-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--silver);
+      white-space: nowrap;
+    }
+    .vticker-chip .dot {
+      width: 3px;
+      height: 3px;
+      background: var(--silver);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+      animation: dotPulse 3s ease-in-out infinite;
+    }
     @keyframes dotPulse {
       0%,100%{opacity:0.5;transform:rotate(45deg) scale(1)}
-      50%{opacity:1;transform:rotate(45deg) scale(1.9);background:var(--light)}
+      50%{opacity:1;transform:rotate(45deg) scale(1.6);background:var(--light)}
     }
-    @keyframes vScroll {
-      0%  {transform:translateY(0)}      24%{transform:translateY(0)}
-      25% {transform:translateY(-44px)}  49%{transform:translateY(-44px)}
-      50% {transform:translateY(-88px)}  74%{transform:translateY(-88px)}
-      75% {transform:translateY(-132px)} 99%{transform:translateY(-132px)}
-      100%{transform:translateY(-176px)}
+    @keyframes hScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     /* ─── LAYOUT ─── */
@@ -830,11 +854,11 @@
       /* Section titles */
       .s-title { font-size: clamp(32px, 7vw, 54px); margin-bottom: 12px; }
       
-      /* Ticker - slower on mobile */
-      .vticker { height: 40px; }
-      .vticker-track { animation-duration: 20s; }
-      .vticker-item { height: 40px; gap: 20px; }
-      .vticker-chip { font-size: 10px; gap: 6px; }
+      /* Ticker - adjust for mobile */
+      .vticker { height: 36px; }
+      .vticker-track { animation-duration: 50s; }
+      .vticker-item { gap: 32px; padding: 0 32px; }
+      .vticker-chip { font-size: 10px; gap: 6px; letter-spacing: 0.16em; }
       .vticker-chip .dot { width: 2.5px; height: 2.5px; }
       
       /* Footer */
@@ -932,30 +956,24 @@
         <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
         <span class="vticker-chip"><span class="dot"></span>חיטוב ומסה</span>
         <span class="vticker-chip"><span class="dot"></span>תכניות אימון</span>
-        <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
-      </div>
-      <div class="vticker-item">
         <span class="vticker-chip"><span class="dot"></span>אנטומיה מעמיקה</span>
         <span class="vticker-chip"><span class="dot"></span>תוספי תזונה</span>
-        <span class="vticker-chip"><span class="dot"></span>בלי מאמן יקר</span>
-        <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
-      </div>
-      <div class="vticker-item">
         <span class="vticker-chip"><span class="dot"></span>תורת האימון</span>
         <span class="vticker-chip"><span class="dot"></span>פציעות ושיקום</span>
         <span class="vticker-chip"><span class="dot"></span>MyFitnessPal</span>
-        <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
-      </div>
-      <div class="vticker-item">
         <span class="vticker-chip"><span class="dot"></span>שיטות אימון</span>
-        <span class="vticker-chip"><span class="dot"></span>תזמון ארוחות</span>
-        <span class="vticker-chip"><span class="dot"></span>ידע = תוצאות</span>
         <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
       </div>
       <div class="vticker-item">
         <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
         <span class="vticker-chip"><span class="dot"></span>חיטוב ומסה</span>
         <span class="vticker-chip"><span class="dot"></span>תכניות אימון</span>
+        <span class="vticker-chip"><span class="dot"></span>אנטומיה מעמיקה</span>
+        <span class="vticker-chip"><span class="dot"></span>תוספי תזונה</span>
+        <span class="vticker-chip"><span class="dot"></span>תורת האימון</span>
+        <span class="vticker-chip"><span class="dot"></span>פציעות ושיקום</span>
+        <span class="vticker-chip"><span class="dot"></span>MyFitnessPal</span>
+        <span class="vticker-chip"><span class="dot"></span>שיטות אימון</span>
         <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
       </div>
     </div>
