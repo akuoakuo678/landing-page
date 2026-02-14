@@ -314,7 +314,7 @@
     .vticker-track {
       position: absolute; top: 0; left: 0; right: 0;
       display: flex; flex-direction: column;
-      animation: vScroll 9s linear infinite;
+      animation: vScroll 15s linear infinite;
       will-change: transform;
     }
     .vticker-item { height: 44px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: nowrap; overflow: hidden; }
@@ -328,10 +328,10 @@
       50%{opacity:1;transform:rotate(45deg) scale(1.9);background:var(--light)}
     }
     @keyframes vScroll {
-      0%  {transform:translateY(0)}      22%{transform:translateY(0)}
-      25% {transform:translateY(-44px)}  47%{transform:translateY(-44px)}
-      50% {transform:translateY(-88px)}  72%{transform:translateY(-88px)}
-      75% {transform:translateY(-132px)} 97%{transform:translateY(-132px)}
+      0%  {transform:translateY(0)}      24%{transform:translateY(0)}
+      25% {transform:translateY(-44px)}  49%{transform:translateY(-44px)}
+      50% {transform:translateY(-88px)}  74%{transform:translateY(-88px)}
+      75% {transform:translateY(-132px)} 99%{transform:translateY(-132px)}
       100%{transform:translateY(-176px)}
     }
 
@@ -830,8 +830,9 @@
       /* Section titles */
       .s-title { font-size: clamp(32px, 7vw, 54px); margin-bottom: 12px; }
       
-      /* Ticker */
+      /* Ticker - slower on mobile */
       .vticker { height: 40px; }
+      .vticker-track { animation-duration: 20s; }
       .vticker-item { height: 40px; gap: 20px; }
       .vticker-chip { font-size: 10px; gap: 6px; }
       .vticker-chip .dot { width: 2.5px; height: 2.5px; }
