@@ -23,7 +23,11 @@
 
     /* ─── RESET & BASE ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    html { 
+      scroll-behavior: smooth; 
+      -webkit-text-size-adjust: 100%; 
+      -webkit-tap-highlight-color: transparent;
+    }
     body {
       background: var(--black);
       color: var(--white);
@@ -31,6 +35,7 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      touch-action: pan-y;
     }
 
     /* noise texture */
@@ -85,7 +90,8 @@
     #hero {
       min-height: 100svh; position: relative;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 80px 20px 110px; text-align: center; overflow: hidden;
+      padding: max(80px, env(safe-area-inset-top) + 60px) 20px max(110px, env(safe-area-inset-bottom) + 90px) 20px; 
+      text-align: center; overflow: hidden;
     }
     .hero-stripe {
       position: absolute; inset: 0; pointer-events: none;
@@ -717,20 +723,156 @@
 
     /* ─── MOBILE ─── */
     @media (max-width: 640px) {
-      .pain-grid { grid-template-columns: 1fr; }
-      .pain-cell { padding: 28px 22px; }
-      .outcomes-wrap { grid-template-columns: 1fr; gap: 36px; }
-      .stats-inner { grid-template-columns: 1fr 1fr; gap: 0; }
-      .stat-cell { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); padding: 16px 8px; }
-      .stat-cell:nth-child(2n+1) { border-right: 1px solid rgba(255,255,255,0.06); }
-      .price-card { padding: 48px 22px 40px; }
+      /* Reduce animations on mobile for better performance */
+      * {
+        animation-duration: 0.8s !important;
+      }
+      
+      /* Disable parallax on mobile */
+      .hero-bg-num, .hero-glow::before, .hero-glow::after {
+        animation: none;
+      }
+      
+      /* Hero adjustments */
+      #hero { padding: max(60px, env(safe-area-inset-top) + 40px) 16px max(90px, env(safe-area-inset-bottom) + 70px) 16px; min-height: 100svh; }
+      .hero-title { font-size: clamp(52px, 13vw, 72px); line-height: 0.9; }
+      .hero-sub { font-size: clamp(14px, 4.2vw, 17px); line-height: 1.6; max-width: 100%; padding: 0 8px; }
+      .hero-divider { max-width: 160px; }
+      .hero-btns { gap: 10px; width: 100%; padding: 0 8px; }
       .hero-bg-num { display: none; }
-      .btn-main, .btn-ghost { font-size: 16px; padding: 14px 28px; }
-      #hero { padding: 70px 18px 100px; }
-      .container { padding: 0 18px; }
+      .hero-glow { max-width: 500px; max-height: 500px; }
+      
+      /* Buttons - larger touch targets */
+      .btn-main, .btn-ghost { 
+        font-size: 15px; 
+        padding: 16px 32px; 
+        width: 100%;
+        max-width: 320px;
+        min-height: 48px;
+      }
+      
+      /* Pain section */
+      .pain-grid { grid-template-columns: 1fr; gap: 8px; }
+      .pain-cell { padding: 24px 20px; }
+      .pain-h { font-size: clamp(17px, 4.5vw, 20px); margin-bottom: 10px; }
+      .pain-p { font-size: clamp(14px, 3.8vw, 15px); line-height: 1.7; }
+      .pain-conclusion { font-size: clamp(22px, 5.8vw, 38px); margin-top: 36px; padding-top: 24px; }
+      
+      /* Curriculum */
+      .curr-head .s-title { font-size: clamp(32px, 7vw, 52px); line-height: 1.1; }
+      .mod-row { 
+        grid-template-columns: 52px 1fr 24px; 
+        gap: 14px; 
+        padding: 18px 16px;
+        min-height: 72px;
+      }
+      .mod-n { font-size: 26px; }
+      .mod-title { font-size: clamp(16px, 4.2vw, 18px); margin-bottom: 6px; }
+      .mod-tag { font-size: 10px; padding: 3px 8px; }
+      .mod-arrow { font-size: 16px; }
+      
+      /* Outcomes */
+      .outcomes-wrap { grid-template-columns: 1fr; gap: 32px; }
+      .outcomes-wrap > div:first-child .s-title { 
+        font-size: clamp(38px, 8vw, 62px) !important; 
+        margin-bottom: 8px;
+      }
+      .outcomes-desc { font-size: clamp(14px, 3.8vw, 16px); margin-top: 8px; }
+      .out-item { 
+        padding: 14px 0; 
+        font-size: clamp(15px, 4.2vw, 17px); 
+        gap: 12px;
+        min-height: 52px;
+      }
+      .out-check { width: 22px; height: 22px; font-size: 10px; }
+      
+      /* Stats */
+      .stats-inner { 
+        grid-template-columns: 1fr 1fr; 
+        gap: 0; 
+        padding: 50px 16px;
+      }
+      .stat-cell { 
+        border-left: none; 
+        border-top: 1px solid rgba(255,255,255,0.06); 
+        padding: 20px 8px;
+        min-height: 100px;
+      }
+      .stat-cell:first-child { border-top: none; }
+      .stat-cell:nth-child(2) { border-top: none; }
+      .stat-cell:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.06); }
+      .stat-n { font-size: clamp(36px, 8vw, 56px); }
+      .stat-l { font-size: 10px; margin-top: 4px; }
+      
+      /* Pricing */
+      .price-wrap { margin-top: 36px; padding: 0 8px; }
+      .price-card { padding: 44px 20px 36px; }
+      .price-badge { font-size: 10px; padding: 3px 16px; top: -10px; }
+      .price-was { font-size: 14px; }
+      .price-big { font-size: clamp(56px, 12vw, 80px); }
+      .price-list { gap: 8px; margin-bottom: 28px; }
+      .price-list li { font-size: clamp(13px, 3.6vw, 15px); gap: 8px; line-height: 1.5; }
+      .price-list li::before { width: 18px; height: 18px; font-size: 9px; }
+      .price-cta { 
+        font-size: clamp(16px, 4.5vw, 19px); 
+        padding: 18px;
+        min-height: 54px;
+      }
+      
+      /* Container */
+      .container { padding: 0 16px; }
+      
+      /* Section padding */
+      #pain, #curriculum, #outcomes, #pricing { 
+        padding: 60px 0 70px; 
+      }
+      
+      /* Section titles */
+      .s-title { font-size: clamp(32px, 7vw, 54px); margin-bottom: 12px; }
+      
+      /* Ticker */
+      .vticker { height: 40px; }
+      .vticker-item { height: 40px; gap: 20px; }
+      .vticker-chip { font-size: 10px; gap: 6px; }
+      .vticker-chip .dot { width: 2.5px; height: 2.5px; }
+      
+      /* Footer */
+      footer { padding: 32px 16px env(safe-area-inset-bottom, 16px); }
+      .footer-inner { flex-direction: column; text-align: center; gap: 8px; }
+      .footer-brand { font-size: 24px; }
+      .footer-copy { font-size: 10px; }
+      
+      /* Scroll hint */
+      .hero-scroll-hint { bottom: max(24px, env(safe-area-inset-bottom) + 12px); }
+      .scroll-track { height: 44px; }
+      
+      /* Wedges - reduce height on mobile */
+      .section-wedge svg { height: 30px; }
+      
+      /* Disable hover effects on mobile */
+      .pain-cell:hover { transform: none; background: var(--black); }
+      .mod-row:hover { transform: none; border-color: rgba(255,255,255,0.05); }
+      .out-item:hover { padding-right: 0; }
+      .out-item:hover .out-check { transform: translateY(-4px) scale(1); }
     }
+    
     @media (max-width: 400px) {
-      .hero-title { font-size: clamp(56px, 14vw, 80px); }
+      .hero-title { font-size: clamp(48px, 12vw, 64px); }
+      .hero-sub { font-size: clamp(13px, 4vw, 15px); }
+      .btn-main, .btn-ghost { font-size: 14px; padding: 15px 28px; }
+      .pain-h { font-size: clamp(16px, 4.5vw, 18px); }
+      .pain-p { font-size: clamp(13px, 3.8vw, 14px); }
+      .mod-row { padding: 16px 14px; }
+      .stat-cell { padding: 18px 6px; }
+      .price-card { padding: 40px 16px 32px; }
+    }
+    
+    /* Landscape mobile */
+    @media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
+      #hero { min-height: auto; padding: 40px 16px 60px; }
+      .hero-title { font-size: clamp(40px, 8vw, 56px); }
+      .hero-scroll-hint { display: none; }
+      .hero-glow { max-width: 400px; max-height: 400px; }
     }
   </style>
 </head>
@@ -828,26 +970,21 @@
 
   <section id="pain">
     <div class="container">
-      <h2 class="s-title reveal">אם <em>אתה</em></h2>
+      <h2 class="s-title reveal">אם אתה מזדהה עם אחד מהפרמטרים - <em>הקורס הזה בשבילך.</em></h2>
       <div class="pain-grid stagger">
         <div class="pain-cell reveal">
           <div class="pain-h">מתאמן ולא רואה שינוי</div>
-          <div class="pain-p">משקיע שעות בחדר כושר אבל התוצאות לא מגיעות. זה לא חוסר מאמץ — זה חוסר ידע.</div>
         </div>
         <div class="pain-cell reveal">
           <div class="pain-h">מעתיק ממאמנים באינסטגרם/יוטיוב וחושב שזה יעבוד עבורך</div>
-          <div class="pain-p">הוא נותן לך תוכנית, אתה עושה מה שכתוב, אבל אף פעם לא באמת מבין למה ונשאר תלוי בו לנצח.</div>
         </div>
         <div class="pain-cell reveal">
           <div class="pain-h">מתבלבל מכל עניין התזונה</div>
-          <div class="pain-p">כל אחד אומר משהו אחר. פחמימות טוב או רע? כמה חלבון צריך? הקורס שם סוף לכל הבלבול.</div>
         </div>
         <div class="pain-cell reveal">
           <div class="pain-h">עושה כמו כולם ומצפה לתוצאה אחרת</div>
-          <div class="pain-p">אותם תרגילים, אותה שגרה, אותן תוצאות. אם אתה רוצה משהו שונה — צריך לחשוב אחרת.</div>
         </div>
       </div>
-      <p class="pain-conclusion reveal">אם אתה מזדהה עם אחד מהפרמטרים - <em>הקורס הזה בשבילך.</em></p>
     </div>
   </section>
 
@@ -974,7 +1111,7 @@
           <div class="price-was">₪997</div>
           <div class="price-big"><sup>₪</sup>499</div>
           <ul class="price-list">
-            <li> כל הידע שאתה צריך על: תזונה, אנטומיה ואימונים</li>
+            <li>3 כל הידע שאתה צריך על: תזונה, אנטומיה ואימונים</li>
             <li>למידת היכולת לבנות תכנית אימונים מושלמת</li>
             <li>מדריך מלא לעבודה עם MyFitnessPal</li>
             <li>בונוסים: שאלות נפוצות, מיתוסים וסיכום מעשי</li>
