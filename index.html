@@ -45,6 +45,15 @@
       opacity: 0.018;
     }
 
+    /* ─── BACKGROUND FLOWING LINES ─── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;
+    }
+
     /* ─── LOADER ─── */
     #loader {
       position: fixed; inset: 0; background: var(--black); z-index: 9999;
@@ -319,44 +328,44 @@
     }
     .vticker-track {
       display: flex;
-      align-items: center;
       height: 100%;
-      animation: hScroll 40s linear infinite;
+      align-items: center;
+      gap: 48px;
+      animation: infiniteScroll 35s linear infinite;
       will-change: transform;
     }
-    .vticker-item {
+    .vticker-content {
       display: flex;
       align-items: center;
-      gap: 40px;
-      padding: 0 40px;
-      white-space: nowrap;
+      gap: 48px;
       flex-shrink: 0;
     }
     .vticker-chip {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--silver);
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .vticker-chip .dot {
-      width: 3px;
-      height: 3px;
+      width: 4px;
+      height: 4px;
       background: var(--silver);
-      transform: rotate(45deg);
+      border-radius: 50%;
       flex-shrink: 0;
       animation: dotPulse 3s ease-in-out infinite;
     }
     @keyframes dotPulse {
-      0%,100%{opacity:0.5;transform:rotate(45deg) scale(1)}
-      50%{opacity:1;transform:rotate(45deg) scale(1.6);background:var(--light)}
+      0%,100%{opacity:0.5;transform:scale(1)}
+      50%{opacity:1;transform:scale(1.4);background:var(--light)}
     }
-    @keyframes hScroll {
+    @keyframes infiniteScroll {
       0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      100% { transform: translateX(calc(-50% - 24px)); }
     }
 
     /* ─── LAYOUT ─── */
@@ -747,11 +756,6 @@
 
     /* ─── MOBILE ─── */
     @media (max-width: 640px) {
-      /* Reduce animations on mobile for better performance */
-      * {
-        animation-duration: 0.8s !important;
-      }
-      
       /* Disable parallax on mobile */
       .hero-bg-num, .hero-glow::before, .hero-glow::after {
         animation: none;
@@ -854,12 +858,16 @@
       /* Section titles */
       .s-title { font-size: clamp(32px, 7vw, 54px); margin-bottom: 12px; }
       
-      /* Ticker - adjust for mobile */
-      .vticker { height: 36px; }
-      .vticker-track { animation-duration: 50s; }
-      .vticker-item { gap: 32px; padding: 0 32px; }
-      .vticker-chip { font-size: 10px; gap: 6px; letter-spacing: 0.16em; }
-      .vticker-chip .dot { width: 2.5px; height: 2.5px; }
+      /* Ticker - same smooth speed on mobile */
+      .vticker { height: 38px; }
+      .vticker-track { gap: 40px; }
+      .vticker-content { gap: 40px; }
+      .vticker-chip { font-size: 10px; gap: 8px; letter-spacing: 0.16em; }
+      .vticker-chip .dot { width: 3px; height: 3px; }
+      @keyframes infiniteScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(calc(-50% - 20px)); }
+      }
       
       /* Footer */
       footer { padding: 32px 16px env(safe-area-inset-bottom, 16px); }
@@ -903,7 +911,8 @@
 </head>
 <body>
 
-  <!-- LOADER -->
+  <!-- BACKGROUND FLOWING LINES -->
+  <canvas id="bg-canvas"></canvas>
   <div id="loader">
     <div class="loader-inner">
       <div class="loader-word"><span>איך להפוך</span><span class="fill">איך להפוך</span></div>
@@ -952,7 +961,7 @@
   <!-- TICKER -->
   <div class="vticker">
     <div class="vticker-track">
-      <div class="vticker-item">
+      <div class="vticker-content">
         <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
         <span class="vticker-chip"><span class="dot"></span>חיטוב ומסה</span>
         <span class="vticker-chip"><span class="dot"></span>תכניות אימון</span>
@@ -964,7 +973,7 @@
         <span class="vticker-chip"><span class="dot"></span>שיטות אימון</span>
         <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
       </div>
-      <div class="vticker-item">
+      <div class="vticker-content">
         <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
         <span class="vticker-chip"><span class="dot"></span>חיטוב ומסה</span>
         <span class="vticker-chip"><span class="dot"></span>תכניות אימון</span>
@@ -1248,7 +1257,79 @@
     }, { threshold: 0.5 });
     document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
 
-    /* ── HERO PARALLAX ── */
+    /* ── FLOWING BURGUNDY LINES ── */
+    (function() {
+      const canvas = document.getElementById('bg-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      // Each line is a flowing sine curve
+      const lines = [];
+      const count = window.innerWidth < 640 ? 5 : 9;
+
+      for (let i = 0; i < count; i++) {
+        lines.push({
+          y: Math.random() * 1.4 - 0.2,     // vertical position (fraction of height)
+          amplitude: 40 + Math.random() * 80, // wave height
+          frequency: 0.0008 + Math.random() * 0.0012, // wave frequency
+          speed: 0.0003 + Math.random() * 0.0004,      // how fast it drifts
+          offset: Math.random() * Math.PI * 2,          // phase offset
+          opacity: 0.04 + Math.random() * 0.10,        // subtle opacity
+          width: 0.5 + Math.random() * 1.0,             // line thickness
+          drift: (Math.random() - 0.5) * 0.00008,      // slow vertical drift
+        });
+      }
+
+      let t = 0;
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const W = canvas.width;
+        const H = canvas.height;
+
+        lines.forEach(line => {
+          line.y += line.drift;
+          // Bounce back at edges
+          if (line.y < -0.3 || line.y > 1.3) line.drift *= -1;
+
+          ctx.beginPath();
+
+          // Build the path with smooth bezier-like sampling
+          const steps = 200;
+          for (let s = 0; s <= steps; s++) {
+            const x = (s / steps) * W;
+            const wave1 = Math.sin(x * line.frequency + t * line.speed + line.offset);
+            const wave2 = Math.sin(x * line.frequency * 1.7 + t * line.speed * 0.6 + line.offset + 1.2);
+            const wave3 = Math.sin(x * line.frequency * 0.4 + t * line.speed * 1.3 + line.offset + 2.5);
+            const y = line.y * H + (wave1 * 0.6 + wave2 * 0.25 + wave3 * 0.15) * line.amplitude;
+
+            if (s === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+
+          // Burgundy/dark-red glow
+          ctx.shadowColor = 'rgba(160, 20, 40, 0.6)';
+          ctx.shadowBlur = 8;
+          ctx.strokeStyle = `rgba(140, 10, 30, ${line.opacity})`;
+          ctx.lineWidth = line.width;
+          ctx.stroke();
+        });
+
+        t++;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+
+
     if (window.innerWidth > 768) {
       const hc = document.querySelector('.hero-content');
       const hbn = document.querySelector('.hero-bg-num');
