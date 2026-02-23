@@ -398,6 +398,9 @@
     }
     @keyframes shimmer { 0%,100%{left:-60%;opacity:0} 40%{opacity:1} 60%{left:120%;opacity:0} }
 
+    /* Hide mobile line breaks on desktop */
+    .mobile-br { display: none; }
+
     /* ─── PAIN ─── */
     #pain {
       padding: 80px 0 90px;
@@ -776,7 +779,14 @@
       /* Hero adjustments */
       #hero { padding: max(60px, env(safe-area-inset-top) + 40px) 16px max(90px, env(safe-area-inset-bottom) + 70px) 16px; min-height: 100svh; }
       .hero-title { font-size: clamp(52px, 13vw, 72px); line-height: 0.9; }
-      .hero-sub { font-size: clamp(14px, 4.2vw, 17px); line-height: 1.6; max-width: 100%; padding: 0 8px; }
+      .hero-sub { 
+        font-size: clamp(14px, 4.2vw, 17px); 
+        line-height: 1.6; 
+        max-width: 100%; 
+        padding: 0 8px; 
+      }
+      .hero-sub .mobile-br { display: block; }
+      .hero-sub strong { display: inline; }
       .hero-divider { max-width: 160px; }
       .hero-btns { gap: 10px; width: 100%; padding: 0 8px; }
       .hero-bg-num { display: none; }
@@ -800,6 +810,7 @@
       
       /* Curriculum */
       .curr-head .s-title { font-size: clamp(32px, 7vw, 52px); line-height: 1.1; }
+      .curr-head .mobile-br { display: block; margin-bottom: 8px; }
       .mod-row { 
         grid-template-columns: 52px 1fr 24px; 
         gap: 14px; 
@@ -813,6 +824,8 @@
       
       /* Outcomes */
       .outcomes-wrap { grid-template-columns: 1fr; gap: 32px; }
+      .outcomes-title { font-size: clamp(40px, 9vw, 64px) !important; line-height: 1.15 !important; }
+      .outcomes-title .mobile-br { display: block; }
       .outcomes-desc { font-size: clamp(14px, 3.8vw, 16px); margin-top: 8px; }
       .out-item { 
         padding: 14px 0; 
