@@ -551,7 +551,7 @@
     }
     .about-wrap {
       display: grid;
-      grid-template-columns: 400px 1fr;
+      grid-template-columns: 200px 1fr;
       gap: 60px;
       margin-top: 50px;
       align-items: start;
@@ -559,8 +559,9 @@
     .about-photo {
       position: relative;
       border: 2px solid rgba(230,57,70,0.3);
-      padding: 8px;
+      padding: 6px;
       background: var(--black);
+      max-width: 200px;
     }
     .about-photo::before {
       content: '';
@@ -910,6 +911,8 @@
       .pain-h { font-size: clamp(17px, 4.5vw, 20px); margin-bottom: 10px; }
       .pain-p { font-size: clamp(14px, 3.8vw, 15px); line-height: 1.7; }
       .pain-conclusion { font-size: clamp(22px, 5.8vw, 38px); margin-top: 36px; padding-top: 24px; }
+      .pain-title { font-size: clamp(24px, 5.5vw, 48px) !important; line-height: 1.3 !important; }
+      .pain-title .mobile-br { display: block !important; margin: 6px 0; }
       
       /* Curriculum */
       .curr-head .s-title { 
@@ -947,11 +950,12 @@
       /* About - mobile layout */
       .about-wrap {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 24px;
       }
       .about-photo {
-        max-width: 100%;
+        max-width: 150px;
         margin: 0 auto;
+        padding: 4px;
       }
       .trainer-img {
         width: 100%;
@@ -1056,6 +1060,7 @@
     @media (max-width: 480px) {
       .mobile-br { display: block !important; }
       .hero-sub { font-size: clamp(13px, 4.2vw, 16px); line-height: 1.7; }
+      .pain-title { font-size: clamp(22px, 5.2vw, 42px) !important; }
       .curr-head .s-title { font-size: clamp(28px, 7.5vw, 48px); line-height: 1.3; }
       .outcomes-title { font-size: clamp(36px, 9.5vw, 60px) !important; line-height: 1.25 !important; }
     }
@@ -1229,7 +1234,7 @@
 
   <section id="pain">
     <div class="container">
-      <h2 class="s-title reveal">אם אתה מזדהה עם אחד מהפרמטרים -<br class="mobile-br" style="display:none"><em>הקורס הזה בשבילך</em></h2>
+      <h2 class="s-title reveal pain-title">אם אתה מזדהה עם אחד מהפרמטרים<br class="mobile-br" style="display:none"><em>הקורס הזה בשבילך</em></h2>
       <div class="pain-grid stagger">
         <div class="pain-cell reveal">
           <div class="pain-h">מתאמן ולא רואה שינוי</div>
