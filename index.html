@@ -372,7 +372,7 @@
     }
     @keyframes infiniteScroll {
       0% { transform: translateX(0); }
-      100% { transform: translateX(calc(-50% - 24px)); }
+      100% { transform: translateX(calc(-33.33% - 16px)); }
     }
 
     /* ─── LAYOUT ─── */
@@ -771,6 +771,9 @@
 
     /* ─── MOBILE ─── */
     @media (max-width: 640px) {
+      /* Show mobile line breaks */
+      .mobile-br { display: block !important; }
+      
       /* Disable parallax on mobile */
       .hero-bg-num, .hero-glow::before, .hero-glow::after {
         animation: none;
@@ -781,11 +784,10 @@
       .hero-title { font-size: clamp(52px, 13vw, 72px); line-height: 0.9; }
       .hero-sub { 
         font-size: clamp(14px, 4.2vw, 17px); 
-        line-height: 1.6; 
+        line-height: 1.65; 
         max-width: 100%; 
         padding: 0 8px; 
       }
-      .hero-sub .mobile-br { display: block; }
       .hero-sub strong { display: inline; }
       .hero-divider { max-width: 160px; }
       .hero-btns { gap: 10px; width: 100%; padding: 0 8px; }
@@ -809,8 +811,11 @@
       .pain-conclusion { font-size: clamp(22px, 5.8vw, 38px); margin-top: 36px; padding-top: 24px; }
       
       /* Curriculum */
-      .curr-head .s-title { font-size: clamp(32px, 7vw, 52px); line-height: 1.1; }
-      .curr-head .mobile-br { display: block; margin-bottom: 8px; }
+      .curr-head .s-title { 
+        font-size: clamp(32px, 7vw, 52px); 
+        line-height: 1.25; 
+      }
+      .curr-head .s-title .mobile-br { display: block !important; margin: 4px 0; }
       .mod-row { 
         grid-template-columns: 52px 1fr 24px; 
         gap: 14px; 
@@ -824,8 +829,11 @@
       
       /* Outcomes */
       .outcomes-wrap { grid-template-columns: 1fr; gap: 32px; }
-      .outcomes-title { font-size: clamp(40px, 9vw, 64px) !important; line-height: 1.15 !important; }
-      .outcomes-title .mobile-br { display: block; }
+      .outcomes-title { 
+        font-size: clamp(42px, 9.5vw, 68px) !important; 
+        line-height: 1.2 !important; 
+      }
+      .outcomes-title .mobile-br { display: block !important; margin: 6px 0; }
       .outcomes-desc { font-size: clamp(14px, 3.8vw, 16px); margin-top: 8px; }
       .out-item { 
         padding: 14px 0; 
@@ -887,7 +895,7 @@
       .vticker-chip .dot { width: 3px; height: 3px; }
       @keyframes infiniteScroll {
         0% { transform: translateX(0); }
-        100% { transform: translateX(calc(-50% - 20px)); }
+        100% { transform: translateX(calc(-33.33% - 13.33px)); }
       }
       
       /* Footer */
@@ -961,8 +969,7 @@
       </h1>
       <div class="hero-divider"></div>
       <p class="hero-sub">
-        <strong class="hero-sub-line1">הבעיה היא לא האימונים שאתם עושים —</strong><br class="mobile-br">
-        <strong class="hero-sub-line2">הבעיה היא שאתם לא באמת מבינים מה צריך לעשות.</strong><br>
+        <strong>הבעיה היא לא האימונים שאתם עושים<br class="mobile-br">הבעיה היא שאתם לא באמת מבינים מה צריך לעשות.</strong><br>
         הגיע הזמן לראות תוצאות אמיתיות.
       </p>
       <div class="hero-btns">
@@ -983,6 +990,34 @@
   <!-- TICKER -->
   <div class="vticker">
     <div class="vticker-track">
+      <div class="vticker-content">
+        <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
+        <span class="vticker-chip"><span class="dot"></span>חיטוב ומסה</span>
+        <span class="vticker-chip"><span class="dot"></span>תכניות אימון</span>
+        <span class="vticker-chip"><span class="dot"></span>אנטומיה מעמיקה</span>
+        <span class="vticker-chip"><span class="dot"></span>תוספי תזונה</span>
+        <span class="vticker-chip"><span class="dot"></span>תורת האימון</span>
+        <span class="vticker-chip"><span class="dot"></span>פציעות ושיקום</span>
+        <span class="vticker-chip"><span class="dot"></span>MyFitnessPal</span>
+        <span class="vticker-chip"><span class="dot"></span>שיטות אימון</span>
+        <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
+        <span class="vticker-chip"><span class="dot"></span>ידע מקצועי</span>
+        <span class="vticker-chip"><span class="dot"></span>תוצאות אמיתיות</span>
+      </div>
+      <div class="vticker-content">
+        <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
+        <span class="vticker-chip"><span class="dot"></span>חיטוב ומסה</span>
+        <span class="vticker-chip"><span class="dot"></span>תכניות אימון</span>
+        <span class="vticker-chip"><span class="dot"></span>אנטומיה מעמיקה</span>
+        <span class="vticker-chip"><span class="dot"></span>תוספי תזונה</span>
+        <span class="vticker-chip"><span class="dot"></span>תורת האימון</span>
+        <span class="vticker-chip"><span class="dot"></span>פציעות ושיקום</span>
+        <span class="vticker-chip"><span class="dot"></span>MyFitnessPal</span>
+        <span class="vticker-chip"><span class="dot"></span>שיטות אימון</span>
+        <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
+        <span class="vticker-chip"><span class="dot"></span>ידע מקצועי</span>
+        <span class="vticker-chip"><span class="dot"></span>תוצאות אמיתיות</span>
+      </div>
       <div class="vticker-content">
         <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
         <span class="vticker-chip"><span class="dot"></span>חיטוב ומסה</span>
