@@ -229,6 +229,11 @@
     .hero-sub strong { color: var(--white); font-weight: 700; }
     .mobile-br { display: none; }
     
+    /* Force mobile-br on all common mobile sizes */
+    @media (max-width: 1024px) {
+      br.mobile-br { display: block !important; }
+    }
+    
     .hero-btns {
       display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
       opacity: 0; animation: fSlide 0.7s ease forwards 2.9s;
@@ -536,6 +541,111 @@
       background: var(--black);
       position: relative; overflow: hidden;
     }
+
+    /* ─── ABOUT ME ─── */
+    #about {
+      padding: 80px 0 90px;
+      background: var(--dark);
+      position: relative;
+    }
+    .about-wrap {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 60px;
+      margin-top: 50px;
+      align-items: start;
+    }
+    .about-photo {
+      position: relative;
+      border: 2px solid rgba(230,57,70,0.3);
+      padding: 8px;
+      background: var(--black);
+    }
+    .about-photo::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--accent), transparent, var(--burgundy));
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: -1;
+    }
+    .about-photo:hover::before {
+      opacity: 0.3;
+    }
+    .trainer-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: grayscale(0.2);
+      transition: filter 0.4s;
+    }
+    .trainer-img:hover {
+      filter: grayscale(0);
+    }
+    .about-content {
+      padding: 20px 0;
+    }
+    .about-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 5vw, 48px);
+      color: var(--white);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .about-subtitle {
+      font-size: clamp(14px, 3.5vw, 17px);
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    .about-text p {
+      font-size: clamp(14px, 3.5vw, 16px);
+      line-height: 1.8;
+      color: var(--light);
+      margin-bottom: 20px;
+    }
+    .about-text p strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+    .about-highlight {
+      background: rgba(230,57,70,0.08);
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      margin: 30px 0 !important;
+      font-size: clamp(15px, 3.8vw, 18px) !important;
+      font-weight: 600 !important;
+      color: var(--white) !important;
+      font-style: italic;
+    }
+    .about-divider {
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      margin: 35px 0;
+    }
+    .about-course-desc {
+      background: var(--black);
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin: 30px 0 !important;
+    }
+    .about-cta-text {
+      font-size: clamp(15px, 3.8vw, 17px) !important;
+      color: var(--white) !important;
+    }
+    .about-final {
+      margin-top: 30px !important;
+      font-size: clamp(15px, 3.8vw, 17px) !important;
+    }
+    .about-final em {
+      color: var(--accent);
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    /* ─── OUTCOMES ─── */
     #outcomes::before {
       content: ''; position: absolute;
       width: 70vw; height: 70vw; max-width: 450px; max-height: 450px;
@@ -548,9 +658,6 @@
     .outcomes-desc { font-size: clamp(14px,3.5vw,16px); font-weight: 300; color: var(--silver); line-height: 1.85; margin-top: 12px; }
     .outcomes-title { font-size: clamp(42px,6vw,82px); }
     
-    @media (max-width: 640px) {
-      .outcomes-title { font-size: clamp(38px,9vw,58px) !important; line-height: 1.1; }
-    }
     .out-list { list-style: none; }
     .out-item {
       display: flex; align-items: center; gap: 16px;
@@ -763,7 +870,7 @@
     .section-wedge svg { display: block; width: 100%; height: auto; }
 
     /* ─── MOBILE ─── */
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       /* Show mobile line breaks */
       .mobile-br { display: block !important; }
       
@@ -835,6 +942,39 @@
         min-height: 52px;
       }
       .out-check { width: 22px; height: 22px; font-size: 10px; }
+      
+      /* About - mobile layout */
+      .about-wrap {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .about-photo {
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      .trainer-img {
+        width: 100%;
+        height: auto;
+      }
+      .about-content {
+        padding: 0;
+      }
+      .about-name {
+        text-align: center;
+        font-size: clamp(28px, 7vw, 42px);
+      }
+      .about-subtitle {
+        text-align: center;
+        font-size: clamp(13px, 3.5vw, 16px);
+      }
+      .about-text p {
+        font-size: clamp(14px, 3.8vw, 16px);
+        line-height: 1.75;
+      }
+      .about-highlight {
+        padding: 16px 18px;
+        font-size: clamp(14px, 3.8vw, 17px) !important;
+      }
       
       /* Stats */
       .stats-inner { 
@@ -911,6 +1051,14 @@
       .out-item:hover .out-check { transform: translateY(-4px) scale(1); }
     }
     
+    /* ─── SMALL MOBILE (extra safety) ─── */
+    @media (max-width: 480px) {
+      .mobile-br { display: block !important; }
+      .hero-sub { font-size: clamp(13px, 4.2vw, 16px); line-height: 1.7; }
+      .curr-head .s-title { font-size: clamp(28px, 7.5vw, 48px); line-height: 1.3; }
+      .outcomes-title { font-size: clamp(36px, 9.5vw, 60px) !important; line-height: 1.25 !important; }
+    }
+    
     @media (max-width: 400px) {
       .hero-title { font-size: clamp(48px, 12vw, 64px); }
       .hero-sub { font-size: clamp(13px, 4vw, 15px); }
@@ -962,7 +1110,7 @@
       </h1>
       <div class="hero-divider"></div>
       <p class="hero-sub">
-        <strong>הבעיה היא לא האימונים שאתם עושים<br class="mobile-br">הבעיה היא שאתם לא באמת מבינים מה צריך לעשות.</strong><br>
+        <strong>הבעיה היא לא האימונים שאתם עושים —<br class="mobile-br">הבעיה היא שאתם לא באמת מבינים מה צריך לעשות.</strong><br>
         הגיע הזמן לראות תוצאות אמיתיות.
       </p>
       <div class="hero-btns">
@@ -1161,7 +1309,7 @@
     <div class="container">
       <div class="outcomes-wrap">
         <div>
-          <h2 class="s-title reveal outcomes-title"><span class="out-line1">עם איזה ידע</span><br class="mobile-br"><span class="out-line2">תצא בסוף <em>הקורס</em></span></h2>
+          <h2 class="s-title reveal outcomes-title"><span class="out-line1">עם איזה ידע תצא</span><br class="mobile-br"><span class="out-line2">בסוף <em>הקורס</em></span></h2>
         </div>
         <ul class="out-list">
           <li class="out-item reveal"><span class="out-check">✓</span>לבנות תפריט תזונה מותאם אישית</li>
@@ -1169,6 +1317,55 @@
           <li class="out-item reveal"><span class="out-check">✓</span>לנהל תהליכי חיטוב ומסה לבד</li>
           <li class="out-item reveal"><span class="out-check">✓</span>לעבוד עם MyFitnessPal בצורה חכמה</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ ABOUT ME ════ -->
+  <div class="section-wedge" style="background:var(--dark)">
+    <svg viewBox="0 0 1440 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 1440,44 0,44" fill="var(--black)"/>
+      <line x1="0" y1="0" x2="1440" y2="44" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <section id="about">
+    <div class="container">
+      <h2 class="s-title reveal" style="text-align:center">מי אני ולמה כדאי לך<br class="mobile-br"><em>ללמוד ממני?</em></h2>
+      
+      <div class="about-wrap reveal">
+        <div class="about-photo">
+          <img src="trainer-photo.png" alt="טל בולוקן - מאמן כושר" class="trainer-img">
+        </div>
+        
+        <div class="about-content">
+          <h3 class="about-name">טל בולוקן</h3>
+          <p class="about-subtitle">מאמן כושר, ובעלים של שני סטודיואים בוטיק לאימונים אישיים</p>
+          
+          <div class="about-text">
+            <p>בעבר הייתי כדורגלן בליגת העל, עד שפציעה משמעותית עצרה לי את הקריירה — והובילה אותי להעמיק בעולם האימון, הגוף והביצועים ברמה הכי גבוהה.</p>
+            
+            <p>מה שהתחיל מתוך צורך אישי להבין איך לחזור חזק יותר, הפך לשליחות.</p>
+            
+            <p>מאז צברתי אלפי שעות אימון, ליוויתי ועזרתי ליותר מ-<strong>500 מתאמנים ומתאמנות</strong> להגיע לתוצאות מטורפות.</p>
+            
+            <p>במהלך השנים פיתחתי גישה מדויקת שמבוססת על <strong>ניסיון אמיתי בשטח</strong> — לא טרנדים, לא קיצורי דרך ולא תאוריות שלא עובדות בעולם האמיתי.</p>
+            
+            <p><strong>אני יודע בדיוק מה ההבדל בין להתאמן קשה — לבין להתאמן נכון.</strong></p>
+            
+            <p class="about-highlight">אבל מבחינתי, גוף חזק הוא רק התוצר. הבסיס האמיתי הוא מיינדסט.</p>
+            
+            <p>אני חי ונושם התפתחות אישית, חוקר ומיישם כלים של משמעת, פוקוס וביצועים — כי <strong>שינוי אמיתי מתחיל בראש</strong>, ורק אחר כך משתקף במראה.</p>
+            
+            <div class="about-divider"></div>
+            
+            <p class="about-course-desc">הקורס הזה מיועד למתאמנים מתקדמים שלא מחפשים עוד תוכנית, אלא רוצים להבין לעומק איך לקחת את האימונים שלהם לשלב הבא: לחדד ביצועים, לשלוט בתזונה, לייעל את התהליך ולמצות את הפוטנציאל שלהם עד הסוף.</p>
+            
+            <p class="about-cta-text"><strong>המטרה שלי היא שתצא מהקורס עם שיטה ברורה, ידע עמוק וביטחון מלא</strong> כדי שתוכל לייצר תוצאות ברמה גבוהה, ולשמור עליהן לאורך זמן — בלי להיות תלוי באף אחד.</p>
+            
+            <p class="about-final">הגיע הזמן להפסיק להתאמן על אוטומט, ולהתחיל להתאמן עם <em>הבנה ושליטה אמיתית</em>.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
