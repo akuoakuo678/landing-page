@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#000000">
-  <title>TB Studio | קורס כושר דיגיטלי</title>
+  <title>TB Fitness | קורס כושר דיגיטלי</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
@@ -227,6 +227,13 @@
       opacity: 0; animation: fSlide 0.7s ease forwards 2.7s;
     }
     .hero-sub strong { color: var(--white); font-weight: 700; }
+    .mobile-br { display: none; }
+    
+    @media (max-width: 640px) {
+      .mobile-br { display: block; }
+      .hero-sub { line-height: 1.75; }
+      .hero-sub-line1, .hero-sub-line2 { display: block; }
+    }
     .hero-btns {
       display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
       opacity: 0; animation: fSlide 0.7s ease forwards 2.9s;
@@ -331,7 +338,7 @@
       height: 100%;
       align-items: center;
       gap: 48px;
-      animation: infiniteScroll 35s linear infinite;
+      animation: infiniteScroll 25s linear infinite;
       will-change: transform;
     }
     .vticker-content {
@@ -543,6 +550,11 @@
     @keyframes ambDrift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-60px,-50px)} }
     .outcomes-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
     .outcomes-desc { font-size: clamp(14px,3.5vw,16px); font-weight: 300; color: var(--silver); line-height: 1.85; margin-top: 12px; }
+    .outcomes-title { font-size: clamp(42px,6vw,82px); }
+    
+    @media (max-width: 640px) {
+      .outcomes-title { font-size: clamp(38px,9vw,58px) !important; line-height: 1.1; }
+    }
     .out-list { list-style: none; }
     .out-item {
       display: flex; align-items: center; gap: 16px;
@@ -801,10 +813,6 @@
       
       /* Outcomes */
       .outcomes-wrap { grid-template-columns: 1fr; gap: 32px; }
-      .outcomes-wrap > div:first-child .s-title { 
-        font-size: clamp(38px, 8vw, 62px) !important; 
-        margin-bottom: 8px;
-      }
       .outcomes-desc { font-size: clamp(14px, 3.8vw, 16px); margin-top: 8px; }
       .out-item { 
         padding: 14px 0; 
@@ -940,7 +948,8 @@
       </h1>
       <div class="hero-divider"></div>
       <p class="hero-sub">
-        <strong>הבעיה היא לא האימונים שאתם עושים — הבעיה היא שאתם לא באמת מבינים מה צריך לעשות.</strong><br>
+        <strong class="hero-sub-line1">הבעיה היא לא האימונים שאתם עושים —</strong><br class="mobile-br">
+        <strong class="hero-sub-line2">הבעיה היא שאתם לא באמת מבינים מה צריך לעשות.</strong><br>
         הגיע הזמן לראות תוצאות אמיתיות.
       </p>
       <div class="hero-btns">
@@ -972,6 +981,8 @@
         <span class="vticker-chip"><span class="dot"></span>MyFitnessPal</span>
         <span class="vticker-chip"><span class="dot"></span>שיטות אימון</span>
         <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
+        <span class="vticker-chip"><span class="dot"></span>ידע מקצועי</span>
+        <span class="vticker-chip"><span class="dot"></span>תוצאות אמיתיות</span>
       </div>
       <div class="vticker-content">
         <span class="vticker-chip"><span class="dot"></span>תזונת ספורט</span>
@@ -984,6 +995,8 @@
         <span class="vticker-chip"><span class="dot"></span>MyFitnessPal</span>
         <span class="vticker-chip"><span class="dot"></span>שיטות אימון</span>
         <span class="vticker-chip"><span class="dot"></span>NEXT LEVEL</span>
+        <span class="vticker-chip"><span class="dot"></span>ידע מקצועי</span>
+        <span class="vticker-chip"><span class="dot"></span>תוצאות אמיתיות</span>
       </div>
     </div>
   </div>
@@ -1027,7 +1040,7 @@
   <section id="curriculum">
     <div class="container">
       <div class="curr-head">
-        <h2 class="s-title reveal">תזונה · אנטומיה · תורת האימון<br><em>הכל בשפה ברורה.</em></h2>
+        <h2 class="s-title reveal"><span class="curr-line1">תזונה · אנטומיה · תורת האימון</span><br class="mobile-br"><span class="curr-line2"><em>הכל בשפה ברורה.</em></span></h2>
       </div>
       <div class="mod-list">
         <div class="mod-row reveal">
@@ -1079,7 +1092,7 @@
     <div class="container">
       <div class="outcomes-wrap">
         <div>
-          <h2 class="s-title reveal" style="font-size:clamp(42px,6vw,82px)">עם איזה ידע<br>תצא בסוף<br><em>הקורס</em></h2>
+          <h2 class="s-title reveal outcomes-title"><span class="out-line1">עם איזה ידע תצא</span><br class="mobile-br"><span class="out-line2">בסוף <em>הקורס</em></span></h2>
         </div>
         <ul class="out-list">
           <li class="out-item reveal"><span class="out-check">✓</span>לבנות תפריט תזונה מותאם אישית</li>
