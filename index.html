@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Quantum Scalping - Master the Crypto Liquidity</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,6 +18,7 @@
             background-color: #000000;
             color: #FFFFFF;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Loading Screen */
@@ -33,11 +34,15 @@
         }
         .load-text {
             color: #00FF41;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.5em;
+            letter-spacing: 0.3em;
             animation: pulse 1.5s infinite;
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+            .load-text { font-size: 1.5rem; letter-spacing: 0.5em; }
         }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
@@ -53,7 +58,8 @@
         #hero-3d-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
+            z-index: 0;
+            pointer-events: none; /* Prevents scroll blocking on mobile */
         }
 
         /* Glowing Effects */
@@ -61,16 +67,16 @@
         .glow-text-red { text-shadow: 0 0 10px #FF073A, 0 0 20px #FF073A; }
         
         .btn-glow-green {
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
             transition: all 0.3s ease;
         }
-        .btn-glow-green:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.8);
+        .btn-glow-green:hover, .btn-glow-green:active {
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.8);
             transform: translateY(-2px);
         }
 
         /* Utility classes */
-        .content-overlay { z-index: 10; position: relative; }
+        .content-overlay { z-index: 10; position: relative; pointer-events: auto; }
         
         /* SVG Animated Path */
         .animated-path {
@@ -83,10 +89,10 @@
         }
     </style>
 </head>
-<body class="antialiased antialiased-none">
+<body>
 
     <div id="loader">
-        <div class="load-text">INITIALIZING QUANTUM STATE...</div>
+        <div class="load-text px-4">INITIALIZING QUANTUM STATE...</div>
     </div>
 
     <svg id="bg-lines-canvas" preserveAspectRatio="none" viewBox="0 0 100 100">
@@ -95,100 +101,101 @@
         <path class="animated-path" d="M90,0 Q85,50 90,100" stroke="#FF073A" stroke-width="0.1" fill="none" opacity="0.05" style="animation-delay: 5s;"/>
     </svg>
 
-    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <header class="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-10 pb-20 md:py-0">
         <div id="hero-3d-canvas"></div>
         
-        <div class="container mx-auto px-6 text-center content-overlay pt-20">
-            <h1 id="hero-title" class="text-5xl md:text-8xl font-black mb-8 leading-tight tracking-tighter">
+        <div class="container mx-auto px-4 sm:px-6 text-center content-overlay">
+            <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight tracking-tighter">
                 הפסיקו להיות ה"נזילות"<br> 
                 <span class="glow-text-green">של אחרים</span>
             </h1>
-            <p id="hero-subtitle" class="text-xl md:text-3xl mb-12 max-w-4xl mx-auto font-light text-gray-300">
+            <p id="hero-subtitle" class="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-10 max-w-4xl mx-auto font-light text-gray-300 px-2">
                 תתחילו לסחור עם הכסף הגדול. השיטה המדויקת למסחר סקאלפינג בקריפטו – מהבסיס ועד שליטה מלאה ברווחיות עקבית.
             </p>
             
-            <div id="hero-ctas" class="flex flex-col sm:flex-row gap-6 justify-center">
-                <a href="#purchase" class="bg-[#00FF41] text-black font-bold py-5 px-10 rounded-full text-xl btn-glow-green transition">
+            <div id="hero-ctas" class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-2xl mx-auto">
+                <a href="#purchase" class="w-full sm:w-auto bg-[#00FF41] text-black font-bold py-4 px-8 md:py-5 md:px-10 rounded-full text-lg md:text-xl btn-glow-green transition text-center">
                     גישה מיידית לקורס (620 ש"ח)
                 </a>
-                <a href="#contact" class="bg-transparent border border-gray-700 hover:border-[#00FF41] hover:text-[#00FF41] text-white font-bold py-5 px-10 rounded-full text-xl transition duration-300">
+                <a href="#contact" class="w-full sm:w-auto bg-black bg-opacity-50 backdrop-blur-sm border border-gray-700 hover:border-[#00FF41] hover:text-[#00FF41] text-white font-bold py-4 px-8 md:py-5 md:px-10 rounded-full text-lg md:text-xl transition duration-300 text-center">
                     אני רוצה לשמוע עוד
                 </a>
             </div>
         </div>
     </header>
 
-    <section class="relative py-32 bg-[#050505] px-6 overflow-hidden">
+    <section class="relative py-20 md:py-32 bg-[#050505] px-4 sm:px-6 overflow-hidden">
         <svg class="absolute top-0 left-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
             <path class="animated-path" d="M0,0 Q50,50 100,100" stroke="#00FF41" stroke-width="0.2" fill="none" opacity="0.3"/>
         </svg>
 
         <div class="container mx-auto max-w-5xl content-overlay">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-12 tracking-tight text-white">הלילה שבו רציתי למחוק את פלטפורמת המסחר מהמחשב...</h2>
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-10 tracking-tight text-white leading-tight">הלילה שבו רציתי למחוק את פלטפורמת המסחר מהמחשב...</h2>
             
-            <div class="grid md:grid-cols-3 gap-12 text-gray-300 text-lg leading-relaxed">
-                <div class="col-span-2 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-gray-300 text-base md:text-lg leading-relaxed">
+                <div class="md:col-span-2 space-y-6">
                     <p>אני לעולם לא אשכח את הלילה ההוא. השעה הייתה 03:00 לפנות בוקר. העיניים שלי צרבו מהאור של המסך, והבטן שלי התהפכה. עוד עסקה שהייתה נראית 'מושלמת' הלכה לפח.</p>
-                    <p class="border-l-4 border-[#FF073A] pl-6 py-2 text-[#FF073A] glow-text-red">שמתי את הסטופ-לוס בדיוק איפה שכל המדריכים ביוטיוב אמרו לי לשים... ומה קרה? הגרף ירד בדיוק בפיפס אחד מתחת לסטופ שלי, הוציא אותי בהפסד, ומיד טס למעלה ליעד שלי.</p>
+                    <p class="border-l-4 border-[#FF073A] pl-4 md:pl-6 py-2 text-[#FF073A] glow-text-red font-medium">שמתי את הסטופ-לוס בדיוק איפה שכל המדריכים ביוטיוב אמרו לי לשים... ומה קרה? הגרף ירד בדיוק בפיפס אחד מתחת לסטופ שלי, הוציא אותי בהפסד, ומיד טס למעלה ליעד שלי.</p>
                 </div>
-                <div class="bg-black p-8 rounded-2xl border border-gray-800 flex flex-col justify-center">
-                    <p class="font-bold text-white text-xl mb-3">האסימון שנפל</p>
-                    <p>הבנתי משהו ששינה את החיים שלי לעד:</p>
-                    <p class="font-black text-2xl text-[#00FF41] glow-text-green mt-3">זו לא הייתה אשמתי. וזו גם לא אשמתכם.</p>
+                <div class="bg-black p-6 md:p-8 rounded-2xl border border-gray-800 flex flex-col justify-center shadow-lg">
+                    <p class="font-bold text-white text-lg md:text-xl mb-2">האסימון שנפל</p>
+                    <p class="text-sm md:text-base">הבנתי משהו ששינה את החיים שלי לעד:</p>
+                    <p class="font-black text-xl md:text-2xl text-[#00FF41] glow-text-green mt-3 leading-tight">זו לא הייתה אשמתי. וזו גם לא אשמתכם.</p>
                 </div>
             </div>
             
-            <p class="mt-12 text-gray-300 text-lg leading-relaxed max-w-3xl">שכחו ממה שלימדו אתכם. השוק מתוכנן לצוד את הכסף של הסוחרים הקטנים. המקומות שבהם לימדו אתכם לשים פקודות הגנה? לשם הגופים המוסדיים הולכים כדי לחפש <strong>נזילות</strong>. ברגע שהבנתי את זה, הפסקתי להיות הטרף.</p>
+            <p class="mt-10 md:mt-12 text-gray-300 text-base md:text-lg leading-relaxed max-w-3xl border-t border-gray-900 pt-8">שכחו ממה שלימדו אתכם. השוק מתוכנן לצוד את הכסף של הסוחרים הקטנים. המקומות שבהם לימדו אתכם לשים פקודות הגנה? לשם הגופים המוסדיים הולכים כדי לחפש <strong>נזילות</strong>. ברגע שהבנתי את זה, הפסקתי להיות הטרף.</p>
         </div>
     </section>
 
-    <section class="py-24 px-6 bg-black relative">
-        <div class="container mx-auto max-w-4xl text-center border border-[#00FF41] p-16 rounded-3xl bg-[#000d02] shadow-[0_0_50px_rgba(0,255,65,0.2)]">
-            <h2 class="text-4xl font-black mb-8 text-white tracking-tighter">צעד אחד לפני הרוב.</h2>
-            <p class="text-gray-300 text-xl mb-8 leading-relaxed font-light">
+    <section class="py-16 md:py-24 px-4 sm:px-6 bg-black relative">
+        <div class="container mx-auto max-w-4xl text-center border border-[#00FF41] p-8 md:p-16 rounded-3xl bg-[#000d02] shadow-[0_0_30px_rgba(0,255,65,0.15)] md:shadow-[0_0_50px_rgba(0,255,65,0.2)] mx-2">
+            <h2 class="text-3xl md:text-4xl font-black mb-6 md:mb-8 text-white tracking-tighter">צעד אחד לפני הרוב.</h2>
+            <p class="text-gray-300 text-base md:text-xl mb-6 md:mb-8 leading-relaxed font-light">
                 עולם המסחר הוא לא קל. רוב האנשים מוותרים אחרי ההפסד הראשון, או ממשיכים להפסיד באותן שיטות ישנות כי אין להם את האומץ לשנות גישה.
             </p>
-            <p class="text-[#00FF41] font-bold text-2xl glow-text-green leading-snug">
+            <p class="text-[#00FF41] font-bold text-lg md:text-2xl glow-text-green leading-snug">
                 עצם העובדה שאתם קוראים את המילים האלה עכשיו, מעידה עליכם משהו. יש לכם את המשמעת, הרעב והדרייב של סוחרים אמיתיים. אתם לא מתפשרים על בינוניות. יש לכם את הפוטנציאל – עכשיו רק חסרה לכם השיטה.
             </p>
         </div>
     </section>
 
-    <section id="contact" class="py-32 bg-[#050505] px-6 relative overflow-hidden">
+    <section id="contact" class="py-20 md:py-32 bg-[#050505] px-4 sm:px-6 relative overflow-hidden">
         <svg class="absolute top-0 right-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
             <path class="animated-path" d="M100,20 Q50,80 0,20" stroke="#FF073A" stroke-width="0.1" fill="none" opacity="0.1" style="animation-delay: 3s;"/>
         </svg>
 
-        <div class="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-5 gap-16 items-center content-overlay">
+        <div class="container mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center content-overlay">
             
-            <div class="md:col-span-3 space-y-6">
-                <h3 class="text-4xl md:text-5xl font-black text-white glow-text-green tracking-tighter">הבחירה בידיים שלכם.</h3>
-                <p class="text-gray-400 text-xl font-light leading-relaxed">אפשר להמשיך להמר על הגרף ולהיות חלק מהנזילות של אחרים. או שאפשר להשקיע פעם אחת בשיטה שבאמת עובדת, ולהצטרף לקהילה של סוחרים שרואים את הגרף אחרת.</p>
-                <div class="flex items-center gap-4 text-white text-lg">
-                    <span class="w-12 h-[1px] bg-[#00FF41]"></span>
-                    מאפס למאה: מצעד ראשון ועד רווחיות
+            <div class="lg:col-span-3 space-y-6">
+                <h3 class="text-3xl md:text-4xl md:text-5xl font-black text-white glow-text-green tracking-tighter">הבחירה בידיים שלכם.</h3>
+                <p class="text-gray-400 text-base md:text-xl font-light leading-relaxed">אפשר להמשיך להמר על הגרף ולהיות חלק מהנזילות של אחרים. או שאפשר להשקיע פעם אחת בשיטה שבאמת עובדת, ולהצטרף לקהילה של סוחרים שרואים את הגרף אחרת.</p>
+                <div class="flex items-center gap-4 text-white text-base md:text-lg bg-black bg-opacity-50 p-4 rounded-xl border border-gray-900">
+                    <span class="w-8 md:w-12 h-[2px] bg-[#00FF41] flex-shrink-0"></span>
+                    <span>מאפס למאה: מצעד ראשון ועד רווחיות</span>
                 </div>
-                <div class="flex items-center gap-4 text-white text-lg">
-                    <span class="w-12 h-[1px] bg-[#00FF41]"></span>
-                    שיטת הנזילות המלאה (Liquidity Grabs)
+                <div class="flex items-center gap-4 text-white text-base md:text-lg bg-black bg-opacity-50 p-4 rounded-xl border border-gray-900">
+                    <span class="w-8 md:w-12 h-[2px] bg-[#00FF41] flex-shrink-0"></span>
+                    <span>שיטת הנזילות המלאה (Liquidity Grabs)</span>
                 </div>
             </div>
 
-            <div class="md:col-span-2 space-y-8">
-                <div id="purchase" class="bg-black p-10 rounded-2xl border border-gray-800 text-center shadow-xl">
-                    <div class="text-lg text-gray-400 mb-2">גישה מיידית לקורס המלא</div>
-                    <div class="text-6xl font-black text-white glow-text-green mb-8 tracking-tighter">620 ₪</div>
-                    <button class="w-full bg-[#00FF41] text-black font-bold py-5 px-8 rounded-xl text-xl btn-glow-green transition duration-300">
+            <div class="lg:col-span-2 space-y-8">
+                <div id="purchase" class="bg-black p-8 md:p-10 rounded-2xl border border-gray-800 text-center shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-[#00FF41]"></div>
+                    <div class="text-base md:text-lg text-gray-400 mb-2">גישה מיידית לקורס המלא</div>
+                    <div class="text-5xl md:text-6xl font-black text-white glow-text-green mb-6 md:mb-8 tracking-tighter">620 ₪</div>
+                    <button class="w-full bg-[#00FF41] text-black font-bold py-4 md:py-5 px-6 md:px-8 rounded-xl text-lg md:text-xl btn-glow-green transition duration-300">
                         לרכישה מאובטחת עכשיו
                     </button>
                 </div>
 
-                <div class="bg-[#0b0b0b] p-8 rounded-2xl border border-gray-900">
-                    <h4 class="text-xl font-bold mb-5 text-white">מעדיפים לדבר איתנו קודם?</h4>
+                <div class="bg-[#0b0b0b] p-6 md:p-8 rounded-2xl border border-gray-900 shadow-lg">
+                    <h4 class="text-lg md:text-xl font-bold mb-5 text-white">מעדיפים לדבר איתנו קודם?</h4>
                     <form class="space-y-4">
-                        <input type="text" placeholder="שם מלא" class="w-full bg-black border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#00FF41]">
-                        <input type="tel" placeholder="טלפון" class="w-full bg-black border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#00FF41]">
-                        <button type="submit" class="w-full bg-transparent border border-[#00FF41] text-[#00FF41] hover:bg-[#00FF41] hover:text-black font-bold py-3 px-8 rounded-lg transition duration-300 mt-2">
+                        <input type="text" placeholder="שם מלא" class="w-full bg-black border border-gray-800 rounded-xl px-4 py-3 md:py-4 text-white text-base focus:outline-none focus:border-[#00FF41] transition">
+                        <input type="tel" placeholder="טלפון" class="w-full bg-black border border-gray-800 rounded-xl px-4 py-3 md:py-4 text-white text-base focus:outline-none focus:border-[#00FF41] transition" dir="ltr" style="text-align: right;">
+                        <button type="submit" class="w-full bg-transparent border-2 border-[#00FF41] text-[#00FF41] hover:bg-[#00FF41] hover:text-black font-bold py-3 md:py-4 px-8 rounded-xl text-lg transition duration-300 mt-2">
                             שלח פרטים - ונחזור אליך
                         </button>
                     </form>
@@ -198,14 +205,14 @@
         </div>
     </section>
 
-    <footer class="py-12 text-center text-gray-700 border-t border-gray-900 px-6">
-        <p class="font-light tracking-widest text-sm">&copy; 2026 QUANTUM SCALPING SYSTEM. ALL RIGHTS RESERVED. HIGH RISK INVESTMENT.</p>
+    <footer class="py-8 md:py-12 text-center text-gray-600 border-t border-gray-900 px-4">
+        <p class="font-light tracking-widest text-xs md:text-sm">&copy; 2026 QUANTUM SCALPING SYSTEM. ALL RIGHTS RESERVED. HIGH RISK INVESTMENT.</p>
     </footer>
 
     <script>
         // --- PRELOADER ---
         window.addEventListener('load', () => {
-            gsap.to('#loader', { opacity: 0, duration: 1, delay: 0.5, onComplete: () => {
+            gsap.to('#loader', { opacity: 0, duration: 0.8, delay: 0.2, onComplete: () => {
                 document.getElementById('loader').style.display = 'none';
                 startHeroAnimations();
             }});
@@ -214,9 +221,9 @@
         // --- HERO ANIMATIONS (GSAP) ---
         function startHeroAnimations() {
             const tl = gsap.timeline();
-            tl.from('#hero-title', { opacity: 0, y: 50, duration: 1.2, ease: "power4.out" })
-              .from('#hero-subtitle', { opacity: 0, y: 30, duration: 1, ease: "power3.out" }, "-=0.8")
-              .from('#hero-ctas', { opacity: 0, y: 20, duration: 0.8, ease: "power2.out" }, "-=0.6");
+            tl.from('#hero-title', { opacity: 0, y: 30, duration: 1, ease: "power4.out" })
+              .from('#hero-subtitle', { opacity: 0, y: 20, duration: 0.8, ease: "power3.out" }, "-=0.6")
+              .from('#hero-ctas', { opacity: 0, y: 20, duration: 0.8, ease: "power2.out" }, "-=0.5");
         }
 
         // --- THREE.JS: 3D HERO ANIMATION ---
@@ -225,15 +232,20 @@
             if (!container) return;
 
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             
-            renderer.setSize(container.offsetWidth, container.offsetHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Performance optimization for mobile
             container.appendChild(renderer.domElement);
 
+            // Responsive sizing for the 3D element
+            const isMobile = window.innerWidth < 768;
+            const knotRadius = isMobile ? 6 : 10;
+            const knotTube = isMobile ? 1.5 : 3;
+
             // Geometry: Knot Mesh (looks abstract and technological)
-            const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+            const geometry = new THREE.TorusKnotGeometry(knotRadius, knotTube, 100, 16);
             
             // Material: Silver metallic with green glow reflection
             const material = new THREE.MeshPhongMaterial({
@@ -252,29 +264,48 @@
             const ambientLight = new THREE.AmbientLight(0x404040, 2);
             scene.add(ambientLight);
             
-            const pointLight = new THREE.PointLight(0x00FF41, 1);
+            const pointLight = new THREE.PointLight(0x00FF41, 1.5);
             pointLight.position.set(20, 20, 20);
             scene.add(pointLight);
 
-            camera.position.z = 40;
+            // Move camera back
+            camera.position.z = isMobile ? 30 : 40;
 
-            // Mouse interaction
-            let mouseX = 0, mouseY = 0;
-            window.addEventListener('mousemove', (e) => {
-                mouseX = (e.clientX / window.innerWidth) - 0.5;
-                mouseY = (e.clientY / window.innerHeight) - 0.5;
-            });
+            // Mouse & Touch interaction
+            let targetRotationX = 0;
+            let targetRotationY = 0;
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX) * 0.001;
+                mouseY = (event.clientY - windowHalfY) * 0.001;
+            }, false);
+
+            document.addEventListener('touchmove', (event) => {
+                if (event.touches.length > 0) {
+                    mouseX = (event.touches[0].clientX - windowHalfX) * 0.0015;
+                    mouseY = (event.touches[0].clientY - windowHalfY) * 0.0015;
+                }
+            }, { passive: true }); // passive true for scroll performance
 
             // Animation Loop
             function animate() {
                 requestAnimationFrame(animate);
                 
-                // Slow continuous rotation
+                // Base slow rotation
                 knot.rotation.x += 0.001;
                 knot.rotation.y += 0.002;
                 
-                // Mouse interaction effect
-                gsap.to(knot.rotation, { x: knot.rotation.x + mouseY * 0.2, y: knot.rotation.y + mouseX * 0.2, duration: 0.5 });
+                // Add interactive rotation smoothly
+                targetRotationX += (mouseY - targetRotationX) * 0.05;
+                targetRotationY += (mouseX - targetRotationY) * 0.05;
+                
+                knot.rotation.x += targetRotationX;
+                knot.rotation.y += targetRotationY;
                 
                 renderer.render(scene, camera);
             }
@@ -282,27 +313,31 @@
 
             // Resize handle
             window.addEventListener('resize', () => {
-                camera.aspect = container.offsetWidth / container.offsetHeight;
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                camera.aspect = width / height;
                 camera.updateProjectionMatrix();
-                renderer.setSize(container.offsetWidth, container.offsetHeight);
+                renderer.setSize(width, height);
             });
         })();
 
-        // --- GSAP: SCROLL TRIGGER & LINES ---
+        // --- GSAP: SCROLL TRIGGER ---
         gsap.registerPlugin(ScrollTrigger);
         
-        // Example: animate sections in on scroll
+        // Setup scroll animations only for desktop to avoid mobile jank, or use lighter settings
+        const isMobileScreen = window.innerWidth < 768;
+        
         gsap.utils.toArray('section').forEach(section => {
             gsap.from(section.querySelectorAll('.content-overlay > *'), {
                 scrollTrigger: {
                     trigger: section,
-                    start: "top 80%",
+                    start: isMobileScreen ? "top 90%" : "top 80%",
                 },
                 opacity: 0,
-                y: 50,
-                duration: 1,
-                stagger: 0.2,
-                ease: "power3.out"
+                y: isMobileScreen ? 30 : 50,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: "power2.out"
             });
         });
 
