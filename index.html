@@ -2,7 +2,8 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
     <title>Quantum Scalping - Master the Crypto Liquidity</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -76,7 +77,14 @@
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(5px);
+            display: block;
+            width: 100%;
+            text-align: center;
         }
+        @media (min-width: 640px) {
+            .btn-primary { display: inline-block; width: auto; }
+        }
+        
         .btn-primary::before {
             content: '';
             position: absolute;
@@ -84,25 +92,32 @@
             background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.15), transparent);
             transition: all 0.5s ease;
         }
-        .btn-primary:hover {
+        .btn-primary:hover, .btn-primary:active {
             box-shadow: 0 0 25px rgba(0, 255, 65, 0.2), inset 0 0 10px rgba(0, 255, 65, 0.1);
             border-color: #00FF41;
             transform: translateY(-2px);
         }
-        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover::before, .btn-primary:active::before { left: 100%; }
 
         .btn-secondary {
             border: 1px solid #333;
             color: #A0AEC0;
             transition: all 0.4s ease;
+            display: block;
+            width: 100%;
+            text-align: center;
         }
-        .btn-secondary:hover { border-color: #FFF; color: #FFF; }
+        @media (min-width: 640px) {
+            .btn-secondary { display: inline-block; width: auto; }
+        }
+        .btn-secondary:hover, .btn-secondary:active { border-color: #FFF; color: #FFF; }
 
         /* Glass Panels */
         .glass-panel {
-            background: rgba(5, 5, 5, 0.6);
+            background: rgba(5, 5, 5, 0.65);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
             overflow: hidden;
         }
@@ -112,7 +127,7 @@
 
         /* Gradient Mask for Smooth Sections */
         .section-fade {
-            background: linear-gradient(to bottom, transparent, #000000 15%, #000000 85%, transparent);
+            background: linear-gradient(to bottom, transparent, #000000 10%, #000000 90%, transparent);
         }
     </style>
 </head>
@@ -126,49 +141,49 @@
         <div class="loader-line" id="loaderLine"></div>
     </div>
 
-    <header class="relative min-h-screen flex items-center justify-center pt-20">
-        <div class="container mx-auto px-6 text-center content-overlay">
-            <div class="overflow-hidden mb-6">
-                <h1 id="hero-title" class="text-5xl md:text-7xl font-black leading-tight tracking-tight text-white translate-y-full opacity-0">
+    <header class="relative min-h-screen flex items-center justify-center pt-10 pb-20 px-4">
+        <div class="container mx-auto text-center content-overlay mt-10 md:mt-0">
+            <div class="overflow-hidden mb-4 md:mb-6">
+                <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-7xl font-black leading-tight tracking-tight text-white translate-y-full opacity-0">
                     הפסיקו להיות הנזילות של אחרים.<br> 
-                    <span class="text-gray-300 font-light">תתחילו לסחור עם הכסף הגדול.</span>
+                    <span class="text-gray-300 font-light text-2xl sm:text-4xl md:text-6xl block mt-2">תתחילו לסחור עם הכסף הגדול.</span>
                 </h1>
             </div>
-            <div class="overflow-hidden mb-12">
-                <p id="hero-subtitle" class="text-lg md:text-xl max-w-3xl mx-auto font-normal text-gray-400 tracking-wide translate-y-full opacity-0">
+            <div class="overflow-hidden mb-10 md:mb-12">
+                <p id="hero-subtitle" class="text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-normal text-gray-400 tracking-wide translate-y-full opacity-0 px-2">
                     השיטה המדויקת למסחר סקאלפינג בקריפטו – מהבסיס ועד שליטה מוחלטת בזיהוי מלכודות, שילוב של טכנולוגיה, פסיכולוגיה ודיוק מתמטי.
                 </p>
             </div>
             
-            <div id="hero-ctas" class="flex flex-col sm:flex-row gap-5 justify-center opacity-0">
-                <a href="#purchase" class="btn-primary font-bold py-4 px-10 rounded-sm text-lg tracking-wide uppercase">
+            <div id="hero-ctas" class="flex flex-col sm:flex-row gap-4 justify-center opacity-0 px-4 md:px-0">
+                <a href="#purchase" class="btn-primary font-bold py-4 px-8 rounded-sm text-base md:text-lg tracking-wide uppercase">
                     גישה מיידית למערכת
                 </a>
-                <a href="#contact" class="btn-secondary font-medium py-4 px-10 rounded-sm text-lg tracking-wide">
+                <a href="#contact" class="btn-secondary font-medium py-4 px-8 rounded-sm text-base md:text-lg tracking-wide">
                     פרטים נוספים
                 </a>
             </div>
         </div>
     </header>
 
-    <section class="relative py-32 px-6 section-fade">
+    <section class="relative py-20 md:py-32 px-5 md:px-6 section-fade">
         <div class="container mx-auto max-w-5xl content-overlay">
-            <h2 class="gsap-reveal text-3xl md:text-4xl font-bold mb-20 tracking-tight text-white text-center">הלילה שבו המערכת נחשפה</h2>
+            <h2 class="gsap-reveal text-2xl sm:text-3xl md:text-4xl font-bold mb-12 md:mb-20 tracking-tight text-white text-center">הלילה שבו המערכת נחשפה</h2>
             
-            <div class="grid md:grid-cols-2 gap-16 text-gray-400 text-lg leading-relaxed font-light">
-                <div class="space-y-12">
+            <div class="grid md:grid-cols-2 gap-10 md:gap-16 text-gray-400 text-base md:text-lg leading-relaxed font-light">
+                <div class="space-y-8 md:space-y-12">
                     <p class="gsap-slide-up">השעה הייתה 03:00 לפנות בוקר. העיניים צרבו מהאור של המסך. עוד עסקה שהייתה נראית 'מושלמת' מבחינה טכנית, נסגרה בהפסד.</p>
-                    <div class="gsap-slide-up accent-border-red pr-6 py-2 relative">
+                    <div class="gsap-slide-up accent-border-red pr-5 md:pr-6 py-2 relative">
                         <div class="absolute right-[-3px] top-1/2 transform -translate-y-1/2 w-1 h-1 bg-[#FF073A] rounded-full shadow-[0_0_10px_#FF073A]"></div>
                         <p class="text-gray-300">הסטופ-לוס מוקם בדיוק איפה שכל ספרי ההדרכה אמרו למקם אותו. הגרף ירד בפיפס אחד מתחתיו, הוציא אותי החוצה, ומיד טס למעלה אל עבר היעד המקורי.</p>
                     </div>
                 </div>
-                <div class="gsap-parallax glass-panel p-10 rounded-sm flex flex-col justify-center">
+                <div class="gsap-parallax glass-panel p-6 md:p-10 rounded-sm flex flex-col justify-center">
                     <div class="absolute top-0 left-0 w-32 h-32 bg-[#00FF41] rounded-full filter blur-[100px] opacity-[0.07]"></div>
                     
-                    <p class="font-medium text-white text-xl mb-6">התובנה שמשנה את כללי המשחק</p>
-                    <p class="mb-6">השוק לא אישי נגד אף אחד. אבל הוא כן מתוכנן לצוד את הפקודות של הסוחרים הקטנים.</p>
-                    <div class="accent-border-green pr-4 py-1">
+                    <p class="font-medium text-white text-lg md:text-xl mb-4 md:mb-6 relative z-10">התובנה שמשנה את כללי המשחק</p>
+                    <p class="mb-4 md:mb-6 relative z-10">השוק לא אישי נגד אף אחד. אבל הוא כן מתוכנן לצוד את הפקודות של הסוחרים הקטנים.</p>
+                    <div class="accent-border-green pr-4 py-1 relative z-10">
                         <p class="font-bold text-white">זו לא טעות שלכם. הבעיה היא שלימדו אתכם להשתמש בכלים שנועדו להפוך אתכם לנזילות של הגופים המוסדיים.</p>
                     </div>
                 </div>
@@ -176,58 +191,58 @@
         </div>
     </section>
 
-    <section class="py-32 px-6 relative">
+    <section class="py-20 md:py-32 px-5 md:px-6 relative">
         <div class="container mx-auto max-w-4xl text-center content-overlay">
-            <h2 class="gsap-reveal text-3xl md:text-4xl font-bold mb-10 text-white tracking-tight">צעד אחד לפני הרוב</h2>
-            <p class="gsap-slide-up text-gray-400 text-xl mb-10 leading-relaxed font-light">
+            <h2 class="gsap-reveal text-2xl sm:text-3xl md:text-4xl font-bold mb-8 md:mb-10 text-white tracking-tight">צעד אחד לפני הרוב</h2>
+            <p class="gsap-slide-up text-gray-400 text-lg md:text-xl mb-8 md:mb-10 leading-relaxed font-light">
                 רובו המוחלט של הציבור ממשיך להפסיד באותן שיטות ישנות מתוך חוסר מודעות. עצם העובדה שאתם כאן, מחפשים את המנגנון האמיתי שמאחורי הגרף, מעידה על משמעת ורעב להצלחה אמיתית.
             </p>
-            <div class="gsap-slide-up inline-block border border-[rgba(0,255,65,0.2)] px-8 py-4 rounded-sm bg-black/50 backdrop-blur-md">
-                <p class="text-white font-medium text-xl">
+            <div class="gsap-slide-up inline-block border border-[rgba(0,255,65,0.2)] px-6 md:px-8 py-4 rounded-sm bg-black/50 backdrop-blur-md">
+                <p class="text-white font-medium text-lg md:text-xl">
                     יש לכם את הפוטנציאל והיכולת האנליטית. הפאזל יושלם כשתקבלו את השיטה הנכונה.
                 </p>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-32 px-6 relative section-fade mb-20">
-        <div class="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-5 gap-16 items-center content-overlay">
+    <section id="contact" class="py-20 md:py-32 px-5 md:px-6 relative section-fade mb-10 md:mb-20">
+        <div class="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16 items-center content-overlay">
             
-            <div class="md:col-span-3 space-y-8">
-                <h3 class="gsap-reveal text-4xl font-bold text-white tracking-tight">הצטרפו למסחר המקצועי</h3>
-                <p class="gsap-slide-up text-gray-400 text-lg font-light leading-relaxed">הפסיקו להמר. התחילו לסחור בשיטה קוהרנטית, מוכחת, שמבוססת על הבנת תנועות הנזילות של הגופים הגדולים בשוק.</p>
-                <div class="space-y-6 mt-8">
-                    <div class="gsap-slide-up flex items-center gap-4 text-gray-300 font-light">
-                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41]"></span>
-                        הבנת השוק מ-0 ל-100: בניית יסודות ברזל.
+            <div class="md:col-span-3 space-y-6 md:space-y-8 text-center md:text-right">
+                <h3 class="gsap-reveal text-3xl md:text-4xl font-bold text-white tracking-tight">הצטרפו למסחר המקצועי</h3>
+                <p class="gsap-slide-up text-gray-400 text-base md:text-lg font-light leading-relaxed">הפסיקו להמר. התחילו לסחור בשיטה קוהרנטית, מוכחת, שמבוססת על הבנת תנועות הנזילות של הגופים הגדולים בשוק.</p>
+                <div class="space-y-4 md:space-y-6 mt-6 md:mt-8 inline-block text-right">
+                    <div class="gsap-slide-up flex items-center gap-3 md:gap-4 text-gray-300 font-light text-sm md:text-base">
+                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></span>
+                        <span>הבנת השוק מ-0 ל-100: בניית יסודות ברזל.</span>
                     </div>
-                    <div class="gsap-slide-up flex items-center gap-4 text-gray-300 font-light">
-                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41]"></span>
-                        אסטרטגיית Liquidity Grabs הלכה למעשה.
+                    <div class="gsap-slide-up flex items-center gap-3 md:gap-4 text-gray-300 font-light text-sm md:text-base">
+                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></span>
+                        <span>אסטרטגיית Liquidity Grabs הלכה למעשה.</span>
                     </div>
-                    <div class="gsap-slide-up flex items-center gap-4 text-gray-300 font-light">
-                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41]"></span>
-                        ניהול סיכונים מתמטי קפדני.
+                    <div class="gsap-slide-up flex items-center gap-3 md:gap-4 text-gray-300 font-light text-sm md:text-base">
+                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></span>
+                        <span>ניהול סיכונים מתמטי קפדני.</span>
                     </div>
                 </div>
             </div>
 
             <div class="md:col-span-2 space-y-6">
-                <div id="purchase" class="gsap-parallax glass-panel p-8 rounded-sm relative group">
+                <div id="purchase" class="gsap-parallax glass-panel p-6 md:p-8 rounded-sm relative group text-center">
                     <div class="absolute inset-0 border border-[#00FF41] opacity-10 group-hover:opacity-30 transition-opacity duration-700 rounded-sm"></div>
-                    <div class="text-sm text-gray-500 mb-2 uppercase tracking-widest font-medium">רישיון מלא למערכת</div>
-                    <div class="text-5xl font-black text-white mb-8">620 <span class="text-2xl text-gray-500 font-light">₪</span></div>
-                    <button class="w-full btn-primary font-bold py-4 px-8 rounded-sm text-lg transition duration-300">
+                    <div class="text-xs md:text-sm text-gray-400 mb-2 uppercase tracking-widest font-medium relative z-10">רישיון מלא למערכת</div>
+                    <div class="text-4xl md:text-5xl font-black text-white mb-6 md:mb-8 relative z-10">620 <span class="text-xl md:text-2xl text-gray-500 font-light">₪</span></div>
+                    <button class="btn-primary font-bold py-4 px-8 rounded-sm text-base md:text-lg transition duration-300 relative z-10">
                         רכישה מאובטחת
                     </button>
                 </div>
 
-                <div class="gsap-slide-up bg-[#030303] p-8 rounded-sm border border-gray-900">
-                    <h4 class="text-lg font-medium mb-6 text-white">ייעוץ והתאמה אישית</h4>
+                <div class="gsap-slide-up bg-[#030303] p-6 md:p-8 rounded-sm border border-gray-900">
+                    <h4 class="text-base md:text-lg font-medium mb-5 md:mb-6 text-white text-center md:text-right">ייעוץ והתאמה אישית</h4>
                     <form class="space-y-4">
-                        <input type="text" placeholder="שם מלא" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors">
-                        <input type="tel" placeholder="טלפון" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors">
-                        <button type="submit" class="w-full btn-secondary py-3 px-8 rounded-sm transition duration-300 mt-2 font-medium">
+                        <input type="text" placeholder="שם מלא" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors text-sm md:text-base">
+                        <input type="tel" placeholder="טלפון" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors text-sm md:text-base">
+                        <button type="submit" class="btn-secondary py-3 px-8 rounded-sm transition duration-300 mt-2 font-medium w-full text-sm md:text-base">
                             שליחת פרטים
                         </button>
                     </form>
@@ -237,14 +252,14 @@
         </div>
     </section>
 
-    <footer class="py-8 text-center text-gray-700 border-t border-gray-900 relative z-10 bg-black">
-        <p class="font-light tracking-widest text-xs uppercase">&copy; 2026 QUANTUM SCALPING SYSTEM. TRADING INVOLVES RISK.</p>
+    <footer class="py-6 md:py-8 text-center text-gray-700 border-t border-gray-900 relative z-10 bg-black">
+        <p class="font-light tracking-widest text-[10px] md:text-xs uppercase px-4">&copy; 2026 QUANTUM SCALPING SYSTEM. TRADING INVOLVES RISK.</p>
     </footer>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // --- 1. LOADER & CINEMATIC REVEAL (2.5s) ---
+        // --- 1. LOADER & CINEMATIC REVEAL ---
         window.addEventListener('load', () => {
             const loaderTl = gsap.timeline();
             loaderTl.to('#loaderLine', { width: '250px', duration: 1.5, ease: "power2.inOut" })
@@ -261,30 +276,28 @@
         });
 
         // --- 2. ADVANCED SCROLL ANIMATIONS (GSAP) ---
-        // Staggered Slide Ups
         gsap.utils.toArray('.gsap-slide-up').forEach(element => {
             gsap.from(element, {
-                scrollTrigger: { trigger: element, start: "top 85%" },
-                y: 40, opacity: 0, duration: 1, ease: "power3.out"
+                scrollTrigger: { trigger: element, start: "top 90%" },
+                y: 30, opacity: 0, duration: 1, ease: "power3.out"
             });
         });
 
-        // Slow Reveals for Titles
         gsap.utils.toArray('.gsap-reveal').forEach(element => {
             gsap.from(element, {
-                scrollTrigger: { trigger: element, start: "top 85%" },
+                scrollTrigger: { trigger: element, start: "top 90%" },
                 clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
                 y: 20, opacity: 0, duration: 1.5, ease: "power4.out"
             });
-            // Final state to ensure visibility: clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
         });
 
-        // Floating Parallax for Glass Panels
+        // Parallax slightly reduced for mobile to prevent jitter
+        const isMobile = window.innerWidth < 768;
         gsap.utils.toArray('.gsap-parallax').forEach(element => {
             gsap.fromTo(element, 
-                { y: 50 },
+                { y: isMobile ? 20 : 50 },
                 {
-                    y: -20,
+                    y: isMobile ? -10 : -20,
                     ease: "none",
                     scrollTrigger: { trigger: element, start: "top bottom", end: "bottom top", scrub: 1 }
                 }
@@ -300,14 +313,14 @@
             scene.fog = new THREE.FogExp2(0x000000, 0.008);
 
             const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
             
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            // Limit pixel ratio on mobile for better performance
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
             container.appendChild(renderer.domElement);
 
-            // Create the primary Holographic Object (The Core)
-            const coreGeometry = new THREE.IcosahedronGeometry(15, 2);
+            const coreGeometry = new THREE.IcosahedronGeometry(isMobile ? 10 : 15, 2);
             const coreMaterial = new THREE.MeshBasicMaterial({ 
                 color: 0x00FF41, 
                 wireframe: true, 
@@ -317,16 +330,15 @@
             const core = new THREE.Mesh(coreGeometry, coreMaterial);
             scene.add(core);
 
-            // Create the Floor Grid (Liquidity Pool representation)
-            const gridHelper = new THREE.GridHelper(300, 80, 0x00FF41, 0x00FF41);
+            const gridHelper = new THREE.GridHelper(300, isMobile ? 40 : 80, 0x00FF41, 0x00FF41);
             gridHelper.position.y = -20;
             gridHelper.material.opacity = 0.06;
             gridHelper.material.transparent = true;
             scene.add(gridHelper);
 
-            // Floating Data Particles
+            // Reduce particles on mobile to save battery
             const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 1500;
+            const particlesCount = isMobile ? 600 : 1200;
             const posArray = new Float32Array(particlesCount * 3);
             
             for(let i = 0; i < particlesCount * 3; i++) {
@@ -339,26 +351,35 @@
             const particles = new THREE.Points(particlesGeometry, particlesMaterial);
             scene.add(particles);
 
-            // Initial Camera Position
             camera.position.set(0, 0, 100);
 
-            // Cinematic fly-in synced with loader
             gsap.to(camera.position, {
                 z: 45, duration: 3, ease: "power3.out", delay: 2
             });
 
-            // Parallax on Scroll (Move camera down into the grid)
             gsap.to(camera.position, {
                 y: -15, z: 60,
                 scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1 }
             });
 
-            // Mouse Interaction
+            // MOUSE & TOUCH INTERACTION
             let mouseX = 0, mouseY = 0;
+            let windowHalfX = window.innerWidth / 2;
+            let windowHalfY = window.innerHeight / 2;
+
+            // Mouse support
             window.addEventListener('mousemove', (e) => {
-                mouseX = (e.clientX / window.innerWidth) - 0.5;
-                mouseY = (e.clientY / window.innerHeight) - 0.5;
+                mouseX = (e.clientX - windowHalfX) * 0.001;
+                mouseY = (e.clientY - windowHalfY) * 0.001;
             });
+
+            // Touch support for Mobile!
+            window.addEventListener('touchmove', (e) => {
+                if(e.touches.length > 0) {
+                    mouseX = (e.touches[0].clientX - windowHalfX) * 0.002;
+                    mouseY = (e.touches[0].clientY - windowHalfY) * 0.002;
+                }
+            }, { passive: true });
 
             const clock = new THREE.Clock();
 
@@ -366,27 +387,26 @@
                 requestAnimationFrame(animate);
                 const time = clock.getElapsedTime();
 
-                // Object Rotations
                 core.rotation.y += 0.001;
                 core.rotation.x += 0.0005;
                 particles.rotation.y = time * 0.01;
 
-                // Gentle breathing effect on the core
                 const scale = 1 + Math.sin(time * 2) * 0.02;
                 core.scale.set(scale, scale, scale);
 
-                // Mouse Parallax
-                camera.position.x += (mouseX * 5 - camera.position.x) * 0.02;
-                // Keep Y controlled mostly by scroll, add tiny mouse effect
-                camera.position.y += (-mouseY * 2 - (camera.position.y - gsap.getProperty(camera.position, "y"))) * 0.02;
+                // Apply Parallax based on input (Mouse or Touch)
+                camera.position.x += (mouseX * 20 - camera.position.x) * 0.02;
+                // Add minor Y interaction without breaking the scroll effect
+                camera.position.y += (-mouseY * 10 - (camera.position.y - gsap.getProperty(camera.position, "y"))) * 0.02;
                 
                 camera.lookAt(0, 0, 0);
                 renderer.render(scene, camera);
             }
             animate();
 
-            // Handle Resize
             window.addEventListener('resize', () => {
+                windowHalfX = window.innerWidth / 2;
+                windowHalfY = window.innerHeight / 2;
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
