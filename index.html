@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;700;900&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -21,7 +21,36 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Loading Screen - 2.5s transition */
+        /* Scanline Holographic Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0) 0px,
+                rgba(0, 0, 0, 0) 2px,
+                rgba(0, 255, 65, 0.02) 2px,
+                rgba(0, 255, 65, 0.02) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 3D Fixed Background Canvas */
+        #hologram-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Content Wrappers */
+        .content-overlay { 
+            z-index: 10; 
+            position: relative; 
+        }
+
+        /* Loader */
         #loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -31,110 +60,85 @@
             justify-content: center;
             align-items: center;
         }
-        
         .loader-line {
             width: 0px;
             height: 1px;
             background: #00FF41;
-            box-shadow: 0 0 10px #00FF41;
-        }
-
-        /* Hero Canvas */
-        #hero-3d-canvas {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
-            opacity: 0.8; /* Keeps text readable */
-        }
-
-        /* Content Overlay - Clean and Sharp */
-        .content-overlay { 
-            z-index: 10; 
-            position: relative; 
+            box-shadow: 0 0 15px #00FF41;
         }
 
         /* Minimalist Buttons */
         .btn-primary {
             background-color: transparent;
-            border: 1px solid #00FF41;
+            border: 1px solid rgba(0, 255, 65, 0.6);
             color: #FFFFFF;
-            box-shadow: inset 0 0 0 rgba(0, 255, 65, 0), 0 0 0 rgba(0, 255, 65, 0);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(5px);
         }
         .btn-primary::before {
             content: '';
             position: absolute;
             top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
-            transition: all 0.4s ease;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.15), transparent);
+            transition: all 0.5s ease;
         }
         .btn-primary:hover {
-            box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.2), 0 0 20px rgba(0, 255, 65, 0.4);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.2), inset 0 0 10px rgba(0, 255, 65, 0.1);
+            border-color: #00FF41;
+            transform: translateY(-2px);
         }
-        .btn-primary:hover::before {
-            left: 100%;
-        }
+        .btn-primary:hover::before { left: 100%; }
 
         .btn-secondary {
-            background-color: transparent;
-            border: 1px solid #333333;
+            border: 1px solid #333;
             color: #A0AEC0;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
-        .btn-secondary:hover {
-            border-color: #FFFFFF;
-            color: #FFFFFF;
-        }
+        .btn-secondary:hover { border-color: #FFF; color: #FFF; }
 
-        /* Delicate Animated SVG Lines */
-        .animated-path {
-            stroke-dasharray: 2000;
-            stroke-dashoffset: 2000;
-            animation: drawLine 15s linear infinite;
-        }
-        @keyframes drawLine {
-            to { stroke-dashoffset: 0; }
-        }
-
-        /* Clean Glassmorphism Panels */
+        /* Glass Panels */
         .glass-panel {
-            background: rgba(10, 10, 10, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(5, 5, 5, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+            overflow: hidden;
         }
         
-        .accent-border-red { border-right: 2px solid rgba(255, 7, 58, 0.5); }
-        .accent-border-green { border-right: 2px solid rgba(0, 255, 65, 0.5); }
+        .accent-border-red { border-right: 2px solid rgba(255, 7, 58, 0.4); }
+        .accent-border-green { border-right: 2px solid rgba(0, 255, 65, 0.4); }
+
+        /* Gradient Mask for Smooth Sections */
+        .section-fade {
+            background: linear-gradient(to bottom, transparent, #000000 15%, #000000 85%, transparent);
+        }
     </style>
 </head>
 <body>
+
+    <div class="scanlines"></div>
+
+    <div id="hologram-canvas"></div>
 
     <div id="loader">
         <div class="loader-line" id="loaderLine"></div>
     </div>
 
-    <svg class="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1]" preserveAspectRatio="none" viewBox="0 0 100 100">
-        <path class="animated-path" d="M-10,50 Q50,10 110,50" stroke="#00FF41" stroke-width="0.03" fill="none" opacity="0.4"/>
-        <path class="animated-path" d="M-10,80 Q50,90 110,20" stroke="#00FF41" stroke-width="0.02" fill="none" opacity="0.2" style="animation-duration: 25s;"/>
-    </svg>
-
-    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div id="hero-3d-canvas"></div>
-        
-        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black pointer-events-none z-0"></div>
-        
-        <div class="container mx-auto px-6 text-center content-overlay pt-20">
-            <h1 id="hero-title" class="text-5xl md:text-7xl font-black mb-6 leading-tight tracking-tight text-white opacity-0">
-                הפסיקו להיות הנזילות של אחרים.<br> 
-                <span class="text-gray-300 font-light">תתחילו לסחור עם הכסף הגדול.</span>
-            </h1>
-            <p id="hero-subtitle" class="text-lg md:text-xl mb-12 max-w-3xl mx-auto font-normal text-gray-400 opacity-0 tracking-wide">
-                השיטה המדויקת למסחר סקאלפינג בקריפטו – מהבסיס ועד שליטה מוחלטת בזיהוי מלכודות, שילוב של טכנולוגיה, פסיכולוגיה ודיוק מתמטי.
-            </p>
+    <header class="relative min-h-screen flex items-center justify-center pt-20">
+        <div class="container mx-auto px-6 text-center content-overlay">
+            <div class="overflow-hidden mb-6">
+                <h1 id="hero-title" class="text-5xl md:text-7xl font-black leading-tight tracking-tight text-white translate-y-full opacity-0">
+                    הפסיקו להיות הנזילות של אחרים.<br> 
+                    <span class="text-gray-300 font-light">תתחילו לסחור עם הכסף הגדול.</span>
+                </h1>
+            </div>
+            <div class="overflow-hidden mb-12">
+                <p id="hero-subtitle" class="text-lg md:text-xl max-w-3xl mx-auto font-normal text-gray-400 tracking-wide translate-y-full opacity-0">
+                    השיטה המדויקת למסחר סקאלפינג בקריפטו – מהבסיס ועד שליטה מוחלטת בזיהוי מלכודות, שילוב של טכנולוגיה, פסיכולוגיה ודיוק מתמטי.
+                </p>
+            </div>
             
             <div id="hero-ctas" class="flex flex-col sm:flex-row gap-5 justify-center opacity-0">
                 <a href="#purchase" class="btn-primary font-bold py-4 px-10 rounded-sm text-lg tracking-wide uppercase">
@@ -147,23 +151,23 @@
         </div>
     </header>
 
-    <section class="relative py-32 bg-black px-6 border-t border-gray-900">
+    <section class="relative py-32 px-6 section-fade">
         <div class="container mx-auto max-w-5xl content-overlay">
-            <h2 class="text-3xl md:text-4xl font-bold mb-16 tracking-tight text-white text-center">הלילה שבו המערכת נחשפה</h2>
+            <h2 class="gsap-reveal text-3xl md:text-4xl font-bold mb-20 tracking-tight text-white text-center">הלילה שבו המערכת נחשפה</h2>
             
             <div class="grid md:grid-cols-2 gap-16 text-gray-400 text-lg leading-relaxed font-light">
-                <div class="space-y-8">
-                    <p>השעה הייתה 03:00 לפנות בוקר. העיניים צרבו מהאור של המסך. עוד עסקה שהייתה נראית 'מושלמת' מבחינה טכנית, נסגרה בהפסד.</p>
-                    <div class="accent-border-red pr-6 py-2 relative">
-                        <div class="absolute right-[-3px] top-1/2 transform -translate-y-1/2 w-1 h-1 bg-[#FF073A] rounded-full shadow-[0_0_8px_#FF073A]"></div>
+                <div class="space-y-12">
+                    <p class="gsap-slide-up">השעה הייתה 03:00 לפנות בוקר. העיניים צרבו מהאור של המסך. עוד עסקה שהייתה נראית 'מושלמת' מבחינה טכנית, נסגרה בהפסד.</p>
+                    <div class="gsap-slide-up accent-border-red pr-6 py-2 relative">
+                        <div class="absolute right-[-3px] top-1/2 transform -translate-y-1/2 w-1 h-1 bg-[#FF073A] rounded-full shadow-[0_0_10px_#FF073A]"></div>
                         <p class="text-gray-300">הסטופ-לוס מוקם בדיוק איפה שכל ספרי ההדרכה אמרו למקם אותו. הגרף ירד בפיפס אחד מתחתיו, הוציא אותי החוצה, ומיד טס למעלה אל עבר היעד המקורי.</p>
                     </div>
                 </div>
-                <div class="glass-panel p-10 rounded-sm flex flex-col justify-center relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-32 h-32 bg-[#00FF41] rounded-full filter blur-[80px] opacity-10"></div>
+                <div class="gsap-parallax glass-panel p-10 rounded-sm flex flex-col justify-center">
+                    <div class="absolute top-0 left-0 w-32 h-32 bg-[#00FF41] rounded-full filter blur-[100px] opacity-[0.07]"></div>
                     
-                    <p class="font-medium text-white text-xl mb-4">התובנה שמשנה את כללי המשחק</p>
-                    <p class="mb-4">השוק לא אישי נגד אף אחד. אבל הוא כן מתוכנן לצוד את הפקודות של הסוחרים הקטנים.</p>
+                    <p class="font-medium text-white text-xl mb-6">התובנה שמשנה את כללי המשחק</p>
+                    <p class="mb-6">השוק לא אישי נגד אף אחד. אבל הוא כן מתוכנן לצוד את הפקודות של הסוחרים הקטנים.</p>
                     <div class="accent-border-green pr-4 py-1">
                         <p class="font-bold text-white">זו לא טעות שלכם. הבעיה היא שלימדו אתכם להשתמש בכלים שנועדו להפוך אתכם לנזילות של הגופים המוסדיים.</p>
                     </div>
@@ -172,60 +176,58 @@
         </div>
     </section>
 
-    <section class="py-24 px-6 bg-[#030303] relative border-y border-gray-900">
-        <svg class="absolute top-0 left-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
-            <path class="animated-path" d="M0,50 Q50,0 100,50" stroke="#00FF41" stroke-width="0.05" fill="none" opacity="0.15"/>
-        </svg>
-
-        <div class="container mx-auto max-w-4xl text-center relative z-10">
-            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-white tracking-tight">צעד אחד לפני הרוב</h2>
-            <p class="text-gray-400 text-xl mb-8 leading-relaxed font-light">
+    <section class="py-32 px-6 relative">
+        <div class="container mx-auto max-w-4xl text-center content-overlay">
+            <h2 class="gsap-reveal text-3xl md:text-4xl font-bold mb-10 text-white tracking-tight">צעד אחד לפני הרוב</h2>
+            <p class="gsap-slide-up text-gray-400 text-xl mb-10 leading-relaxed font-light">
                 רובו המוחלט של הציבור ממשיך להפסיד באותן שיטות ישנות מתוך חוסר מודעות. עצם העובדה שאתם כאן, מחפשים את המנגנון האמיתי שמאחורי הגרף, מעידה על משמעת ורעב להצלחה אמיתית.
             </p>
-            <p class="text-white font-medium text-xl">
-                יש לכם את הפוטנציאל והיכולת האנליטית. הפאזל יושלם כשתקבלו את השיטה הנכונה.
-            </p>
+            <div class="gsap-slide-up inline-block border border-[rgba(0,255,65,0.2)] px-8 py-4 rounded-sm bg-black/50 backdrop-blur-md">
+                <p class="text-white font-medium text-xl">
+                    יש לכם את הפוטנציאל והיכולת האנליטית. הפאזל יושלם כשתקבלו את השיטה הנכונה.
+                </p>
+            </div>
         </div>
     </section>
 
-    <section id="contact" class="py-32 bg-black px-6 relative overflow-hidden">
+    <section id="contact" class="py-32 px-6 relative section-fade mb-20">
         <div class="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-5 gap-16 items-center content-overlay">
             
             <div class="md:col-span-3 space-y-8">
-                <h3 class="text-4xl font-bold text-white tracking-tight">הצטרפו למסחר המקצועי</h3>
-                <p class="text-gray-400 text-lg font-light leading-relaxed">הפסיקו להמר. התחילו לסחור בשיטה קוהרנטית, מוכחת, שמבוססת על הבנת תנועות הנזילות של הגופים הגדולים בשוק.</p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4 text-gray-300 font-light">
-                        <span class="w-2 h-2 bg-[#00FF41] rounded-full shadow-[0_0_5px_#00FF41]"></span>
+                <h3 class="gsap-reveal text-4xl font-bold text-white tracking-tight">הצטרפו למסחר המקצועי</h3>
+                <p class="gsap-slide-up text-gray-400 text-lg font-light leading-relaxed">הפסיקו להמר. התחילו לסחור בשיטה קוהרנטית, מוכחת, שמבוססת על הבנת תנועות הנזילות של הגופים הגדולים בשוק.</p>
+                <div class="space-y-6 mt-8">
+                    <div class="gsap-slide-up flex items-center gap-4 text-gray-300 font-light">
+                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41]"></span>
                         הבנת השוק מ-0 ל-100: בניית יסודות ברזל.
                     </div>
-                    <div class="flex items-center gap-4 text-gray-300 font-light">
-                        <span class="w-2 h-2 bg-[#00FF41] rounded-full shadow-[0_0_5px_#00FF41]"></span>
+                    <div class="gsap-slide-up flex items-center gap-4 text-gray-300 font-light">
+                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41]"></span>
                         אסטרטגיית Liquidity Grabs הלכה למעשה.
                     </div>
-                    <div class="flex items-center gap-4 text-gray-300 font-light">
-                        <span class="w-2 h-2 bg-[#00FF41] rounded-full shadow-[0_0_5px_#00FF41]"></span>
+                    <div class="gsap-slide-up flex items-center gap-4 text-gray-300 font-light">
+                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41]"></span>
                         ניהול סיכונים מתמטי קפדני.
                     </div>
                 </div>
             </div>
 
             <div class="md:col-span-2 space-y-6">
-                <div id="purchase" class="glass-panel p-8 rounded-sm relative group">
-                    <div class="absolute inset-0 border border-[#00FF41] opacity-20 group-hover:opacity-50 transition-opacity duration-500 rounded-sm"></div>
-                    <div class="text-sm text-gray-500 mb-2 uppercase tracking-widest">רישיון מלא לקורס</div>
-                    <div class="text-5xl font-black text-white mb-8">620 <span class="text-2xl text-gray-500">₪</span></div>
+                <div id="purchase" class="gsap-parallax glass-panel p-8 rounded-sm relative group">
+                    <div class="absolute inset-0 border border-[#00FF41] opacity-10 group-hover:opacity-30 transition-opacity duration-700 rounded-sm"></div>
+                    <div class="text-sm text-gray-500 mb-2 uppercase tracking-widest font-medium">רישיון מלא למערכת</div>
+                    <div class="text-5xl font-black text-white mb-8">620 <span class="text-2xl text-gray-500 font-light">₪</span></div>
                     <button class="w-full btn-primary font-bold py-4 px-8 rounded-sm text-lg transition duration-300">
                         רכישה מאובטחת
                     </button>
                 </div>
 
-                <div class="bg-[#050505] p-8 rounded-sm border border-gray-900">
+                <div class="gsap-slide-up bg-[#030303] p-8 rounded-sm border border-gray-900">
                     <h4 class="text-lg font-medium mb-6 text-white">ייעוץ והתאמה אישית</h4>
                     <form class="space-y-4">
                         <input type="text" placeholder="שם מלא" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors">
                         <input type="tel" placeholder="טלפון" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors">
-                        <button type="submit" class="w-full btn-secondary py-3 px-8 rounded-sm transition duration-300 mt-2">
+                        <button type="submit" class="w-full btn-secondary py-3 px-8 rounded-sm transition duration-300 mt-2 font-medium">
                             שליחת פרטים
                         </button>
                     </form>
@@ -235,181 +237,161 @@
         </div>
     </section>
 
-    <footer class="py-10 text-center text-gray-700 bg-black border-t border-gray-900 px-6">
-        <p class="font-light tracking-widest text-xs uppercase">&copy; 2026 QUANTUM SCALPING SYSTEM. ALL RIGHTS RESERVED. TRADING INVOLVES RISK.</p>
+    <footer class="py-8 text-center text-gray-700 border-t border-gray-900 relative z-10 bg-black">
+        <p class="font-light tracking-widest text-xs uppercase">&copy; 2026 QUANTUM SCALPING SYSTEM. TRADING INVOLVES RISK.</p>
     </footer>
 
     <script>
-        // --- PRELOADER & ENTRANCE TIMING (EXACTLY 2.5 SECONDS) ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- 1. LOADER & CINEMATIC REVEAL (2.5s) ---
         window.addEventListener('load', () => {
             const loaderTl = gsap.timeline();
-            
-            // Loader line animation (0 to 1.5s)
-            loaderTl.to('#loaderLine', { width: '200px', duration: 1.5, ease: "power2.inOut" })
-            // Fade out loader screen (starts at 2.0s, ends at 2.5s)
-            .to('#loader', { opacity: 0, duration: 0.5, delay: 0.5, onComplete: () => {
-                document.getElementById('loader').style.display = 'none';
-            }});
+            loaderTl.to('#loaderLine', { width: '250px', duration: 1.5, ease: "power2.inOut" })
+                    .to('#loader', { opacity: 0, duration: 0.5, delay: 0.5, onComplete: () => {
+                        document.getElementById('loader').style.display = 'none';
+                    }});
 
-            // 3D Camera & UI Reveal synced to the 2.5s mark
             setTimeout(() => {
-                startHeroUIReveal();
-            }, 2000); // UI starts fading in right as loader fades out
+                const heroTl = gsap.timeline();
+                heroTl.to('#hero-title', { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" })
+                      .to('#hero-subtitle', { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" }, "-=0.9")
+                      .to('#hero-ctas', { opacity: 1, duration: 1.5, ease: "power2.out" }, "-=0.6");
+            }, 2000);
         });
 
-        function startHeroUIReveal() {
-            const tl = gsap.timeline();
-            tl.to('#hero-title', { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" })
-              .to('#hero-subtitle', { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" }, "-=1.2")
-              .to('#hero-ctas', { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" }, "-=1.2");
-        }
+        // --- 2. ADVANCED SCROLL ANIMATIONS (GSAP) ---
+        // Staggered Slide Ups
+        gsap.utils.toArray('.gsap-slide-up').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: { trigger: element, start: "top 85%" },
+                y: 40, opacity: 0, duration: 1, ease: "power3.out"
+            });
+        });
 
-        // --- HIGH-END THREE.JS: CINEMATIC 3D ANIMATION ---
-        (function initThreeJS() {
-            const container = document.getElementById('hero-3d-canvas');
+        // Slow Reveals for Titles
+        gsap.utils.toArray('.gsap-reveal').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: { trigger: element, start: "top 85%" },
+                clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
+                y: 20, opacity: 0, duration: 1.5, ease: "power4.out"
+            });
+            // Final state to ensure visibility: clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
+        });
+
+        // Floating Parallax for Glass Panels
+        gsap.utils.toArray('.gsap-parallax').forEach(element => {
+            gsap.fromTo(element, 
+                { y: 50 },
+                {
+                    y: -20,
+                    ease: "none",
+                    scrollTrigger: { trigger: element, start: "top bottom", end: "bottom top", scrub: 1 }
+                }
+            );
+        });
+
+        // --- 3. THREE.JS: THE HOLOGRAPHIC CYBER-GRID ---
+        (function initHologram() {
+            const container = document.getElementById('hologram-canvas');
             if (!container) return;
 
             const scene = new THREE.Scene();
-            // Add subtle fog to blend the 3D into the black background
-            scene.fog = new THREE.FogExp2(0x000000, 0.015);
+            scene.fog = new THREE.FogExp2(0x000000, 0.008);
 
-            const camera = new THREE.PerspectiveCamera(60, container.offsetWidth / container.offsetHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             
-            renderer.setSize(container.offsetWidth, container.offsetHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimize for performance
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
-            // 1. CORE (Dark, glossy inner solid shape)
-            const coreGeometry = new THREE.IcosahedronGeometry(12, 1);
-            const coreMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x0a0a0a, 
-                roughness: 0.2, 
-                metalness: 0.8,
-                flatShading: true
-            });
-            const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
-            scene.add(coreMesh);
-
-            // 2. WIREFRAME SHELL (Delicate glowing green data structure)
-            const shellGeometry = new THREE.IcosahedronGeometry(14, 1);
-            const shellMaterial = new THREE.MeshBasicMaterial({ 
+            // Create the primary Holographic Object (The Core)
+            const coreGeometry = new THREE.IcosahedronGeometry(15, 2);
+            const coreMaterial = new THREE.MeshBasicMaterial({ 
                 color: 0x00FF41, 
                 wireframe: true, 
                 transparent: true, 
-                opacity: 0.15 // Very delicate
+                opacity: 0.15 
             });
-            const shellMesh = new THREE.Mesh(shellGeometry, shellMaterial);
-            scene.add(shellMesh);
+            const core = new THREE.Mesh(coreGeometry, coreMaterial);
+            scene.add(core);
 
-            // 3. FLOATING PARTICLES (Data points)
+            // Create the Floor Grid (Liquidity Pool representation)
+            const gridHelper = new THREE.GridHelper(300, 80, 0x00FF41, 0x00FF41);
+            gridHelper.position.y = -20;
+            gridHelper.material.opacity = 0.06;
+            gridHelper.material.transparent = true;
+            scene.add(gridHelper);
+
+            // Floating Data Particles
             const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 800;
+            const particlesCount = 1500;
             const posArray = new Float32Array(particlesCount * 3);
             
             for(let i = 0; i < particlesCount * 3; i++) {
-                // Spread particles in a large sphere
-                posArray[i] = (Math.random() - 0.5) * 150;
+                posArray[i] = (Math.random() - 0.5) * 200;
             }
             particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            
             const particlesMaterial = new THREE.PointsMaterial({
-                size: 0.2,
-                color: 0x00FF41,
-                transparent: true,
-                opacity: 0.6,
-                blending: THREE.AdditiveBlending
+                size: 0.15, color: 0x00FF41, transparent: true, opacity: 0.4
             });
-            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particlesMesh);
+            const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
 
-            // 4. LIGHTING
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-            scene.add(ambientLight);
-            
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-            directionalLight.position.set(20, 50, 30);
-            scene.add(directionalLight);
+            // Initial Camera Position
+            camera.position.set(0, 0, 100);
 
-            const greenPointLight = new THREE.PointLight(0x00FF41, 3, 100);
-            greenPointLight.position.set(0, 0, 0);
-            scene.add(greenPointLight);
-
-            // 5. CAMERA ENTRANCE ANIMATION (EXACTLY 2.5s DURATION)
-            // Starts far away, flies in dramatically
-            camera.position.set(0, 30, 150);
+            // Cinematic fly-in synced with loader
             gsap.to(camera.position, {
-                x: 0, y: 0, z: 45,
-                duration: 2.5,
-                ease: "power4.out" // Cinematic deceleration
+                z: 45, duration: 3, ease: "power3.out", delay: 2
             });
 
-            // 6. MOUSE INTERACTION (Parallax effect)
+            // Parallax on Scroll (Move camera down into the grid)
+            gsap.to(camera.position, {
+                y: -15, z: 60,
+                scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1 }
+            });
+
+            // Mouse Interaction
             let mouseX = 0, mouseY = 0;
-            let targetX = 0, targetY = 0;
-            const windowHalfX = window.innerWidth / 2;
-            const windowHalfY = window.innerHeight / 2;
-
-            window.addEventListener('mousemove', (event) => {
-                mouseX = (event.clientX - windowHalfX);
-                mouseY = (event.clientY - windowHalfY);
+            window.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth) - 0.5;
+                mouseY = (e.clientY / window.innerHeight) - 0.5;
             });
 
-            // Animation Loop
             const clock = new THREE.Clock();
 
             function animate() {
                 requestAnimationFrame(animate);
-                const elapsedTime = clock.getElapsedTime();
-                
-                // Smooth mouse interpolation
-                targetX = mouseX * 0.001;
-                targetY = mouseY * 0.001;
+                const time = clock.getElapsedTime();
 
-                // Rotate meshes
-                coreMesh.rotation.y += 0.002;
-                coreMesh.rotation.x += 0.001;
-                
-                shellMesh.rotation.y -= 0.001;
-                shellMesh.rotation.z += 0.002;
+                // Object Rotations
+                core.rotation.y += 0.001;
+                core.rotation.x += 0.0005;
+                particles.rotation.y = time * 0.01;
 
-                // Subtle floating animation for particles
-                particlesMesh.rotation.y = elapsedTime * 0.02;
-                
-                // Camera parallax reacting to mouse
-                camera.position.x += (mouseX * 0.01 - camera.position.x) * 0.05;
-                camera.position.y += (-mouseY * 0.01 - camera.position.y) * 0.05;
-                camera.lookAt(scene.position);
+                // Gentle breathing effect on the core
+                const scale = 1 + Math.sin(time * 2) * 0.02;
+                core.scale.set(scale, scale, scale);
 
+                // Mouse Parallax
+                camera.position.x += (mouseX * 5 - camera.position.x) * 0.02;
+                // Keep Y controlled mostly by scroll, add tiny mouse effect
+                camera.position.y += (-mouseY * 2 - (camera.position.y - gsap.getProperty(camera.position, "y"))) * 0.02;
+                
+                camera.lookAt(0, 0, 0);
                 renderer.render(scene, camera);
             }
             animate();
 
             // Handle Resize
             window.addEventListener('resize', () => {
-                camera.aspect = container.offsetWidth / container.offsetHeight;
+                camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
-                renderer.setSize(container.offsetWidth, container.offsetHeight);
+                renderer.setSize(window.innerWidth, window.innerHeight);
             });
         })();
-
-        // --- GSAP: SCROLL ANIMATIONS FOR CONTENT ---
-        gsap.registerPlugin(ScrollTrigger);
-        
-        gsap.utils.toArray('section').forEach(section => {
-            gsap.from(section.querySelectorAll('.content-overlay > *'), {
-                scrollTrigger: {
-                    trigger: section,
-                    start: "top 85%",
-                },
-                opacity: 0,
-                y: 30,
-                duration: 1,
-                stagger: 0.15,
-                ease: "power2.out"
-            });
-        });
-
     </script>
 </body>
 </html>
