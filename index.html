@@ -45,21 +45,24 @@
             pointer-events: none;
         }
 
-        /* Content Wrappers */
-        .content-overlay { 
-            z-index: 10; 
-            position: relative; 
+        /* Main Content Wrapper - Hidden initially for dive effect */
+        #main-content {
+            opacity: 0;
+            visibility: hidden;
+            position: relative;
+            z-index: 10;
         }
 
         /* Loader */
         #loader {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background: #000000;
             z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: background-color 1s ease;
         }
         .loader-line {
             width: 0px;
@@ -67,8 +70,21 @@
             background: #00FF41;
             box-shadow: 0 0 15px #00FF41;
         }
+        
+        /* Tooltip style explanation */
+        .liquidity-badge {
+            display: inline-block;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            background: rgba(0, 255, 65, 0.05);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            color: #a3e6b5;
+            backdrop-filter: blur(4px);
+            margin-bottom: 20px;
+        }
 
-        /* Minimalist Buttons */
+        /* Buttons */
         .btn-primary {
             background-color: transparent;
             border: 1px solid rgba(0, 255, 65, 0.6);
@@ -81,9 +97,7 @@
             width: 100%;
             text-align: center;
         }
-        @media (min-width: 640px) {
-            .btn-primary { display: inline-block; width: auto; }
-        }
+        @media (min-width: 640px) { .btn-primary { display: inline-block; width: auto; } }
         
         .btn-primary::before {
             content: '';
@@ -107,9 +121,7 @@
             width: 100%;
             text-align: center;
         }
-        @media (min-width: 640px) {
-            .btn-secondary { display: inline-block; width: auto; }
-        }
+        @media (min-width: 640px) { .btn-secondary { display: inline-block; width: auto; } }
         .btn-secondary:hover, .btn-secondary:active { border-color: #FFF; color: #FFF; }
 
         /* Glass Panels */
@@ -125,7 +137,6 @@
         .accent-border-red { border-right: 2px solid rgba(255, 7, 58, 0.4); }
         .accent-border-green { border-right: 2px solid rgba(0, 255, 65, 0.4); }
 
-        /* Gradient Mask for Smooth Sections */
         .section-fade {
             background: linear-gradient(to bottom, transparent, #000000 10%, #000000 90%, transparent);
         }
@@ -141,141 +152,207 @@
         <div class="loader-line" id="loaderLine"></div>
     </div>
 
-    <header class="relative min-h-screen flex items-center justify-center pt-10 pb-20 px-4">
-        <div class="container mx-auto text-center content-overlay mt-10 md:mt-0">
-            <div class="overflow-hidden mb-4 md:mb-6">
-                <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-7xl font-black leading-tight tracking-tight text-white translate-y-full opacity-0">
-                    הפסיקו להיות הנזילות של אחרים.<br> 
-                    <span class="text-gray-300 font-light text-2xl sm:text-4xl md:text-6xl block mt-2">תתחילו לסחור עם הכסף הגדול.</span>
-                </h1>
-            </div>
-            <div class="overflow-hidden mb-10 md:mb-12">
-                <p id="hero-subtitle" class="text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-normal text-gray-400 tracking-wide translate-y-full opacity-0 px-2">
-                    השיטה המדויקת למסחר סקאלפינג בקריפטו – מהבסיס ועד שליטה מוחלטת בזיהוי מלכודות, שילוב של טכנולוגיה, פסיכולוגיה ודיוק מתמטי.
-                </p>
-            </div>
-            
-            <div id="hero-ctas" class="flex flex-col sm:flex-row gap-4 justify-center opacity-0 px-4 md:px-0">
-                <a href="#purchase" class="btn-primary font-bold py-4 px-8 rounded-sm text-base md:text-lg tracking-wide uppercase">
-                    גישה מיידית למערכת
-                </a>
-                <a href="#contact" class="btn-secondary font-medium py-4 px-8 rounded-sm text-base md:text-lg tracking-wide">
-                    פרטים נוספים
-                </a>
-            </div>
-        </div>
-    </header>
+    <div id="main-content">
+        <header class="relative min-h-screen flex flex-col justify-center pt-24 pb-20 px-4">
+            <div class="container mx-auto text-center mt-10 md:mt-0">
+                
+                <div class="gsap-hero opacity-0 translate-y-4">
+                    <div class="liquidity-badge">
+                        <span class="font-bold text-white">נזילות (Liquidity):</span> הכסף "הכלוא" בפקודות ההגנה של סוחרים קטנים.
+                    </div>
+                </div>
 
-    <section class="relative py-20 md:py-32 px-5 md:px-6 section-fade">
-        <div class="container mx-auto max-w-5xl content-overlay">
-            <h2 class="gsap-reveal text-2xl sm:text-3xl md:text-4xl font-bold mb-12 md:mb-20 tracking-tight text-white text-center">הלילה שבו המערכת נחשפה</h2>
-            
-            <div class="grid md:grid-cols-2 gap-10 md:gap-16 text-gray-400 text-base md:text-lg leading-relaxed font-light">
-                <div class="space-y-8 md:space-y-12">
-                    <p class="gsap-slide-up">השעה הייתה 03:00 לפנות בוקר. העיניים צרבו מהאור של המסך. עוד עסקה שהייתה נראית 'מושלמת' מבחינה טכנית, נסגרה בהפסד.</p>
-                    <div class="gsap-slide-up accent-border-red pr-5 md:pr-6 py-2 relative">
+                <div class="overflow-hidden mb-6">
+                    <h1 class="gsap-hero text-4xl sm:text-5xl md:text-7xl font-black leading-tight tracking-tight text-white translate-y-full opacity-0">
+                        הפסיקו להיות ה"נזילות" של אחרים.<br> 
+                        <span class="text-gray-300 font-light text-2xl sm:text-4xl md:text-6xl block mt-2">תתחילו לסחור עם הכסף הגדול.</span>
+                    </h1>
+                </div>
+                
+                <div class="overflow-hidden mb-12">
+                    <p class="gsap-hero text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-normal text-gray-400 tracking-wide translate-y-full opacity-0 px-2 leading-relaxed">
+                        הקורס המקיף למסחר יומי (סקאלפינג) בקריפטו. מיועד לכולם – ממי שעושה צעד ראשון ועד לסוחר שמחפש פריצת דרך. 
+                        <br><br>
+                        כאן תבינו איך "הכסף החכם" משתמש בפקודות שלכם כדלק, ותלמדו לרכוב על התנועה במקום להפסיד לה.
+                    </p>
+                </div>
+                
+                <div class="gsap-hero flex flex-col sm:flex-row gap-4 justify-center opacity-0 px-4 md:px-0">
+                    <a href="#purchase" class="btn-primary font-bold py-4 px-8 rounded-sm text-base md:text-lg tracking-wide uppercase">
+                        גישה מיידית למערכת
+                    </a>
+                    <a href="#contact" class="btn-secondary font-medium py-4 px-8 rounded-sm text-base md:text-lg tracking-wide">
+                        פרטים נוספים
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <section class="relative py-20 px-5 md:px-6 section-fade">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="gsap-reveal text-2xl sm:text-3xl md:text-4xl font-bold mb-16 tracking-tight text-white text-center">הלילה שבו המערכת נחשפה</h2>
+                
+                <div class="gsap-slide-up mb-12">
+                    <p class="text-gray-400 text-lg md:text-xl leading-relaxed font-light mb-6">
+                        השעה הייתה 03:00 לפנות בוקר. העיניים צרבו מהאור של המסך. עוד עסקה שהייתה נראית 'מושלמת' מבחינה טכנית, נסגרה בהפסד כואב.
+                    </p>
+                    <div class="accent-border-red pr-5 md:pr-6 py-4 relative bg-[#0a0000] rounded-l-lg border-y border-l border-gray-900/30">
                         <div class="absolute right-[-3px] top-1/2 transform -translate-y-1/2 w-1 h-1 bg-[#FF073A] rounded-full shadow-[0_0_10px_#FF073A]"></div>
-                        <p class="text-gray-300">הסטופ-לוס מוקם בדיוק איפה שכל ספרי ההדרכה אמרו למקם אותו. הגרף ירד בפיפס אחד מתחתיו, הוציא אותי החוצה, ומיד טס למעלה אל עבר היעד המקורי.</p>
+                        <p class="text-gray-300 font-light leading-relaxed">
+                            שמתי את פקודת ההגנה (הסטופ-לוס) בדיוק איפה שכל ספרי ההדרכה אמרו. הגרף ירד, הוציא אותי החוצה בהפסד, ומיד טס למעלה אל עבר היעד שהגדרתי. הרגשתי שהשוק מחפש אותי אישית.
+                        </p>
                     </div>
                 </div>
-                <div class="gsap-parallax glass-panel p-6 md:p-10 rounded-sm flex flex-col justify-center">
+
+                <div class="gsap-slide-up glass-panel p-6 md:p-10 rounded-sm">
                     <div class="absolute top-0 left-0 w-32 h-32 bg-[#00FF41] rounded-full filter blur-[100px] opacity-[0.07]"></div>
-                    
-                    <p class="font-medium text-white text-lg md:text-xl mb-4 md:mb-6 relative z-10">התובנה שמשנה את כללי המשחק</p>
-                    <p class="mb-4 md:mb-6 relative z-10">השוק לא אישי נגד אף אחד. אבל הוא כן מתוכנן לצוד את הפקודות של הסוחרים הקטנים.</p>
-                    <div class="accent-border-green pr-4 py-1 relative z-10">
-                        <p class="font-bold text-white">זו לא טעות שלכם. הבעיה היא שלימדו אתכם להשתמש בכלים שנועדו להפוך אתכם לנזילות של הגופים המוסדיים.</p>
+                    <h3 class="font-medium text-white text-xl md:text-2xl mb-4 relative z-10">הסוד שהגופים הגדולים מסתירים</h3>
+                    <p class="text-gray-400 text-lg font-light leading-relaxed mb-6 relative z-10">
+                        השוק לא אישי נגדכם. בעולם המסחר, גופים ענקיים צריכים כמות אדירה של כסף כדי לבצע עסקאות. לכסף הזה קוראים <strong>נזילות</strong>. מאיפה הם משיגים אותו? מכם.
+                    </p>
+                    <div class="accent-border-green pr-4 py-2 relative z-10">
+                        <p class="font-bold text-white text-base md:text-lg">
+                            כשהגרף פוגע בסטופ-לוס שלכם, הכסף שלכם משמש כ'דלק' שמטיס את הגרף לכיוון שלהם. הבעיה היא לא בכם, אלא בכלים הישנים שלימדו אתכם.
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="py-20 md:py-32 px-5 md:px-6 relative">
-        <div class="container mx-auto max-w-4xl text-center content-overlay">
-            <h2 class="gsap-reveal text-2xl sm:text-3xl md:text-4xl font-bold mb-8 md:mb-10 text-white tracking-tight">צעד אחד לפני הרוב</h2>
-            <p class="gsap-slide-up text-gray-400 text-lg md:text-xl mb-8 md:mb-10 leading-relaxed font-light">
-                רובו המוחלט של הציבור ממשיך להפסיד באותן שיטות ישנות מתוך חוסר מודעות. עצם העובדה שאתם כאן, מחפשים את המנגנון האמיתי שמאחורי הגרף, מעידה על משמעת ורעב להצלחה אמיתית.
-            </p>
-            <div class="gsap-slide-up inline-block border border-[rgba(0,255,65,0.2)] px-6 md:px-8 py-4 rounded-sm bg-black/50 backdrop-blur-md">
-                <p class="text-white font-medium text-lg md:text-xl">
-                    יש לכם את הפוטנציאל והיכולת האנליטית. הפאזל יושלם כשתקבלו את השיטה הנכונה.
+        <section class="py-20 md:py-32 px-5 md:px-6 relative">
+            <div class="container mx-auto max-w-4xl text-center">
+                <h2 class="gsap-reveal text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-white tracking-tight">צעד אחד לפני הרוב</h2>
+                <p class="gsap-slide-up text-gray-400 text-lg md:text-xl mb-10 leading-relaxed font-light max-w-2xl mx-auto">
+                    רובו המוחלט של הציבור ממשיך להפסיד באותן שיטות ישנות מתוך חוסר מודעות. עצם העובדה שאתם כאן, קוראים את זה ומחפשים להבין את המנגנון האמיתי, מעידה על רעב אמיתי להצלחה.
                 </p>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-20 md:py-32 px-5 md:px-6 relative section-fade mb-10 md:mb-20">
-        <div class="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16 items-center content-overlay">
-            
-            <div class="md:col-span-3 space-y-6 md:space-y-8 text-center md:text-right">
-                <h3 class="gsap-reveal text-3xl md:text-4xl font-bold text-white tracking-tight">הצטרפו למסחר המקצועי</h3>
-                <p class="gsap-slide-up text-gray-400 text-base md:text-lg font-light leading-relaxed">הפסיקו להמר. התחילו לסחור בשיטה קוהרנטית, מוכחת, שמבוססת על הבנת תנועות הנזילות של הגופים הגדולים בשוק.</p>
-                <div class="space-y-4 md:space-y-6 mt-6 md:mt-8 inline-block text-right">
-                    <div class="gsap-slide-up flex items-center gap-3 md:gap-4 text-gray-300 font-light text-sm md:text-base">
-                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></span>
-                        <span>הבנת השוק מ-0 ל-100: בניית יסודות ברזל.</span>
-                    </div>
-                    <div class="gsap-slide-up flex items-center gap-3 md:gap-4 text-gray-300 font-light text-sm md:text-base">
-                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></span>
-                        <span>אסטרטגיית Liquidity Grabs הלכה למעשה.</span>
-                    </div>
-                    <div class="gsap-slide-up flex items-center gap-3 md:gap-4 text-gray-300 font-light text-sm md:text-base">
-                        <span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></span>
-                        <span>ניהול סיכונים מתמטי קפדני.</span>
-                    </div>
+                <div class="gsap-slide-up inline-block border border-[rgba(0,255,65,0.2)] px-8 py-5 rounded-sm bg-black/50 backdrop-blur-md shadow-[0_0_30px_rgba(0,255,65,0.05)]">
+                    <p class="text-white font-medium text-lg md:text-xl">
+                        יש לכם את הפוטנציאל והמשמעת. הפאזל יושלם ברגע שתלמדו לקרוא את הגרף נכון.
+                    </p>
                 </div>
             </div>
+        </section>
 
-            <div class="md:col-span-2 space-y-6">
-                <div id="purchase" class="gsap-parallax glass-panel p-6 md:p-8 rounded-sm relative group text-center">
-                    <div class="absolute inset-0 border border-[#00FF41] opacity-10 group-hover:opacity-30 transition-opacity duration-700 rounded-sm"></div>
-                    <div class="text-xs md:text-sm text-gray-400 mb-2 uppercase tracking-widest font-medium relative z-10">רישיון מלא למערכת</div>
-                    <div class="text-4xl md:text-5xl font-black text-white mb-6 md:mb-8 relative z-10">620 <span class="text-xl md:text-2xl text-gray-500 font-light">₪</span></div>
-                    <button class="btn-primary font-bold py-4 px-8 rounded-sm text-base md:text-lg transition duration-300 relative z-10">
-                        רכישה מאובטחת
-                    </button>
+        <section id="contact" class="py-20 px-5 md:px-6 relative section-fade mb-10">
+            <div class="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16 items-start">
+                
+                <div class="md:col-span-3 text-center md:text-right">
+                    <h3 class="gsap-reveal text-3xl md:text-4xl font-bold text-white tracking-tight mb-6">הצטרפו למסחר המקצועי</h3>
+                    <p class="gsap-slide-up text-gray-400 text-base md:text-lg font-light leading-relaxed mb-8">
+                        התחילו לסחור בשיטה ברורה שמותאמת גם למי שמתחיל מאפס, ומתבססת על הבנת תנועות ה"דלק" (הנזילות) של הגדולים.
+                    </p>
+                    
+                    <div class="space-y-6 inline-block text-right">
+                        <div class="gsap-slide-up flex items-start gap-4">
+                            <div class="w-2 h-2 mt-2 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">הבנת השוק מ-0 ל-100</h4>
+                                <p class="text-gray-400 font-light text-sm md:text-base">בניית יסודות ברזל בשפה פשוטה וברורה.</p>
+                            </div>
+                        </div>
+                        <div class="gsap-slide-up flex items-start gap-4">
+                            <div class="w-2 h-2 mt-2 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">אסטרטגיית Liquidity Grabs</h4>
+                                <p class="text-gray-400 font-light text-sm md:text-base">איך לזהות מלכודות נזילות ולסחור יחד עם המוסדיים.</p>
+                            </div>
+                        </div>
+                        <div class="gsap-slide-up flex items-start gap-4">
+                            <div class="w-2 h-2 mt-2 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">ניהול סיכונים מתמטי קפדני</h4>
+                                <p class="text-gray-400 font-light text-sm md:text-base">השיטות לשמור על הכסף שלכם ולמקסם רווחים בטוחים.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="gsap-slide-up bg-[#030303] p-6 md:p-8 rounded-sm border border-gray-900">
-                    <h4 class="text-base md:text-lg font-medium mb-5 md:mb-6 text-white text-center md:text-right">ייעוץ והתאמה אישית</h4>
-                    <form class="space-y-4">
-                        <input type="text" placeholder="שם מלא" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors text-sm md:text-base">
-                        <input type="tel" placeholder="טלפון" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors text-sm md:text-base">
-                        <button type="submit" class="btn-secondary py-3 px-8 rounded-sm transition duration-300 mt-2 font-medium w-full text-sm md:text-base">
-                            שליחת פרטים
+                <div class="md:col-span-2 space-y-6">
+                    <div id="purchase" class="gsap-parallax glass-panel p-6 md:p-8 rounded-sm text-center">
+                        <div class="text-sm text-gray-400 mb-2 uppercase tracking-widest font-medium relative z-10">גישה מלאה לקורס</div>
+                        <div class="text-4xl md:text-5xl font-black text-white mb-6 md:mb-8 relative z-10">620 <span class="text-xl md:text-2xl text-gray-500 font-light">₪</span></div>
+                        <button class="btn-primary font-bold py-4 px-8 rounded-sm text-base md:text-lg transition duration-300 relative z-10">
+                            רכישה מאובטחת
                         </button>
-                    </form>
+                    </div>
+
+                    <div class="gsap-slide-up bg-[#030303] p-6 md:p-8 rounded-sm border border-gray-900">
+                        <h4 class="text-base md:text-lg font-medium mb-6 text-white text-center md:text-right">ייעוץ והתאמה אישית</h4>
+                        <form class="space-y-4">
+                            <input type="text" placeholder="שם מלא" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors text-sm">
+                            <input type="tel" placeholder="טלפון" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors text-sm">
+                            <button type="submit" class="btn-secondary py-3 px-8 rounded-sm transition duration-300 mt-2 font-medium w-full text-sm">
+                                שליחת פרטים
+                            </button>
+                        </form>
+                    </div>
                 </div>
+
             </div>
+        </section>
 
-        </div>
-    </section>
-
-    <footer class="py-6 md:py-8 text-center text-gray-700 border-t border-gray-900 relative z-10 bg-black">
-        <p class="font-light tracking-widest text-[10px] md:text-xs uppercase px-4">&copy; 2026 QUANTUM SCALPING SYSTEM. TRADING INVOLVES RISK.</p>
-    </footer>
+        <footer class="py-6 text-center text-gray-700 border-t border-gray-900 relative z-10 bg-black">
+            <p class="font-light tracking-widest text-[10px] md:text-xs uppercase px-4">&copy; 2026 QUANTUM SCALPING SYSTEM. TRADING INVOLVES RISK.</p>
+        </footer>
+    </div>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
+        let cameraObj, sceneObj;
 
-        // --- 1. LOADER & CINEMATIC REVEAL ---
+        // --- 1. THE HOLOGRAPHIC DIVE-IN ANIMATION ---
         window.addEventListener('load', () => {
-            const loaderTl = gsap.timeline();
-            loaderTl.to('#loaderLine', { width: '250px', duration: 1.5, ease: "power2.inOut" })
-                    .to('#loader', { opacity: 0, duration: 0.5, delay: 0.5, onComplete: () => {
-                        document.getElementById('loader').style.display = 'none';
-                    }});
+            // Step 1: Small loader line
+            gsap.to('#loaderLine', { width: '250px', duration: 1.5, ease: "power2.inOut" });
 
+            // Step 2: Hide loader UI and start the 3D dive
             setTimeout(() => {
-                const heroTl = gsap.timeline();
-                heroTl.to('#hero-title', { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" })
-                      .to('#hero-subtitle', { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" }, "-=0.9")
-                      .to('#hero-ctas', { opacity: 1, duration: 1.5, ease: "power2.out" }, "-=0.6");
-            }, 2000);
+                document.getElementById('loaderLine').style.display = 'none';
+                document.getElementById('loader').style.backgroundColor = 'transparent';
+                
+                // Trigger the 3D Camera Dive (Defined in Three.js section)
+                if(cameraObj) {
+                    // Fly THROUGH the hologram
+                    gsap.to(cameraObj.position, {
+                        z: 5, // Extremely close/inside the core
+                        duration: 2.5,
+                        ease: "power4.in" // Accelerate into it
+                    });
+                }
+
+                // Step 3: Fade out loader div completely, show main content, and reverse camera
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    
+                    // Reveal main content container
+                    const mainContent = document.getElementById('main-content');
+                    mainContent.style.visibility = 'visible';
+                    gsap.to(mainContent, { opacity: 1, duration: 1 });
+
+                    // Pull camera back out slightly to read text clearly
+                    if(cameraObj) {
+                        gsap.to(cameraObj.position, {
+                            z: 45, // Back to normal viewing distance
+                            duration: 2,
+                            ease: "power2.out"
+                        });
+                    }
+
+                    // Reveal UI Texts
+                    gsap.to('.gsap-hero', {
+                        y: 0, 
+                        opacity: 1, 
+                        duration: 1.2, 
+                        stagger: 0.2, // Show one by one
+                        ease: "power3.out"
+                    });
+
+                }, 2200); // Wait for the dive to almost finish
+
+            }, 1500);
         });
 
-        // --- 2. ADVANCED SCROLL ANIMATIONS (GSAP) ---
+        // --- 2. ADVANCED SCROLL ANIMATIONS ---
         gsap.utils.toArray('.gsap-slide-up').forEach(element => {
             gsap.from(element, {
                 scrollTrigger: { trigger: element, start: "top 90%" },
@@ -291,13 +368,12 @@
             });
         });
 
-        // Parallax slightly reduced for mobile to prevent jitter
         const isMobile = window.innerWidth < 768;
         gsap.utils.toArray('.gsap-parallax').forEach(element => {
             gsap.fromTo(element, 
-                { y: isMobile ? 20 : 50 },
+                { y: isMobile ? 15 : 40 },
                 {
-                    y: isMobile ? -10 : -20,
+                    y: isMobile ? -5 : -15,
                     ease: "none",
                     scrollTrigger: { trigger: element, start: "top bottom", end: "bottom top", scrub: 1 }
                 }
@@ -309,17 +385,20 @@
             const container = document.getElementById('hologram-canvas');
             if (!container) return;
 
-            const scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x000000, 0.008);
+            sceneObj = new THREE.Scene();
+            sceneObj.fog = new THREE.FogExp2(0x000000, 0.008);
 
-            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+            cameraObj = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
             
+            // Initial position far away for the dive effect
+            cameraObj.position.set(0, 0, 200);
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            // Limit pixel ratio on mobile for better performance
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
             container.appendChild(renderer.domElement);
 
+            // The Core
             const coreGeometry = new THREE.IcosahedronGeometry(isMobile ? 10 : 15, 2);
             const coreMaterial = new THREE.MeshBasicMaterial({ 
                 color: 0x00FF41, 
@@ -328,15 +407,16 @@
                 opacity: 0.15 
             });
             const core = new THREE.Mesh(coreGeometry, coreMaterial);
-            scene.add(core);
+            sceneObj.add(core);
 
+            // Floor Grid
             const gridHelper = new THREE.GridHelper(300, isMobile ? 40 : 80, 0x00FF41, 0x00FF41);
             gridHelper.position.y = -20;
             gridHelper.material.opacity = 0.06;
             gridHelper.material.transparent = true;
-            scene.add(gridHelper);
+            sceneObj.add(gridHelper);
 
-            // Reduce particles on mobile to save battery
+            // Particles
             const particlesGeometry = new THREE.BufferGeometry();
             const particlesCount = isMobile ? 600 : 1200;
             const posArray = new Float32Array(particlesCount * 3);
@@ -349,31 +429,24 @@
                 size: 0.15, color: 0x00FF41, transparent: true, opacity: 0.4
             });
             const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particles);
+            sceneObj.add(particles);
 
-            camera.position.set(0, 0, 100);
-
-            gsap.to(camera.position, {
-                z: 45, duration: 3, ease: "power3.out", delay: 2
-            });
-
-            gsap.to(camera.position, {
+            // Scroll parallax for 3D Camera
+            gsap.to(cameraObj.position, {
                 y: -15, z: 60,
                 scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1 }
             });
 
-            // MOUSE & TOUCH INTERACTION
+            // Interaction mapping
             let mouseX = 0, mouseY = 0;
             let windowHalfX = window.innerWidth / 2;
             let windowHalfY = window.innerHeight / 2;
 
-            // Mouse support
             window.addEventListener('mousemove', (e) => {
                 mouseX = (e.clientX - windowHalfX) * 0.001;
                 mouseY = (e.clientY - windowHalfY) * 0.001;
             });
 
-            // Touch support for Mobile!
             window.addEventListener('touchmove', (e) => {
                 if(e.touches.length > 0) {
                     mouseX = (e.touches[0].clientX - windowHalfX) * 0.002;
@@ -394,21 +467,23 @@
                 const scale = 1 + Math.sin(time * 2) * 0.02;
                 core.scale.set(scale, scale, scale);
 
-                // Apply Parallax based on input (Mouse or Touch)
-                camera.position.x += (mouseX * 20 - camera.position.x) * 0.02;
-                // Add minor Y interaction without breaking the scroll effect
-                camera.position.y += (-mouseY * 10 - (camera.position.y - gsap.getProperty(camera.position, "y"))) * 0.02;
+                // Smooth camera follow mouse
+                cameraObj.position.x += (mouseX * 20 - cameraObj.position.x) * 0.02;
                 
-                camera.lookAt(0, 0, 0);
-                renderer.render(scene, camera);
+                // Add base target Y for scroll, plus mouse offset
+                const targetY = gsap.getProperty(cameraObj.position, "y") - (mouseY * 10);
+                cameraObj.position.y += (targetY - cameraObj.position.y) * 0.02;
+                
+                cameraObj.lookAt(0, 0, 0);
+                renderer.render(sceneObj, cameraObj);
             }
             animate();
 
             window.addEventListener('resize', () => {
                 windowHalfX = window.innerWidth / 2;
                 windowHalfY = window.innerHeight / 2;
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
+                cameraObj.aspect = window.innerWidth / window.innerHeight;
+                cameraObj.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
         })();
