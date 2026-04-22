@@ -53,7 +53,7 @@
             z-index: 10;
         }
 
-        /* Loader */
+        /* Loader Screen */
         #loader {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -62,13 +62,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: background-color 1s ease;
-        }
-        .loader-line {
-            width: 0px;
-            height: 1px;
-            background: #00FF41;
-            box-shadow: 0 0 15px #00FF41;
         }
         
         /* Tooltip style explanation */
@@ -149,7 +142,7 @@
     <div id="hologram-canvas"></div>
 
     <div id="loader">
-        <div class="loader-line" id="loaderLine"></div>
+        <div class="text-[#00FF41] tracking-[0.5em] text-sm md:text-base font-light animate-pulse">SYSTEM BOOT...</div>
     </div>
 
     <div id="main-content">
@@ -157,8 +150,8 @@
             <div class="container mx-auto text-center mt-10 md:mt-0">
                 
                 <div class="gsap-hero opacity-0 translate-y-4">
-                    <div class="liquidity-badge">
-                        <span class="font-bold text-white">נזילות (Liquidity):</span> הכסף "הכלוא" בפקודות ההגנה של סוחרים קטנים.
+                    <div class="liquidity-badge shadow-[0_0_15px_rgba(0,255,65,0.1)]">
+                        <span class="font-bold text-white">נזילות (Liquidity):</span> הכסף "הכלוא" בפקודות ההגנה (סטופ-לוס) של סוחרים.
                     </div>
                 </div>
 
@@ -298,58 +291,52 @@
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
-        let cameraObj, sceneObj;
+        let cameraObj, sceneObj, tunnelMatObj, tunnelObj;
 
-        // --- 1. THE HOLOGRAPHIC DIVE-IN ANIMATION ---
+        // --- 1. THE HOLOGRAPHIC TUNNEL DIVE ANIMATION ---
         window.addEventListener('load', () => {
-            // Step 1: Small loader line
-            gsap.to('#loaderLine', { width: '250px', duration: 1.5, ease: "power2.inOut" });
+            const diveTl = gsap.timeline();
+            
+            // Step 1: Fade out the black loader to reveal the Cyber Tunnel
+            diveTl.to('#loader', { 
+                opacity: 0, 
+                duration: 1, 
+                ease: "power2.out", 
+                onComplete: () => { document.getElementById('loader').style.display = 'none'; }
+            });
 
-            // Step 2: Hide loader UI and start the 3D dive
-            setTimeout(() => {
-                document.getElementById('loaderLine').style.display = 'none';
-                document.getElementById('loader').style.backgroundColor = 'transparent';
-                
-                // Trigger the 3D Camera Dive (Defined in Three.js section)
-                if(cameraObj) {
-                    // Fly THROUGH the hologram
-                    gsap.to(cameraObj.position, {
-                        z: 5, // Extremely close/inside the core
-                        duration: 2.5,
-                        ease: "power4.in" // Accelerate into it
-                    });
-                }
+            // Step 2: Fly the camera THROUGH the tunnel (from Z=350 to Z=45)
+            if(cameraObj) {
+                diveTl.to(cameraObj.position, {
+                    z: 45, 
+                    duration: 2.5, 
+                    ease: "power3.inOut" // Accelerates then decelerates as it reaches the core
+                }, "-=0.5"); // Start slightly before the black screen is completely gone
+            }
 
-                // Step 3: Fade out loader div completely, show main content, and reverse camera
-                setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
-                    
-                    // Reveal main content container
-                    const mainContent = document.getElementById('main-content');
-                    mainContent.style.visibility = 'visible';
-                    gsap.to(mainContent, { opacity: 1, duration: 1 });
+            // Step 3: Dissolve the tunnel wireframe as the camera reaches the end
+            if(tunnelMatObj) {
+                diveTl.to(tunnelMatObj, {
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.in"
+                }, "-=1.2"); // Trigger while the camera is still moving
+            }
 
-                    // Pull camera back out slightly to read text clearly
-                    if(cameraObj) {
-                        gsap.to(cameraObj.position, {
-                            z: 45, // Back to normal viewing distance
-                            duration: 2,
-                            ease: "power2.out"
-                        });
-                    }
+            // Step 4: Fade in the actual website content
+            diveTl.to('#main-content', {
+                autoAlpha: 1, // Handles both visibility and opacity
+                duration: 1.5
+            }, "-=0.5");
 
-                    // Reveal UI Texts
-                    gsap.to('.gsap-hero', {
-                        y: 0, 
-                        opacity: 1, 
-                        duration: 1.2, 
-                        stagger: 0.2, // Show one by one
-                        ease: "power3.out"
-                    });
-
-                }, 2200); // Wait for the dive to almost finish
-
-            }, 1500);
+            // Step 5: Reveal Hero texts elegantly
+            diveTl.to('.gsap-hero', {
+                y: 0, 
+                opacity: 1, 
+                duration: 1.2, 
+                stagger: 0.15,
+                ease: "power3.out"
+            }, "-=1.2");
         });
 
         // --- 2. ADVANCED SCROLL ANIMATIONS ---
@@ -380,7 +367,7 @@
             );
         });
 
-        // --- 3. THREE.JS: THE HOLOGRAPHIC CYBER-GRID ---
+        // --- 3. THREE.JS: THE HOLOGRAPHIC CYBER-GRID & TUNNEL ---
         (function initHologram() {
             const container = document.getElementById('hologram-canvas');
             if (!container) return;
@@ -390,15 +377,30 @@
 
             cameraObj = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
             
-            // Initial position far away for the dive effect
-            cameraObj.position.set(0, 0, 200);
+            // The camera starts far back, OUTSIDE/INSIDE the tunnel
+            cameraObj.position.set(0, 0, 350);
 
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
             container.appendChild(renderer.domElement);
 
-            // The Core
+            // --- CREATE THE CYBER TUNNEL ---
+            // Radius 20, Length 500
+            const tunnelGeo = new THREE.CylinderGeometry(20, 20, 500, 20, 40, true);
+            tunnelMatObj = new THREE.MeshBasicMaterial({ 
+                color: 0x00FF41, 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.15,
+                side: THREE.BackSide // So the camera can see the inside walls
+            });
+            tunnelObj = new THREE.Mesh(tunnelGeo, tunnelMatObj);
+            tunnelObj.rotation.x = Math.PI / 2; // Lay it flat along the Z axis
+            tunnelObj.position.z = 150; // Center it so the camera flies through it
+            sceneObj.add(tunnelObj);
+
+            // --- THE CORE (Revealed at the end of the tunnel) ---
             const coreGeometry = new THREE.IcosahedronGeometry(isMobile ? 10 : 15, 2);
             const coreMaterial = new THREE.MeshBasicMaterial({ 
                 color: 0x00FF41, 
@@ -409,14 +411,14 @@
             const core = new THREE.Mesh(coreGeometry, coreMaterial);
             sceneObj.add(core);
 
-            // Floor Grid
+            // --- THE FLOOR GRID ---
             const gridHelper = new THREE.GridHelper(300, isMobile ? 40 : 80, 0x00FF41, 0x00FF41);
             gridHelper.position.y = -20;
             gridHelper.material.opacity = 0.06;
             gridHelper.material.transparent = true;
             sceneObj.add(gridHelper);
 
-            // Particles
+            // --- PARTICLES ---
             const particlesGeometry = new THREE.BufferGeometry();
             const particlesCount = isMobile ? 600 : 1200;
             const posArray = new Float32Array(particlesCount * 3);
@@ -431,7 +433,7 @@
             const particles = new THREE.Points(particlesGeometry, particlesMaterial);
             sceneObj.add(particles);
 
-            // Scroll parallax for 3D Camera
+            // Parallax on Scroll for 3D Camera
             gsap.to(cameraObj.position, {
                 y: -15, z: 60,
                 scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1 }
@@ -460,8 +462,13 @@
                 requestAnimationFrame(animate);
                 const time = clock.getElapsedTime();
 
+                // Rotate the core
                 core.rotation.y += 0.001;
                 core.rotation.x += 0.0005;
+                
+                // Spin the tunnel to create a "data flow" effect
+                tunnelObj.rotation.z -= 0.002; 
+
                 particles.rotation.y = time * 0.01;
 
                 const scale = 1 + Math.sin(time * 2) * 0.02;
@@ -469,8 +476,6 @@
 
                 // Smooth camera follow mouse
                 cameraObj.position.x += (mouseX * 20 - cameraObj.position.x) * 0.02;
-                
-                // Add base target Y for scroll, plus mouse offset
                 const targetY = gsap.getProperty(cameraObj.position, "y") - (mouseY * 10);
                 cameraObj.position.y += (targetY - cameraObj.position.y) * 0.02;
                 
