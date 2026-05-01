@@ -2,496 +2,333 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#000000">
-    <title>Quantum Scalping - Master the Crypto Liquidity</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaxBot - מנהל המס החכם שלך</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;700;900&display=swap');
-        
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --success: #10b981;
+            --whatsapp: #25D366;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000000;
-            color: #FFFFFF;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Scanline Holographic Overlay */
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0) 0px,
-                rgba(0, 0, 0, 0) 2px,
-                rgba(0, 255, 65, 0.02) 2px,
-                rgba(0, 255, 65, 0.02) 4px
-            );
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* 3D Fixed Background Canvas */
-        #hologram-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Main Content Wrapper - Hidden initially for dive effect */
-        #main-content {
-            opacity: 0;
-            visibility: hidden;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Loader Screen */
-        #loader {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #000000;
-            z-index: 1000;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
         }
+
+        /* סגנונות כלליים */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .btn:hover { background: var(--primary-hover); }
+        .btn-whatsapp { background: var(--whatsapp); color: white; margin-top: 10px; }
+        .btn-whatsapp:hover { background: #128C7E; }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0 1.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        h1, h2, h3 { margin-bottom: 1rem; color: var(--primary); }
+
+        /* מסכי האפליקציה */
+        #dashboard-screen { display: none; }
         
-        /* Tooltip style explanation */
-        .liquidity-badge {
-            display: inline-block;
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            background: rgba(0, 255, 65, 0.05);
-            padding: 8px 16px;
-            border-radius: 100px;
+        /* עיצוב גריד ללוח הבקרה */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--success);
+            margin: 0.5rem 0;
+        }
+
+        /* סימולטור וואטסאפ */
+        .chat-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            background: #efeae2;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .msg {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 8px;
             font-size: 0.9rem;
-            color: #a3e6b5;
-            backdrop-filter: blur(4px);
-            margin-bottom: 20px;
         }
+        .msg.bot { background: white; align-self: flex-start; border-bottom-left-radius: 0; }
+        .msg.user { background: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 0; }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background: #f0f2f5;
+        }
+        .chat-input input { margin: 0; border-radius: 20px; }
+        .chat-input button { width: auto; margin-right: 10px; border-radius: 50%; padding: 10px 15px;}
 
-        /* Buttons */
-        .btn-primary {
-            background-color: transparent;
-            border: 1px solid rgba(0, 255, 65, 0.6);
-            color: #FFFFFF;
-            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
-        @media (min-width: 640px) { .btn-primary { display: inline-block; width: auto; } }
-        
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.15), transparent);
-            transition: all 0.5s ease;
-        }
-        .btn-primary:hover, .btn-primary:active {
-            box-shadow: 0 0 25px rgba(0, 255, 65, 0.2), inset 0 0 10px rgba(0, 255, 65, 0.1);
-            border-color: #00FF41;
-            transform: translateY(-2px);
-        }
-        .btn-primary:hover::before, .btn-primary:active::before { left: 100%; }
-
-        .btn-secondary {
-            border: 1px solid #333;
-            color: #A0AEC0;
-            transition: all 0.4s ease;
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
-        @media (min-width: 640px) { .btn-secondary { display: inline-block; width: auto; } }
-        .btn-secondary:hover, .btn-secondary:active { border-color: #FFF; color: #FFF; }
-
-        /* Glass Panels */
-        .glass-panel {
-            background: rgba(5, 5, 5, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .accent-border-red { border-right: 2px solid rgba(255, 7, 58, 0.4); }
-        .accent-border-green { border-right: 2px solid rgba(0, 255, 65, 0.4); }
-
-        .section-fade {
-            background: linear-gradient(to bottom, transparent, #000000 10%, #000000 90%, transparent);
+        /* נאב-בר */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="scanlines"></div>
+<div class="container">
+    
+    <!-- מסך הרשמה (Onboarding) -->
+    <div id="onboarding-screen" class="card" style="max-width: 500px; margin: 4rem auto;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <i class="fas fa-robot" style="font-size: 3rem; color: var(--primary);"></i>
+            <h1>ברוכים הבאים ל-TaxBot</h1>
+            <p class="text-muted">מערכת המס החכמה שמחליפה את רואה החשבון.</p>
+        </div>
 
-    <div id="hologram-canvas"></div>
+        <form id="registerForm">
+            <label>שם מלא בעל העסק</label>
+            <input type="text" id="userName" required placeholder="לדוגמה: ישראל ישראלי">
 
-    <div id="loader">
-        <div class="text-[#00FF41] tracking-[0.5em] text-sm md:text-base font-light animate-pulse">SYSTEM BOOT...</div>
+            <label>מספר טלפון (לוואטסאפ)</label>
+            <input type="tel" id="userPhone" required placeholder="050-0000000">
+
+            <label>סוג עסק מול רשויות המס</label>
+            <select id="businessType" required>
+                <option value="" disabled selected>בחר סוג עסק...</option>
+                <option value="exempt">עוסק פטור</option>
+                <option value="authorized">עוסק מורשה</option>
+                <option value="company">חברה בע"מ</option>
+            </select>
+
+            <button type="submit" class="btn">הקמת אזור אישי <i class="fas fa-arrow-left"></i></button>
+        </form>
     </div>
 
-    <div id="main-content">
-        <header class="relative min-h-screen flex flex-col justify-center pt-24 pb-20 px-4">
-            <div class="container mx-auto text-center mt-10 md:mt-0">
-                
-                <div class="gsap-hero opacity-0 translate-y-4">
-                    <div class="liquidity-badge shadow-[0_0_15px_rgba(0,255,65,0.1)]">
-                        <span class="font-bold text-white">נזילות (Liquidity):</span> הכסף "הכלוא" בפקודות ההגנה (סטופ-לוס) של סוחרים.
-                    </div>
-                </div>
-
-                <div class="overflow-hidden mb-6">
-                    <h1 class="gsap-hero text-4xl sm:text-5xl md:text-7xl font-black leading-tight tracking-tight text-white translate-y-full opacity-0">
-                        הפסיקו להיות ה"נזילות" של אחרים.<br> 
-                        <span class="text-gray-300 font-light text-2xl sm:text-4xl md:text-6xl block mt-2">תתחילו לסחור עם הכסף הגדול.</span>
-                    </h1>
-                </div>
-                
-                <div class="overflow-hidden mb-12">
-                    <p class="gsap-hero text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-normal text-gray-400 tracking-wide translate-y-full opacity-0 px-2 leading-relaxed">
-                        הקורס המקיף למסחר יומי (סקאלפינג) בקריפטו. מיועד לכולם – ממי שעושה צעד ראשון ועד לסוחר שמחפש פריצת דרך. 
-                        <br><br>
-                        כאן תבינו איך "הכסף החכם" משתמש בפקודות שלכם כדלק, ותלמדו לרכוב על התנועה במקום להפסיד לה.
-                    </p>
-                </div>
-                
-                <div class="gsap-hero flex flex-col sm:flex-row gap-4 justify-center opacity-0 px-4 md:px-0">
-                    <a href="#purchase" class="btn-primary font-bold py-4 px-8 rounded-sm text-base md:text-lg tracking-wide uppercase">
-                        גישה מיידית למערכת
-                    </a>
-                    <a href="#contact" class="btn-secondary font-medium py-4 px-8 rounded-sm text-base md:text-lg tracking-wide">
-                        פרטים נוספים
-                    </a>
-                </div>
+    <!-- מסך לוח בקרה (Dashboard) -->
+    <div id="dashboard-screen">
+        <div class="navbar">
+            <div>
+                <h2><i class="fas fa-robot"></i> TaxBot SaaS</h2>
+                <p id="welcomeMessage" class="text-muted">שלום, משתמש</p>
             </div>
-        </header>
+            <div>
+                <span id="badgeType" style="background: var(--primary); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem;">סוג עסק</span>
+                <button onclick="logout()" style="background: none; border: none; color: red; cursor: pointer; margin-right: 15px;">התנתק</button>
+            </div>
+        </div>
 
-        <section class="relative py-20 px-5 md:px-6 section-fade">
-            <div class="container mx-auto max-w-4xl">
-                <h2 class="gsap-reveal text-2xl sm:text-3xl md:text-4xl font-bold mb-16 tracking-tight text-white text-center">הלילה שבו המערכת נחשפה</h2>
-                
-                <div class="gsap-slide-up mb-12">
-                    <p class="text-gray-400 text-lg md:text-xl leading-relaxed font-light mb-6">
-                        השעה הייתה 03:00 לפנות בוקר. העיניים צרבו מהאור של המסך. עוד עסקה שהייתה נראית 'מושלמת' מבחינה טכנית, נסגרה בהפסד כואב.
-                    </p>
-                    <div class="accent-border-red pr-5 md:pr-6 py-4 relative bg-[#0a0000] rounded-l-lg border-y border-l border-gray-900/30">
-                        <div class="absolute right-[-3px] top-1/2 transform -translate-y-1/2 w-1 h-1 bg-[#FF073A] rounded-full shadow-[0_0_10px_#FF073A]"></div>
-                        <p class="text-gray-300 font-light leading-relaxed">
-                            שמתי את פקודת ההגנה (הסטופ-לוס) בדיוק איפה שכל ספרי ההדרכה אמרו. הגרף ירד, הוציא אותי החוצה בהפסד, ומיד טס למעלה אל עבר היעד שהגדרתי. הרגשתי שהשוק מחפש אותי אישית.
-                        </p>
-                    </div>
+        <div class="dashboard-grid">
+            <!-- אזור נתונים דינמיים -->
+            <div class="card">
+                <h3><i class="fas fa-chart-pie"></i> תמונת מצב מס</h3>
+                <div class="stat-box" id="taxStatusBox">
+                    <p>צפי תשלום מע"מ קרוב (ל-15 בחודש):</p>
+                    <div class="stat-value" id="vatAmount">₪0</div>
+                    <p class="text-muted" style="font-size: 0.8rem;">מבוסס על 0 חשבוניות שנסרקו</p>
                 </div>
+                <button class="btn" style="margin-top: 15px;" onclick="alert('בסביבת פרודקשן כפתור זה יפתח מצלמה לסריקת קבלה (OCR)')">
+                    <i class="fas fa-camera"></i> סרוק הוצאה חדשה
+                </button>
+            </div>
 
-                <div class="gsap-slide-up glass-panel p-6 md:p-10 rounded-sm">
-                    <div class="absolute top-0 left-0 w-32 h-32 bg-[#00FF41] rounded-full filter blur-[100px] opacity-[0.07]"></div>
-                    <h3 class="font-medium text-white text-xl md:text-2xl mb-4 relative z-10">הסוד שהגופים הגדולים מסתירים</h3>
-                    <p class="text-gray-400 text-lg font-light leading-relaxed mb-6 relative z-10">
-                        השוק לא אישי נגדכם. בעולם המסחר, גופים ענקיים צריכים כמות אדירה של כסף כדי לבצע עסקאות. לכסף הזה קוראים <strong>נזילות</strong>. מאיפה הם משיגים אותו? מכם.
-                    </p>
-                    <div class="accent-border-green pr-4 py-2 relative z-10">
-                        <p class="font-bold text-white text-base md:text-lg">
-                            כשהגרף פוגע בסטופ-לוס שלכם, הכסף שלכם משמש כ'דלק' שמטיס את הגרף לכיוון שלהם. הבעיה היא לא בכם, אלא בכלים הישנים שלימדו אתכם.
-                        </p>
+            <!-- אזור משימות -->
+            <div class="card">
+                <h3><i class="fas fa-tasks"></i> המשימות שלך</h3>
+                <ul style="list-style: none; line-height: 2.5;">
+                    <li id="task1"><i class="fas fa-check-circle" style="color: #d1d5db;"></i> חיבור חשבון בנק (ממתין)</li>
+                    <li id="task2"><i class="fas fa-check-circle" style="color: var(--success);"></i> פתיחת תיק ברשויות</li>
+                    <li id="task3"><i class="fas fa-exclamation-circle" style="color: #f59e0b;"></i> חסרה קבלה על חיוב באופיס דיפו</li>
+                </ul>
+            </div>
+
+            <!-- סימולטור וואטסאפ -->
+            <div class="card">
+                <h3><i class="fab fa-whatsapp" style="color: var(--whatsapp);"></i> הבוט שלך בפעולה</h3>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatWindow">
+                        <div class="msg bot">היי! אני TaxBot. שמתי לב שהוצאת 450 ש"ח בתחנת דלק. אפשר צילום של החשבונית?</div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="chatInput" placeholder="הקלד הודעה לבוט...">
+                        <button class="btn btn-whatsapp" onclick="sendSimulatedMessage()"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section class="py-20 md:py-32 px-5 md:px-6 relative">
-            <div class="container mx-auto max-w-4xl text-center">
-                <h2 class="gsap-reveal text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-white tracking-tight">צעד אחד לפני הרוב</h2>
-                <p class="gsap-slide-up text-gray-400 text-lg md:text-xl mb-10 leading-relaxed font-light max-w-2xl mx-auto">
-                    רובו המוחלט של הציבור ממשיך להפסיד באותן שיטות ישנות מתוך חוסר מודעות. עצם העובדה שאתם כאן, קוראים את זה ומחפשים להבין את המנגנון האמיתי, מעידה על רעב אמיתי להצלחה.
-                </p>
-                <div class="gsap-slide-up inline-block border border-[rgba(0,255,65,0.2)] px-8 py-5 rounded-sm bg-black/50 backdrop-blur-md shadow-[0_0_30px_rgba(0,255,65,0.05)]">
-                    <p class="text-white font-medium text-lg md:text-xl">
-                        יש לכם את הפוטנציאל והמשמעת. הפאזל יושלם ברגע שתלמדו לקרוא את הגרף נכון.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="py-20 px-5 md:px-6 relative section-fade mb-10">
-            <div class="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16 items-start">
-                
-                <div class="md:col-span-3 text-center md:text-right">
-                    <h3 class="gsap-reveal text-3xl md:text-4xl font-bold text-white tracking-tight mb-6">הצטרפו למסחר המקצועי</h3>
-                    <p class="gsap-slide-up text-gray-400 text-base md:text-lg font-light leading-relaxed mb-8">
-                        התחילו לסחור בשיטה ברורה שמותאמת גם למי שמתחיל מאפס, ומתבססת על הבנת תנועות ה"דלק" (הנזילות) של הגדולים.
-                    </p>
-                    
-                    <div class="space-y-6 inline-block text-right">
-                        <div class="gsap-slide-up flex items-start gap-4">
-                            <div class="w-2 h-2 mt-2 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></div>
-                            <div>
-                                <h4 class="text-white font-medium mb-1">הבנת השוק מ-0 ל-100</h4>
-                                <p class="text-gray-400 font-light text-sm md:text-base">בניית יסודות ברזל בשפה פשוטה וברורה.</p>
-                            </div>
-                        </div>
-                        <div class="gsap-slide-up flex items-start gap-4">
-                            <div class="w-2 h-2 mt-2 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></div>
-                            <div>
-                                <h4 class="text-white font-medium mb-1">אסטרטגיית Liquidity Grabs</h4>
-                                <p class="text-gray-400 font-light text-sm md:text-base">איך לזהות מלכודות נזילות ולסחור יחד עם המוסדיים.</p>
-                            </div>
-                        </div>
-                        <div class="gsap-slide-up flex items-start gap-4">
-                            <div class="w-2 h-2 mt-2 bg-[#00FF41] rounded-full shadow-[0_0_8px_#00FF41] flex-shrink-0"></div>
-                            <div>
-                                <h4 class="text-white font-medium mb-1">ניהול סיכונים מתמטי קפדני</h4>
-                                <p class="text-gray-400 font-light text-sm md:text-base">השיטות לשמור על הכסף שלכם ולמקסם רווחים בטוחים.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="md:col-span-2 space-y-6">
-                    <div id="purchase" class="gsap-parallax glass-panel p-6 md:p-8 rounded-sm text-center">
-                        <div class="text-sm text-gray-400 mb-2 uppercase tracking-widest font-medium relative z-10">גישה מלאה לקורס</div>
-                        <div class="text-4xl md:text-5xl font-black text-white mb-6 md:mb-8 relative z-10">620 <span class="text-xl md:text-2xl text-gray-500 font-light">₪</span></div>
-                        <button class="btn-primary font-bold py-4 px-8 rounded-sm text-base md:text-lg transition duration-300 relative z-10">
-                            רכישה מאובטחת
-                        </button>
-                    </div>
-
-                    <div class="gsap-slide-up bg-[#030303] p-6 md:p-8 rounded-sm border border-gray-900">
-                        <h4 class="text-base md:text-lg font-medium mb-6 text-white text-center md:text-right">ייעוץ והתאמה אישית</h4>
-                        <form class="space-y-4">
-                            <input type="text" placeholder="שם מלא" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors text-sm">
-                            <input type="tel" placeholder="טלפון" class="w-full bg-[#0a0a0a] border border-gray-800 rounded-sm px-4 py-3 text-white font-light focus:outline-none focus:border-gray-500 transition-colors text-sm">
-                            <button type="submit" class="btn-secondary py-3 px-8 rounded-sm transition duration-300 mt-2 font-medium w-full text-sm">
-                                שליחת פרטים
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <footer class="py-6 text-center text-gray-700 border-t border-gray-900 relative z-10 bg-black">
-            <p class="font-light tracking-widest text-[10px] md:text-xs uppercase px-4">&copy; 2026 QUANTUM SCALPING SYSTEM. TRADING INVOLVES RISK.</p>
-        </footer>
+        </div>
     </div>
 
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
-        let cameraObj, sceneObj, tunnelMatObj, tunnelObj;
+</div>
 
-        // --- 1. THE HOLOGRAPHIC TUNNEL DIVE ANIMATION ---
-        window.addEventListener('load', () => {
-            const diveTl = gsap.timeline();
-            
-            // Step 1: Fade out the black loader to reveal the Cyber Tunnel
-            diveTl.to('#loader', { 
-                opacity: 0, 
-                duration: 1, 
-                ease: "power2.out", 
-                onComplete: () => { document.getElementById('loader').style.display = 'none'; }
-            });
+<script>
+    // לוגיקת האפליקציה (Frontend בלבד)
 
-            // Step 2: Fly the camera THROUGH the tunnel (from Z=350 to Z=45)
-            if(cameraObj) {
-                diveTl.to(cameraObj.position, {
-                    z: 45, 
-                    duration: 2.5, 
-                    ease: "power3.inOut" // Accelerates then decelerates as it reaches the core
-                }, "-=0.5"); // Start slightly before the black screen is completely gone
-            }
+    const registerForm = document.getElementById('registerForm');
+    const onboardingScreen = document.getElementById('onboarding-screen');
+    const dashboardScreen = document.getElementById('dashboard-screen');
+    
+    // מאזין לאירוע שליחת טופס ההרשמה
+    registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // איסוף נתונים
+        const userData = {
+            name: document.getElementById('userName').value,
+            phone: document.getElementById('userPhone').value,
+            type: document.getElementById('businessType').value,
+            typeText: document.getElementById('businessType').options[document.getElementById('businessType').selectedIndex].text
+        };
 
-            // Step 3: Dissolve the tunnel wireframe as the camera reaches the end
-            if(tunnelMatObj) {
-                diveTl.to(tunnelMatObj, {
-                    opacity: 0,
-                    duration: 1,
-                    ease: "power2.in"
-                }, "-=1.2"); // Trigger while the camera is still moving
-            }
+        // שמירה בדפדפן (LocalStorage) כדי לדמות שמירה במסד נתונים
+        localStorage.setItem('taxbot_user', JSON.stringify(userData));
+        
+        // מעבר ללוח הבקרה
+        loadDashboard();
+    });
 
-            // Step 4: Fade in the actual website content
-            diveTl.to('#main-content', {
-                autoAlpha: 1, // Handles both visibility and opacity
-                duration: 1.5
-            }, "-=0.5");
+    // פונקציה לטעינת לוח הבקרה בהתאם לסוג העסק
+    function loadDashboard() {
+        const userStr = localStorage.getItem('taxbot_user');
+        if (!userStr) return; // אם אין משתמש, נשארים במסך הרשמה
 
-            // Step 5: Reveal Hero texts elegantly
-            diveTl.to('.gsap-hero', {
-                y: 0, 
-                opacity: 1, 
-                duration: 1.2, 
-                stagger: 0.15,
-                ease: "power3.out"
-            }, "-=1.2");
-        });
+        const user = JSON.parse(userStr);
+        
+        // הסתרת הרשמה, הצגת דאשבורד
+        onboardingScreen.style.display = 'none';
+        dashboardScreen.style.display = 'block';
 
-        // --- 2. ADVANCED SCROLL ANIMATIONS ---
-        gsap.utils.toArray('.gsap-slide-up').forEach(element => {
-            gsap.from(element, {
-                scrollTrigger: { trigger: element, start: "top 90%" },
-                y: 30, opacity: 0, duration: 1, ease: "power3.out"
-            });
-        });
+        // עדכון ממשק משתמש
+        document.getElementById('welcomeMessage').innerText = `שלום, ${user.name}`;
+        document.getElementById('badgeType').innerText = user.typeText;
 
-        gsap.utils.toArray('.gsap-reveal').forEach(element => {
-            gsap.from(element, {
-                scrollTrigger: { trigger: element, start: "top 90%" },
-                clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
-                y: 20, opacity: 0, duration: 1.5, ease: "power4.out"
-            });
-        });
+        // לוגיקה עסקית: שינוי תצוגה לפי סוג עסק
+        const vatDisplay = document.getElementById('vatAmount');
+        const task1 = document.getElementById('task1');
+        const chatWindow = document.getElementById('chatWindow');
 
-        const isMobile = window.innerWidth < 768;
-        gsap.utils.toArray('.gsap-parallax').forEach(element => {
-            gsap.fromTo(element, 
-                { y: isMobile ? 15 : 40 },
-                {
-                    y: isMobile ? -5 : -15,
-                    ease: "none",
-                    scrollTrigger: { trigger: element, start: "top bottom", end: "bottom top", scrub: 1 }
-                }
-            );
-        });
+        if (user.type === 'exempt') {
+            // עוסק פטור
+            document.getElementById('taxStatusBox').innerHTML = `
+                <p>צפי הכנסות עד כה (מתוך תקרה שנתית):</p>
+                <div class="stat-value" style="color: var(--primary);">₪45,200</div>
+                <p class="text-muted">נותרו עוד ₪75,000 לתקרה.</p>
+            `;
+            task1.innerHTML = `<i class="fas fa-check-circle" style="color: #d1d5db;"></i> הכנת הצהרת עוסק פטור (בדצמבר)`;
+            chatWindow.innerHTML += `<div class="msg bot">הגדרתי אותך כעוסק פטור. שלח לי לכאן הוצאות ואשמור אותן ישר לדוח השנתי!</div>`;
+        } else if (user.type === 'authorized') {
+            // עוסק מורשה
+            vatDisplay.innerText = "₪1,240";
+            chatWindow.innerHTML += `<div class="msg bot">הגדרתי אותך כעוסק מורשה. הדיווח הבא למע"מ הוא ב-15 לחודש. אל תשכח לשלוח לי חשבוניות!</div>`;
+        } else {
+            // חברה
+            vatDisplay.innerText = "₪14,500";
+            task1.innerHTML = `<i class="fas fa-exclamation-circle" style="color: red;"></i> דרוש אישור חתימה מרואה החשבון המבקר`;
+            chatWindow.innerHTML += `<div class="msg bot">התיק הוגדר כחברה בע"מ. מכין סנכרון למערכות השכר...</div>`;
+        }
+    }
 
-        // --- 3. THREE.JS: THE HOLOGRAPHIC CYBER-GRID & TUNNEL ---
-        (function initHologram() {
-            const container = document.getElementById('hologram-canvas');
-            if (!container) return;
+    // סימולציית שיחה בוט-לקוח
+    function sendSimulatedMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
 
-            sceneObj = new THREE.Scene();
-            sceneObj.fog = new THREE.FogExp2(0x000000, 0.008);
+        const chatWindow = document.getElementById('chatWindow');
+        
+        // הודעת לקוח
+        chatWindow.innerHTML += `<div class="msg user">${text}</div>`;
+        input.value = '';
+        chatWindow.scrollTop = chatWindow.scrollHeight;
 
-            cameraObj = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            
-            // The camera starts far back, OUTSIDE/INSIDE the tunnel
-            cameraObj.position.set(0, 0, 350);
+        // הדמיית חשיבה של הבוט
+        setTimeout(() => {
+            chatWindow.innerHTML += `<div class="msg bot">המערכת מנתחת את הודעתך... במערכת האמיתית, ה-AI יזהה כעת את כוונתך (למשל: סיווג הוצאה, בקשת דוח).</div>`;
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }, 1000);
+    }
 
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
-            container.appendChild(renderer.domElement);
+    // ניתוק
+    function logout() {
+        localStorage.removeItem('taxbot_user');
+        window.location.reload();
+    }
 
-            // --- CREATE THE CYBER TUNNEL ---
-            // Radius 20, Length 500
-            const tunnelGeo = new THREE.CylinderGeometry(20, 20, 500, 20, 40, true);
-            tunnelMatObj = new THREE.MeshBasicMaterial({ 
-                color: 0x00FF41, 
-                wireframe: true, 
-                transparent: true, 
-                opacity: 0.15,
-                side: THREE.BackSide // So the camera can see the inside walls
-            });
-            tunnelObj = new THREE.Mesh(tunnelGeo, tunnelMatObj);
-            tunnelObj.rotation.x = Math.PI / 2; // Lay it flat along the Z axis
-            tunnelObj.position.z = 150; // Center it so the camera flies through it
-            sceneObj.add(tunnelObj);
+    // הפעלה ראשונית
+    if (localStorage.getItem('taxbot_user')) {
+        loadDashboard();
+    }
+</script>
 
-            // --- THE CORE (Revealed at the end of the tunnel) ---
-            const coreGeometry = new THREE.IcosahedronGeometry(isMobile ? 10 : 15, 2);
-            const coreMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0x00FF41, 
-                wireframe: true, 
-                transparent: true, 
-                opacity: 0.15 
-            });
-            const core = new THREE.Mesh(coreGeometry, coreMaterial);
-            sceneObj.add(core);
-
-            // --- THE FLOOR GRID ---
-            const gridHelper = new THREE.GridHelper(300, isMobile ? 40 : 80, 0x00FF41, 0x00FF41);
-            gridHelper.position.y = -20;
-            gridHelper.material.opacity = 0.06;
-            gridHelper.material.transparent = true;
-            sceneObj.add(gridHelper);
-
-            // --- PARTICLES ---
-            const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = isMobile ? 600 : 1200;
-            const posArray = new Float32Array(particlesCount * 3);
-            
-            for(let i = 0; i < particlesCount * 3; i++) {
-                posArray[i] = (Math.random() - 0.5) * 200;
-            }
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const particlesMaterial = new THREE.PointsMaterial({
-                size: 0.15, color: 0x00FF41, transparent: true, opacity: 0.4
-            });
-            const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-            sceneObj.add(particles);
-
-            // Parallax on Scroll for 3D Camera
-            gsap.to(cameraObj.position, {
-                y: -15, z: 60,
-                scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1 }
-            });
-
-            // Interaction mapping
-            let mouseX = 0, mouseY = 0;
-            let windowHalfX = window.innerWidth / 2;
-            let windowHalfY = window.innerHeight / 2;
-
-            window.addEventListener('mousemove', (e) => {
-                mouseX = (e.clientX - windowHalfX) * 0.001;
-                mouseY = (e.clientY - windowHalfY) * 0.001;
-            });
-
-            window.addEventListener('touchmove', (e) => {
-                if(e.touches.length > 0) {
-                    mouseX = (e.touches[0].clientX - windowHalfX) * 0.002;
-                    mouseY = (e.touches[0].clientY - windowHalfY) * 0.002;
-                }
-            }, { passive: true });
-
-            const clock = new THREE.Clock();
-
-            function animate() {
-                requestAnimationFrame(animate);
-                const time = clock.getElapsedTime();
-
-                // Rotate the core
-                core.rotation.y += 0.001;
-                core.rotation.x += 0.0005;
-                
-                // Spin the tunnel to create a "data flow" effect
-                tunnelObj.rotation.z -= 0.002; 
-
-                particles.rotation.y = time * 0.01;
-
-                const scale = 1 + Math.sin(time * 2) * 0.02;
-                core.scale.set(scale, scale, scale);
-
-                // Smooth camera follow mouse
-                cameraObj.position.x += (mouseX * 20 - cameraObj.position.x) * 0.02;
-                const targetY = gsap.getProperty(cameraObj.position, "y") - (mouseY * 10);
-                cameraObj.position.y += (targetY - cameraObj.position.y) * 0.02;
-                
-                cameraObj.lookAt(0, 0, 0);
-                renderer.render(sceneObj, cameraObj);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                windowHalfX = window.innerWidth / 2;
-                windowHalfY = window.innerHeight / 2;
-                cameraObj.aspect = window.innerWidth / window.innerHeight;
-                cameraObj.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        })();
-    </script>
 </body>
 </html>
